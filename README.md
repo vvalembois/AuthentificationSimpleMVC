@@ -3,6 +3,11 @@
 
 ## Introduction
 
+Pour récuperer le projet, placer vous dans le répertoire où vous voulez travailler puis tapez
+```bash
+git clone https://forge.univ-artois.fr/alexandre_deloffre/authentificationSimpleMVC.git
+```
+
 Dans le cadre du 4<sup>ème</sup> semestre de DUT Informatique, nous avons comme projet de réaliser un module d'authentification pour le framework [Simple MVC Framework](http://simplemvcframework.com/php-framework).
 
 Nous prendrons l'exemple du module d'authentification [panique/huge](https://github.com/panique/huge).
