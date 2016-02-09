@@ -95,7 +95,7 @@ class Config
         /**
          * Optional create a constant for the name of the site.
          */
-        define('SITETITLE', 'Authentifier');
+        define('SITETITLE', 'Authentifier_PTS4');
 
         /**
          * Optionall set a site email address.
