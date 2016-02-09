@@ -15,8 +15,8 @@ git pull
 
 Pour envoyer
 ```bash
-$git commit LEFICHIERENQUESTION
-$git push
+$ git commit LEFICHIERENQUESTION
+$ git push
 ```
 
 
