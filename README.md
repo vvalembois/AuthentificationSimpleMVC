@@ -23,4 +23,3 @@ L'objectif de ce projet est d'obtenir un module d'authentification moderne et un
  * [Forge](https://forge.univ-artois.fr/alexandre_deloffre/authentificationSimpleMVC)
  * [Groupe Facebook](https://www.facebook.com/groups/SMVCauthentification/)
  * [Sujet](http://www.lgi2a.univ-artois.fr/mediawiki/enseignement/index.php/IUT_de_Lens_:_Projets_tutor%C3%A9s_2015-2016#Projet_1_:_Authentification_.26_Simple-MVC)
-____
