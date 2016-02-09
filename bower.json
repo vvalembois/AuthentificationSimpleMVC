@@ -1,0 +1,23 @@
+{
+  "name": "fakeSite",
+  "authors": [
+    "Hemery Fred <fred.hemery@univ-artois.fr>"
+  ],
+  "description": "Controle TP",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "font-awesome": "font-awsome#~4.5.0"
+  }
+}
