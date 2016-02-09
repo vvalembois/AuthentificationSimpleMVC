@@ -3,12 +3,12 @@
 
 ## Introduction
 
-Pour récuperer le projet, placer vous dans le répertoire où vous voulez travailler puis tapez
+Pour récuperer entièrement le projet, placer vous dans le répertoire où vous voulez travailler puis tapez
 ```bash
 git clone https://forge.univ-artois.fr/alexandre_deloffre/authentificationSimpleMVC.git
 ```
 
-Ensuite pour mettre à jour
+Ensuite pour mettre à jour (à faire avant de travailler)
 ```bash
 git pull
 ```
