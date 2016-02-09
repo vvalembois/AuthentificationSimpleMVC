@@ -8,6 +8,7 @@ Pour récuperer entièrement le projet, placer vous dans le répertoire où vous
 git clone https://forge.univ-artois.fr/alexandre_deloffre/authentificationSimpleMVC.git
 ```
 
+PHP Storm gère gite, sinon:
 Ensuite pour mettre à jour (à faire avant de travailler)
 ```bash
 git pull
