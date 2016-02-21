@@ -17,7 +17,7 @@ class Authentifier extends Controller{
 		Authentifier::checkSessionConcurrency();
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
-		if(!Authentifier::userIsLoggedIn() && /*TODO teste le cookie "Rester connecté"*/){
+		if(!Authentifier::userIsLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
 			// TODO renvoyer vers la route loginWithCookie
 		}
 
