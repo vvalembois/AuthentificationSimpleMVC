@@ -15,6 +15,6 @@ class Authentifier extends Controller{
 	}
 
 	public function posts(){
-		echo 'ouaiscca';
+		echo 'authentifier fonctionne';
 	}
 }
