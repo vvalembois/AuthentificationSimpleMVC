@@ -41,6 +41,6 @@ class Welcome extends Controller
     }
 
     public function test(){
-        echo "okletst";
+        echo "projet S4 - Authentifier";
     }
 }
