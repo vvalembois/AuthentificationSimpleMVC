@@ -8,7 +8,26 @@
 namespace Modules\Authentifier\Controllers;
 
 
+use Core\View;
+use Modules\Authentifier\Models\RegisterModel;
+
 class Register extends Authentifier
 {
+    public function routes(){
+        Router::any('authentifier/login_register', 'Modules\Authentifier\Controllers\Register@login_register');
+    }
 
+    /**
+     * Formulaire d'inscription d'un nouvel utilisateur
+     */
+    publci function registerForm(){
+        View::renderModule('/Authentifier/Views/Register/register_form');
+    }
+
+    /**
+     * Action effectuée à la reception d'un formulaire d'inscription
+     */
+    public function registerAction(){
+        $register_successful = RegisterModel::NewUser();
+    }
 }
