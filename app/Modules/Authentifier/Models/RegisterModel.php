@@ -18,7 +18,7 @@ class RegisterModel extends Model
         $user_email = strip_tags(Request::post('user_email'));
         $user_email_repeat = strip_tags(Request::post('user_email_repeat'));
         $user_password = strip_tags(Request::post('user_password'));
-        $user_password_repeat = strip_tags(Request::post('user_password_repeat');
+        $user_password_repeat = strip_tags(Request::post('user_password_repeat'));
 
         if(!self::registerInputValidation(
             Request::post('captcha'),
@@ -28,8 +28,7 @@ class RegisterModel extends Model
             $user_password,
             $user_password_repeat
         )) return false;
-
-        $user_password_hash = password_hash($user_password);
+        return true;
     }
 
     public static function registerInputValidation($captcha, $user_name, $user_email, $user_email_repeat, $user_password, $user_password_repeat){
