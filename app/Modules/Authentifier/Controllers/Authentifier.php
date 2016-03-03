@@ -6,6 +6,7 @@ use Core\View;
 use Core\Router;
 use Helpers\Request;
 use Helpers\Session;
+use Modules\Authentifier\Models\LoginModel;
 
 class Authentifier extends Controller{
 	public function __construct(){
@@ -17,7 +18,7 @@ class Authentifier extends Controller{
 		Authentifier::checkSessionConcurrency();
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
-		if(!Authentifier::userIsLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
+		if(!LoginModel::userIsLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
 			// TODO renvoyer vers la route loginWithCookie
 		}
 
@@ -33,10 +34,7 @@ class Authentifier extends Controller{
 		// TODO tester dans la base de donnée l'id de session de l'utilisateur
 	}
 
-	private static function userIsLoggedIn()
-	{
-		// TODO tester la variable de session concernée
-	}
+
 
 	/**
 	 * Retourne la valeur d'un champ souhaité d'un cookie
