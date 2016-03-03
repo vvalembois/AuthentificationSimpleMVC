@@ -25,7 +25,11 @@ class Authentifier extends Controller{
 	}
 	
 	public function routes(){
-		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@posts');
+		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
+	}
+
+	public static function test(){
+		echo "ok";
 	}
 
 	/* TODO il doit être possible de mettre les fonctions utiles ci-dessous dans un helper interne au module*/
