@@ -8,6 +8,7 @@
 namespace Modules\Authentifier\Controllers;
 
 
+use Core\Router;
 use Core\View;
 use Modules\Authentifier\Models\RegisterModel;
 
@@ -20,7 +21,7 @@ class Register extends Authentifier
     /**
      * Formulaire d'inscription d'un nouvel utilisateur
      */
-    publci function registerForm(){
+    public function registerForm(){
         View::renderModule('/Authentifier/Views/Register/register_form');
     }
 
