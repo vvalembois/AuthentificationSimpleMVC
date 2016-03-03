@@ -27,10 +27,6 @@ class Authentifier extends Controller{
 		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@posts');
 	}
 
-	public function posts(){
-		echo 'authentifier fonctionne';
-	}
-
 	/* TODO il doit être possible de mettre les fonctions utiles ci-dessous dans un helper interne au module*/
 
 	private static function checkSessionConcurrency(){
