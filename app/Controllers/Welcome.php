@@ -58,7 +58,8 @@ class Welcome extends Controller
               <input type='submit'/>
                </form>";
 
-        if($captcha->checkAnswer(Request::post('usercaptcha')))
+        $captcha2 = new RainCaptcha();
+        if($captcha2->checkAnswer(Request::post('usercaptcha')))
             echo "ok";
         else
             echo "faux";
