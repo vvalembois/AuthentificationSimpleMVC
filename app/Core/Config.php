@@ -70,7 +70,7 @@ class Config
         /**
          * Database name.
          */
-        define('DB_NAME', 'ctrltp');
+        define('DB_NAME', 'authentifier');
 
         /**
          * Database username.

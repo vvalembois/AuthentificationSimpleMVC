@@ -47,7 +47,7 @@ class RainCaptcha
      */
     public function getImage()
     {
-        return self::HOST . '/image/' . $this->sessionId . '?rand' . rand(100000, 999999);
+        return self::HOST . '/image/' . $this->sessionId . '?rand' . rand(100000, 999999) . rand(0,999999);
     }
 
     /**

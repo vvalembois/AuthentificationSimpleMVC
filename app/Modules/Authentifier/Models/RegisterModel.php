@@ -9,19 +9,22 @@ namespace Modules\Authentifier\Models;
 
 
 use Core\Model;
+use Helpers\RainCaptcha;
 use Helpers\Request;
 
 class RegisterModel extends Model
 {
+
     public static function newUser(){
         $user_name = strip_tags(Request::post('user_name'));
         $user_email = strip_tags(Request::post('user_email'));
         $user_email_repeat = strip_tags(Request::post('user_email_repeat'));
         $user_password = strip_tags(Request::post('user_password'));
         $user_password_repeat = strip_tags(Request::post('user_password_repeat'));
+        $user_captcha = strip_tags(Request::post('captcha'));
 
         if(!self::registerInputValidation(
-            Request::post('captcha'),
+            $user_captcha,
             $user_name,
             $user_email,
             $user_email_repeat,
@@ -31,9 +34,11 @@ class RegisterModel extends Model
         return true;
     }
 
-    public static function registerInputValidation($captcha, $user_name, $user_email, $user_email_repeat, $user_password, $user_password_repeat){
+    public static function registerInputValidation($user_captcha, $user_name, $user_email, $user_email_repeat, $user_password, $user_password_repeat){
         /* TODO vérifier tous les paramètres saisies par l'utilisateur */
-        return  CaptchaModel::check($captcha) &&
+        $captcha = new RainCaptcha();
+        return  $captcha->checkAnswer($user_captcha) &&
+                self::registerUsernameValidation($user_name);
                 self::registerEmailValidation($user_email, $user_email_repeat) &&
                 self::registerPasswordValidation($user_password, $user_password_repeat);
     }
@@ -56,4 +61,5 @@ class RegisterModel extends Model
                 ($user_password == $user_password_repeat) &&
                 (strlen($user_password) >= 8);
     }
+
 }

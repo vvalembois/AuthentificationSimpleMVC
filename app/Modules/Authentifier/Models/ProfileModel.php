@@ -10,7 +10,7 @@ namespace Modules\Authentifier\Models;
 
 use Core\Model;
 
-class LoginModel extends Model
+class ProfileModel extends Model
 {
 
 }

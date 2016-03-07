@@ -12,6 +12,9 @@ namespace Controllers;
 
 use Core\View;
 use Core\Controller;
+use Helpers\RainCaptcha;
+use Helpers\Request;
+use Modules\Authentifier\Models\CaptchaModel;
 
 /**
  * Sample controller showing a construct and 2 methods and their typical usage.
@@ -41,6 +44,23 @@ class Welcome extends Controller
     }
 
     public function test(){
-        echo "projet S4 - Authentifier";
+        echo "projet S4 - Authendkzodjstifier";
+        $this->testCaptcha();
+
+    }
+
+    private function testCaptcha(){
+        $captcha = new RainCaptcha();
+        echo "<img src=".$captcha->getImage()."/>";
+
+        echo "<form action='#' method='POST'>
+              <input type='text' name='usercaptcha'/>
+              <input type='submit'/>
+               </form>";
+
+        if($captcha->checkAnswer(Request::post('usercaptcha')))
+            echo "ok";
+        else
+            echo "faux";
     }
 }
