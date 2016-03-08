@@ -16,10 +16,10 @@ class Login extends Authentifier
 {
 
     public function routes(){
-        Router::any('authentifier/login_form', 'Modules\Authentifier\Controllers\Login@login_form');
+        Router::any('authentifier/loginForm', 'Modules\Authentifier\Controllers\Login@loginForm');
     }
 
-    public function login_form(){
+    public function loginForm(){
         $data = [];
         View::renderTemplate('header',$data);
         View::renderModule('/Authentifier/Views/Login/login_form', $data);

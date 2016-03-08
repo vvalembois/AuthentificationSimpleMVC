@@ -27,7 +27,10 @@ class Register extends Authentifier
     public function registerForm(){
         $this->captcha = new RainCaptcha();
         $data['captcha_url'] = $this->captcha->getImage();
+
+        View::renderTemplate('header');
         View::renderModule('/Authentifier/Views/Register/register_form', $data);
+        View::renderTemplate('footer');
     }
 
     /**
