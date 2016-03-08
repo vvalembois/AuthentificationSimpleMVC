@@ -1,12 +1,11 @@
-<?php
-/**
- * User: deloffre
- * Date: 02/03/16
- * Time: 23:02
- */
-?>
-<form action="#">
+<form action="/authentifier/loginAction" method="post">
+    <label for="login_name">Nom :</label>
     <input type="text" name="login_name" placeholder="Type your login"/>
+    
+    <label for="login_password">Nom :</label>
     <input type="password" name="login_password" placeholder="Type your password"/>
-    <input type="submit">
+    
+    <div class="button">
+    	<button type="submit">Connexion</button>
+    </div>
 </form>
