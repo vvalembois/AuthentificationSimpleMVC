@@ -41,3 +41,12 @@ $hooks->run('afterBody');
 ?>
 
 <div class="container">
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+				<li><a href="<?= DIR ?>">Home</a></li>
+				<li><a href="<?= DIR."authentifier/registerForm" ?>">S'inscrire</a></li>
+				<li><a href="<?= DIR."authentifier/loginForm" ?>">Se connecter</a></li>
+			</ul>
+		</div>
+	</nav>

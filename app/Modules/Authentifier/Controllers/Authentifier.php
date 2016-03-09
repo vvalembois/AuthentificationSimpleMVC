@@ -6,9 +6,13 @@ use Core\View;
 use Core\Router;
 use Helpers\Request;
 use Helpers\Session;
+use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Models\LoginModel;
 
 class Authentifier extends Controller{
+
+	protected $feedback;
+
 	public function __construct(){
 		parent::__construct();
 		// Initialisation d'une session
@@ -16,6 +20,8 @@ class Authentifier extends Controller{
 
 		// Tester si une session 'concurrente' existe, auquel cas on deconnecte l'utilisateur
 		Authentifier::checkSessionConcurrency();
+
+		$this->feedback = new Feedback();
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
 		if(!LoginModel::userIsLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){

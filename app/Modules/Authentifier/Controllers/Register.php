@@ -21,13 +21,11 @@ use Modules\Authentifier\Models\UserModel;
 class Register extends Authentifier
 {
     private $userSQL;
-    private $feedback;
 
     public function __construct()
     {
         parent::__construct();
         $this->userSQL = new UserModel();
-        $this->feedback = new Feedback();
     }
 
     public function routes()
@@ -57,55 +55,52 @@ class Register extends Authentifier
     }
 
     /**
-     * Action effectuée à la reception d'un formulaire d'inscription
+     * Action effectuée à la réception d'un formulaire d'inscription
      */
-    public function registerAction()
-    {
-        $this->feedback->render();
-        $input_valids = InputValidation::inputsValidation($_POST);
+    public function registerAction(){
 
-        if (!$input_valids) {
-            Session::set('post', $_POST);
-            header('Location: ' . DIR . 'authentifier/registerForm');
-        } else {
-
-            /* Vérification de l'inexistance de l'utilisateur*/
-            if($this->userSQL->exist($input_valids['user_name'])!=null)
+        /* Validation des entrées utilisateurs */
+        if ($input_valids = InputValidation::inputsValidation($_POST)) {
+            /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
+            if ($usernameExist = $this->userSQL->exist($input_valids['user_name']) != null)
                 $this->feedback->add("Username already exists");
 
-            // TODO vérification de l'inexistance de l'adresse mail
-
-            if($this->userSQL->exist($input_valids['user_mail'])!=null){
+            /* Vérification de l'inexistance de l'adresse mail dans la base de données */
+            if ($mailExist = $this->userSQL->exist($input_valids['user_mail']) != null)
                 $this->feedback->add("Mail adress already in use");
-                Session::set('post', $_POST);
-            }
-
 
             /* Vérification du captcha */
             $captcha = new RainCaptcha();
-            if(!$captcha_valid = $captcha->checkAnswer(Request::post('user_captcha')))
+            if (!$captcha_valid = $captcha->checkAnswer(Request::post('user_captcha')))
                 $this->feedback->add("Captcha error");
 
-            if($this->feedback->count()>0) {
-                Session::set('post', $_POST);
-                header('Location: ' . DIR . 'authentifier/registerForm');
-                return;
-            }
-            else {
-                $user_data = [
-                    'user_name' => $input_valids['user_name'],
-                    'user_email' => $input_valids['user_mail'],
-                    'user_password_hash' => password_hash($input_valids['user_password'], PASSWORD_DEFAULT)
-                ];
+            /* Si tout est validé, alors on ajoute à la base de donnée */
+            if (!$usernameExist && !$mailExist && $captcha_valid) {
 
+                /* On récupère un tableau avec les paramètres à utiliser */
+                $user_data =
+                    [
+                        'user_name' => $input_valids['user_name'],
+                        'user_email' => $input_valids['user_mail'],
+                        'user_password_hash' => password_hash($input_valids['user_password'], PASSWORD_DEFAULT) /* On crypte le mot de passe */
+                    ];
+
+                /* Tentative d'insertion dans la table */
                 try {
                     $this->userSQL->insertUser($user_data);
+                    $this->feedback->add("Inscription de $user_data[user_name] réussie!", true);
                 } catch (\Exception $e) {
                     $this->feedback->add("Registration error (database)");
-                    Session::set('post', $_POST);
-                    header('Location: ' . DIR . 'authentifier/registerForm');
                 }
             }
         }
+
+        /* Si l'inscription a échouée, on renvoie vers le formulaire*/
+        if($this->feedback->get() > 0){
+            Session::set('post', $_POST);
+            header('Location: ' . DIR . 'authentifier/registerForm');
+        }
+        else
+            header('Location: ' . DIR);
     }
 }

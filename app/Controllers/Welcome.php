@@ -14,12 +14,13 @@ use Core\View;
 use Core\Controller;
 use Helpers\RainCaptcha;
 use Helpers\Request;
+use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Models\CaptchaModel;
 
 /**
  * Sample controller showing a construct and 2 methods and their typical usage.
  */
-class Welcome extends Controller
+class Welcome extends Authentifier
 {
 
     /**
@@ -36,17 +37,12 @@ class Welcome extends Controller
      */
     public function index()
     {
-        $data['title'] = $this->language->get('welcome_text');
+        $data['title'] = "Page de test";
 
         View::renderTemplate('header', $data);
+        $this->feedback->render();
         View::render('index', $data);
         View::renderTemplate('footer', $data);
-    }
-
-    public function test(){
-        echo "projet S4 - Authendkzodjstifier";
-        $this->testCaptcha();
-
     }
 
     private function testCaptcha(){

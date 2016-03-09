@@ -248,3 +248,26 @@
 #8 {main}</pre>
 
            <hr />
+<p>Error on Mar 09, 2016 15:12PM - file_get_contents(): php_network_getaddresses: getaddrinfo failed: Temporary failure in name resolution in /app/app/Helpers/RainCaptcha.php on line 64</p><p>Error on Mar 09, 2016 15:13PM - file_get_contents(): php_network_getaddresses: getaddrinfo failed: Temporary failure in name resolution in /app/app/Helpers/RainCaptcha.php on line 64</p><p>Error on Mar 09, 2016 15:14PM - file_get_contents(): php_network_getaddresses: getaddrinfo failed: Temporary failure in name resolution in /app/app/Helpers/RainCaptcha.php on line 64</p><p>Error on Mar 09, 2016 15:16PM - file_get_contents(): php_network_getaddresses: getaddrinfo failed: Temporary failure in name resolution in /app/app/Helpers/RainCaptcha.php on line 64</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 09, 2016 20:20PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)</p>
+
+           <p><strong>Code:</strong> 2002</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 61</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(61): PDO->__construct('mysql:host=loca...', 'admin', '********')
+#1 /app/app/Core/Model.php(33): Helpers\Database::get()
+#2 /app/app/Modules/Authentifier/Controllers/Register.php(29): Core\Model->__construct()
+#3 /app/app/Helpers/Hooks.php(161): Modules\Authentifier\Controllers\Register->__construct()
+#4 /app/app/Core/routes.php(20): Helpers\Hooks->run('routes')
+#5 /app/index.php(81): require('/app/app/Core/r...')
+#6 {main}</pre>
+
+           <hr />
