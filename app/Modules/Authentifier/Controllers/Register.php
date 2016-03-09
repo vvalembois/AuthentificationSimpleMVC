@@ -20,12 +20,11 @@ use Modules\Authentifier\Models\UserModel;
 
 class Register extends Authentifier
 {
-    private $userSQL;
+
 
     public function __construct()
     {
         parent::__construct();
-        $this->userSQL = new UserModel();
     }
 
     public function routes()

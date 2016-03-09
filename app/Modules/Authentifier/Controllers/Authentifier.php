@@ -8,10 +8,12 @@ use Helpers\Request;
 use Helpers\Session;
 use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\UserModel;
 
 class Authentifier extends Controller{
 
 	protected $feedback;
+	protected $userSQL;
 
 	public function __construct(){
 		parent::__construct();
@@ -22,6 +24,8 @@ class Authentifier extends Controller{
 		Authentifier::checkSessionConcurrency();
 
 		$this->feedback = new Feedback();
+
+		$this->userSQL = new UserModel();
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
 		if(!LoginModel::userIsLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){

@@ -46,4 +46,13 @@ class UserModel extends Model
             ",array(":user_name_or_email"=>$user_name_or_email))
         );
     }
+
+    public function getUserPasswordHash($user_name_or_email){
+        return($this->db->select(
+            'SELECT user_password_hash FROM '.PREFIX.'users
+             WHERE user_name = :user_name_or_email
+                    OR user_email = :user_name_or_email'
+            ,array(":user_name_or_email"=>$user_name_or_email))
+        );
+    }
 }
