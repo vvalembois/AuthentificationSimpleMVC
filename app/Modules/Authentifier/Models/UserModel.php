@@ -13,6 +13,7 @@ use Modules\Authentifier\Helpers\InputValidation;
 
 class UserModel extends Model
 {
+    private $user_id;
     private $user_name;
     private $session_id;
     private $user_password_hash;
@@ -32,7 +33,17 @@ class UserModel extends Model
     private $user_reset_timestamp;
     private $user_provider_type;
 
-    public static function newUser($user_captcha, $user_name, $user_email, $user_email_repeat, $user_password, $user_password_repeat){
-        return InputValidation::registerInputValidation($user_captcha, $user_name, $user_email, $user_email_repeat, $user_password, $user_password_repeat);
+    public function insertUser($user_data){
+        $this->db->insert(PREFIX.'users', $user_data);
+        return $this->db->lastInsertId('user_id');
+    }
+
+    public function exist($user_name_or_email){
+        return($this->db->select(
+            "SELECT 1 FROM ".PREFIX."users
+             WHERE user_name = :user_name_or_email
+                    OR user_email = :user_name_or_email
+            ",array(":user_name_or_email"=>$user_name_or_email))
+        );
     }
 }

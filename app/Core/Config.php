@@ -85,12 +85,12 @@ class Config
         /**
          * PREFER to be used in database calls default is smvc_
          */
-        define('PREFIX', 'smvc_');
+        define('PREFIX', '');
 
         /**
          * Set prefix for sessions.
          */
-        define('SESSION_PREFIX', 'smvc_');
+        define('SESSION_PREFIX', '');
 
         /**
          * Optional create a constant for the name of the site.

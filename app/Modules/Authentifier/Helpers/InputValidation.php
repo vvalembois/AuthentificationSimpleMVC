@@ -99,12 +99,23 @@ class InputValidation
             'user_captcha'    => 'sanitize_string'
         ));
 
+        $feedback = new Feedback();
+
         $validated_data = $gump->run($data);
 
-        if($validated_data === false) {
-            echo $gump->get_readable_errors(true);
+        if(!$passwordEquality = $data['user_password']==$data['user_password_repeat']) {
+            $feedback->add("The password repeat is not the same");
+            return false;
+        }
+
+        if(!$mailEquality = $data['user_mail']==$data['user_mail_repeat']) {
+            $feedback->add("The mail repeat is not the same");
+            return false;
+        }
+
+        if ($validated_data === false) {
+                $feedback->add($gump->get_readable_errors(true));
         }
         return $validated_data;
     }
-
 }
