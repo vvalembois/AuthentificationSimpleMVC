@@ -1,4 +1,4 @@
-<form action="/User/" method="post">
+<form action="/modifier/profileAction" method="post">
     <label for="user_name">Nom :</label>
     <input type="text" id="user_name" name="user_name" value=<?= $data['user']['user_name'] ?>/>
 
