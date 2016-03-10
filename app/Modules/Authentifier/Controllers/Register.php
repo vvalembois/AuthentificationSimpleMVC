@@ -56,9 +56,11 @@ class Register extends Authentifier
      * Action effectuée à la réception d'un formulaire d'inscription
      */
     public function registerAction(){
-
         /* Validation des entrées utilisateurs */
-        if ($input_valids = InputValidation::inputsValidation($_POST)) {
+        $input_valids = InputValidation::inputsValidation($_POST);
+        $this->feedback->merge(Session::get('feedback')->get());
+
+        if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
             if ($usernameExist = $this->userSQL->exist($input_valids['user_name']) != null)
                 $this->feedback->add("Username already exists");
@@ -93,7 +95,7 @@ class Register extends Authentifier
             }
         }
 
-
+        /* On */
 
         /* Si l'inscription a échouée, on renvoie vers le formulaire*/
         if($this->feedback->count() > 0){

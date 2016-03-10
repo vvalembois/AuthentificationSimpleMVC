@@ -23,7 +23,8 @@ class Authentifier extends Controller{
 		// Tester si une session 'concurrente' existe, auquel cas on deconnecte l'utilisateur
 		Authentifier::checkSessionConcurrency();
 
-		$this->feedback = new Feedback();
+		if(!isset($this->feedback))
+			$this->feedback = new Feedback();
 
 		$this->userSQL = new UserModel();
 

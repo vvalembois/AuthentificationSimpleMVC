@@ -42,9 +42,9 @@ class Feedback {
 
     public function merge(array $msg, $good = false) {
         if ($good) {
-            array_merge($this->good[], $msg);
+            array_merge($this->good, $msg);
         } else {
-            array_merge($this->bad[], $msg);
+            array_merge($this->bad, $msg);
         }
         $this->updateSession();
     }
