@@ -50,13 +50,13 @@ class Profile extends Authentifier
             if ($mailExist = $this->userSQL->exist($input_valids['user_mail']) != null)
                     $this->feedback->add("Mail adress already in use");
             
-             Vérification du captcha si on veut en mettre un 
+             //Vérification du captcha si on veut en mettre un 
             $captcha = new RainCaptcha();
             if (!$captcha_valid = $captcha->checkAnswer(Request::post('user_captcha')))
                 $this->feedback->add("Captcha error");
             
             
-             /* Si l'inscription a échouée, on renvoie vers le formulaire*/
+             // Si l'inscription a échouée, on renvoie vers le formulaire
             if($this->feedback->get() > 0){
                 Session::set('post', $_POST);
                 header('Location: ' . DIR . 'modifier/profileForm');
