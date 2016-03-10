@@ -14,6 +14,7 @@ use Core\View;
 use Core\Controller;
 use Helpers\RainCaptcha;
 use Helpers\Request;
+use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Models\CaptchaModel;
 
@@ -38,6 +39,9 @@ class Welcome extends Authentifier
     public function index()
     {
         $data['title'] = "Page de test";
+
+        if(Session::get('user_logged_in'))
+            $data['user_logged_in'] = true;
 
         View::renderTemplate('header', $data);
         $this->feedback->render();

@@ -111,7 +111,7 @@ class InputValidation
             $feedback->add("The mail repeat is not the same");
         }
 
-        if ($validated_data === false) {
+        if ($validated_data == false) {
                 $feedback->add($gump->get_readable_errors(true));
         }
 

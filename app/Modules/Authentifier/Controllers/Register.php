@@ -45,7 +45,6 @@ class Register extends Authentifier
         $data['user_password_repeat'] = Session::get('post')['user_password_repeat'];
         $data['user_mail'] = Session::get('post')['user_mail'];
         $data['user_mail_repeat'] = Session::get('post')['user_mail_repeat'];
-        Session::destroy('post');
 
         View::renderTemplate('header');
         $this->feedback->render();
@@ -94,12 +93,15 @@ class Register extends Authentifier
             }
         }
 
+
+
         /* Si l'inscription a échouée, on renvoie vers le formulaire*/
-        if($this->feedback->get() > 0){
+        if($this->feedback->count() > 0){
             Session::set('post', $_POST);
             header('Location: ' . DIR . 'authentifier/registerForm');
         }
-        else
+        else {
             header('Location: ' . DIR);
+        }
     }
 }

@@ -10,9 +10,9 @@ $feedback = Session::get('feedback');
             <h3 class="panel-title">Warning</h3>
         </div>
         <div class="panel-body">
-            <ul>
+            <ul class="list-group">
                 <?php foreach ($feedback->get() as $info) {
-                    echo "<li>" . $info . "</li>";
+                    echo "<li class=\"list-group-item list-group-item-danger\">" . $info . "</li>";
                 }?>
             </ul>
         </div>
@@ -25,9 +25,9 @@ $feedback = Session::get('feedback');
             <h3 class="panel-title">Information</h3>
         </div>
         <div class="panel-body">
-            <ul>
+            <ul class="list-group">
                 <?php foreach ($feedback->get('good') as $info) {
-                    echo "<li>" . $info . "</li>";
+                    echo "<li class=\"list-group-item list-group-item-success\">" . $info . "</li>";
                 }?>
             </ul>
         </div>
