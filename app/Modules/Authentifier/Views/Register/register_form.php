@@ -15,11 +15,13 @@
         <label for="user_password_repeat">Répétez votre mot de passe :</label>
         <input class="form-control" type="password" id="user_password_repeat" name="user_password_repeat" value='<?= $data['user_password_repeat']?>' value='<?= $data['user_']?>' autocomplete="off" placeholder="Retapez votre mot de passe ..." required/>
 
-        <img class="col-xs-4 col-xs-offset-4" src= <?= $data['captcha_url'] ?>>
-        <label for="user_captcha">Recopiez le texte de l'image :</label>
+        <br/>
+        <img class="col-xs-4 col-xs-offset-4 img-thumbnail" src= <?= $data['captcha_url'] ?>>
+        <label class=" col-xs-offset-4" for="user_captcha">Recopiez le texte de l'image :</label>
         <input class="form-control" type="text" id="user_captcha" name="user_captcha" autocomplete="off" placeholder="Saisissez le texte de l'image ..." required/>
 
-        <input class="form-control" type="submit" value="S'inscrire">
+        <br/>
+        <input class="form-control btn btn-primary" type="submit" value="S'inscrire">
 
     </form>
 </div>

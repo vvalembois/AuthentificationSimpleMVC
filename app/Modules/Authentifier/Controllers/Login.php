@@ -61,7 +61,10 @@ class Login extends Authentifier
     }
 
     public function logout(){
-        Session::destroy();
+        if(Session::get('user_logged_in')) {
+            Session::destroy('user_logged_in');
+            $this->feedback->add("Vous êtes déconnecté");
+        }
         header('Location: /');
     }
 

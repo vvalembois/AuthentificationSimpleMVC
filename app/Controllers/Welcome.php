@@ -48,20 +48,4 @@ class Welcome extends Authentifier
         View::render('index', $data);
         View::renderTemplate('footer', $data);
     }
-
-    private function testCaptcha(){
-        $captcha = new RainCaptcha();
-        echo "<img src=".$captcha->getImage()."/>";
-
-        echo "<form action='#' method='POST'>
-              <input type='text' name='usercaptcha'/>
-              <input type='submit'/>
-               </form>";
-
-        $captcha2 = new RainCaptcha();
-        if($captcha2->checkAnswer(Request::post('usercaptcha')))
-            echo "ok";
-        else
-            echo "faux";
-    }
 }

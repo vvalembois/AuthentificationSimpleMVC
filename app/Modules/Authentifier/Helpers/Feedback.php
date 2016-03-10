@@ -19,15 +19,14 @@ class Feedback {
      * Feedback constructor.
      */
     public function __construct($session = false) {
+        $this->good = [];
+        $this->bad = [];
         $feedback = Session::get('feedback');
-            if (isset($feedback) !== false) {
-                $this->good = $feedback->good;
-                $this->false = $feedback->false;
-                return;
-            }
-            $this->good = [];
-            $this->bad = [];
-            $this->update();
+        if (isset($feedback)) {
+            $this->good = $feedback->good;
+            $this->bad = $feedback->bad;
+        }
+        $this->updateSession();
     }
 
 
@@ -37,7 +36,7 @@ class Feedback {
         } else {
             $this->bad[] = $msg;
         }
-        $this->update();
+        $this->updateSession();
     }
 
 
@@ -47,7 +46,7 @@ class Feedback {
         } else {
             array_merge($this->bad[], $msg);
         }
-        $this->update();
+        $this->updateSession();
     }
 
     public function count($good = false) {
@@ -56,6 +55,10 @@ class Feedback {
         } else {
             return count($this->bad);
         }
+    }
+
+    public function countAll(){
+        return count($this->bad) + count($this->good);
     }
 
     public function get($good = false) {
@@ -67,13 +70,37 @@ class Feedback {
     }
 
     public function render() {
-        View::renderModule('Authentifier/Views/Feedback/feedback');
-        $this->good = [];
-        $this->bad = [];
-        $this->update();
+        if($this->countAll() > 0) {
+            View::renderModule('Authentifier/Views/Feedback/feedback_header');
+            if ($this->count() > 0) {
+                $data['type'] = "danger";
+                foreach ($this->get() as $data['message']) {
+                    View::renderModule('Authentifier/Views/Feedback/feedback_message', $data);
+                }
+            } else if ($this->count(true) > 0) {
+                $data['type'] = "success";
+                foreach ($this->get(true) as $data['message']) {
+                    View::renderModule('Authentifier/Views/Feedback/feedback_message', $data);
+                }
+            }
+
+            View::renderModule('Authentifier/Views/Feedback/feedback_footer');
+
+            $this->good = [];
+            $this->bad = [];
+            $this->updateSession();
+        }
     }
 
-    public function update(){
+    public function updateFeedback(){
+        $feedback = Session::get('feedback');
+        if (isset($feedback)) {
+            $this->good = $feedback->good;
+            $this->bad = $feedback->bad;
+        }
+    }
+
+    public function updateSession(){
         Session::set('feedback',$this);
     }
 }
