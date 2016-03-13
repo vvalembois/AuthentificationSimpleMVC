@@ -6,9 +6,11 @@ use Core\View;
 use Core\Router;
 use Helpers\Request;
 use Helpers\Session;
-use Modules\Authentifier\Helpers\Feedback;
+use Modules\Feedback\Helpers\Feedback;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModel;
+
+
 
 class Authentifier extends Controller{
 

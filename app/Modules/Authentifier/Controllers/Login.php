@@ -42,20 +42,21 @@ class Login extends Authentifier
         /* Vérifie si le mot de passe est bon */
         $userGoodPassword = password_verify($user_password, $user_password_hash);
         if(!$userGoodPassword)
-            $this->feedback->add('Identifiant ou Mot de passe incorrect');
+            $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
         else {
-            $this->feedback->add('Connexion réussie!', true);
+            $this->feedback->add('You are logged.', FEEDBACK_TYPE_SUCCESS);
             Session::set('user_logged_in',true);
         }
 
         Session::set('post',$_POST);
 
 
-        if(!$userGoodPassword){
-            header('Location: ' . DIR . 'authentifier/loginForm');
-        }
-        else
-            header('Location: ' . DIR);
+
+            if(!$userGoodPassword){
+                header('Location: ' . DIR . 'authentifier/loginForm');
+            }
+            else
+                header('Location: ' . DIR);
 
 
     }

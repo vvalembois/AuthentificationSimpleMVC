@@ -9,7 +9,7 @@ namespace Modules\Authentifier\Helpers;
 
 
 use Helpers\Gump;
-use Helpers\RainCaptcha;
+use Modules\Feedback\Helpers\Feedback;
 
 class InputValidation
 {
@@ -104,15 +104,16 @@ class InputValidation
         $validated_data = $gump->run($data);
 
         if(!$passwordEquality = $data['user_password']==$data['user_password_repeat']) {
-            $feedback->add("The password repeat is not the same");
+            $feedback->add("Passwords are not the same !",FEEDBACK_TYPE_WARNING);
         }
 
         if(!$mailEquality = $data['user_mail']==$data['user_mail_repeat']) {
-            $feedback->add("The mail repeat is not the same");
+            $feedback->add("Email adresses are not the same !", FEEDBACK_TYPE_WARNING);
         }
 
         if ($validated_data == false) {
-                $feedback->add($gump->get_readable_errors(true));
+                foreach($gump->get_readable_errors() as $error)
+                    $feedback->add($error,FEEDBACK_TYPE_WARNING);
         }
 
         if(!$passwordEquality || !$mailEquality || !$validated_data) return false;

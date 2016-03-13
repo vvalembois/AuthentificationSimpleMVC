@@ -58,21 +58,20 @@ class Register extends Authentifier
     public function registerAction(){
         /* Validation des entrées utilisateurs */
         $input_valids = InputValidation::inputsValidation($_POST);
-        $this->feedback->merge(Session::get('feedback')->get());
 
         if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
             if ($usernameExist = $this->userSQL->exist($input_valids['user_name']) != null)
-                $this->feedback->add("Username already exists");
+                $this->feedback->add("Username already exists", FEEDBACK_TYPE_WARNING);
 
             /* Vérification de l'inexistance de l'adresse mail dans la base de données */
             if ($mailExist = $this->userSQL->exist($input_valids['user_mail']) != null)
-                $this->feedback->add("Mail adress already in use");
+                $this->feedback->add("Mail adress already in use", FEEDBACK_TYPE_WARNING);
 
             /* Vérification du captcha */
             $captcha = new RainCaptcha();
             if (!$captcha_valid = $captcha->checkAnswer(Request::post('user_captcha')))
-                $this->feedback->add("Captcha error");
+                $this->feedback->add("Wrong captcha", FEEDBACK_TYPE_FAIL);
 
             /* Si tout est validé, alors on ajoute à la base de donnée */
             if (!$usernameExist && !$mailExist && $captcha_valid) {
@@ -88,9 +87,9 @@ class Register extends Authentifier
                 /* Tentative d'insertion dans la table */
                 try {
                     $this->userSQL->insertUser($user_data);
-                    $this->feedback->add("Inscription de $user_data[user_name] réussie!", true);
+                    $this->feedback->add("Well done $user_data[user_name], you are now registered!", FEEDBACK_TYPE_SUCCESS);
                 } catch (\Exception $e) {
-                    $this->feedback->add("Registration error (database)");
+                    $this->feedback->add("Registration error (database)", FEEDBACK_TYPE_FAIL);
                 }
             }
         }
