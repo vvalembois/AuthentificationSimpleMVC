@@ -77,7 +77,7 @@ class InputValidation
         (InputValidation::registerPasswordValidation($user_password, $user_password_repeat));
     }*/
 
-    public static function inputsValidation($data){
+    public static function inputsValidationRegister($data){
         $gump = new GUMP();
 
         $data = $gump->sanitize($data); // You don't have to sanitize, but it's safest to do so.
@@ -99,9 +99,9 @@ class InputValidation
             'user_captcha'    => 'sanitize_string'
         ));
 
-        $feedback = new Feedback();
-
         $validated_data = $gump->run($data);
+
+        $feedback = new Feedback();
 
         if(!$passwordEquality = $data['user_password']==$data['user_password_repeat']) {
             $feedback->add("Passwords are not the same !",FEEDBACK_TYPE_WARNING);
@@ -117,6 +117,38 @@ class InputValidation
         }
 
         if(!$passwordEquality || !$mailEquality || !$validated_data) return false;
+        return $validated_data;
+    }
+
+    public static function inputsValidationProfileUpdate($data)
+    {
+        $gump = new GUMP();
+
+        $data = $gump->sanitize($data); // You don't have to sanitize, but it's safest to do so.
+
+        $gump->validation_rules(array(
+            'user_name'    => 'alpha_numeric|max_len,100|min_len,4',
+            'user_password'    => 'max_len,100|min_len,6',
+            'user_password_repeat'    => 'max_len,100|min_len,6',
+            'user_mail'       => 'valid_email'
+        ));
+
+        $gump->filter_rules(array(
+            'user_name' => 'trim|sanitize_string',
+            'user_password_repeat' => 'trim',
+            'user_mail'    => 'trim|sanitize_email',
+            'user_captcha'    => 'sanitize_string'
+        ));
+
+        $validated_data = $gump->run($data);
+
+        $feedback = new Feedback();
+
+        if ($validated_data == false) {
+            foreach($gump->get_readable_errors() as $error)
+                $feedback->add($error,FEEDBACK_TYPE_WARNING);
+        }
+
         return $validated_data;
     }
 }

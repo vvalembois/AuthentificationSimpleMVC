@@ -16,6 +16,7 @@ class Authentifier extends Controller{
 
 	protected $feedback;
 	protected $userSQL;
+	protected $userData;
 
 	public function __construct(){
 		parent::__construct();
@@ -31,8 +32,13 @@ class Authentifier extends Controller{
 		$this->userSQL = new UserModel();
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
-		if(!LoginModel::userIsLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
+		if(!Login::userLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
 			// TODO renvoyer vers la route loginWithCookie
+		}
+
+		// Get user session
+		if(Login::userLoggedIn()){
+			$this->userData = Session::get('user_profile_info');
 		}
 
 	}
@@ -41,17 +47,11 @@ class Authentifier extends Controller{
 		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
 	}
 
-	public static function test(){
-		echo "ok";
-	}
-
 	/* TODO il doit être possible de mettre les fonctions utiles ci-dessous dans un helper interne au module*/
 
 	private static function checkSessionConcurrency(){
 		// TODO tester dans la base de donnée l'id de session de l'utilisateur
 	}
-
-
 
 	/**
 	 * Retourne la valeur d'un champ souhaité d'un cookie
@@ -64,4 +64,17 @@ class Authentifier extends Controller{
 			return $_COOKIE[$key];
         return null;
 	}
+
+	public function getUserStatus()
+	{
+		if(Login::userLoggedIn())
+			return "Logged  ".$this->userData['user_name'];
+		else
+			return "Vous n'êtes pas connecté.";
+	}
+
+	public function getUserInfo(){
+		return $this->userData;
+	}
+
 }

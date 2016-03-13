@@ -4,11 +4,15 @@
  * Date: 21/02/16
  * Time: 19:50
  */
-use Modules\Authentifier\Helpers\Feedback;
-use Modules\Authentifier\Helpers\InputValidation;
 
 namespace Modules\Authentifier\Controllers;
 
+use Core\Router;
+use Core\View;
+use Helpers\Request;
+use Helpers\Session;
+use Helpers\Url;
+use Modules\Authentifier\Helpers\InputValidation;
 
 class Profile extends Authentifier
 {
@@ -21,49 +25,41 @@ class Profile extends Authentifier
     
     public function routes()
     {
-        Router::any('modifier/profileForm', 'Modules\Authentifier\Controllers\Profiler@profileForm');
-        Router::any('modifier/profileAction', 'Modules\Authentifier\Controllers\Profile@profileAction');
+        Router::any('authentifier/profileUpdateForm', 'Modules\Authentifier\Controllers\Profile@profileUpdateForm');
+        Router::any('authentifier/profileUpdateAction', 'Modules\Authentifier\Controllers\Profile@profileUpdateAction');
     }
     
-    public function profileForm()
+    public function profileUpdateForm()
     {
-        $data['user_name'] = Session::get('post')['user_name'];
-        $data['user_password'] = Session::get('post')['user_password'];
-        $data['user_mail'] = Session::get('post')['user_mail'];
-       
-       /*si on veut mettre un captcha lors de la modification
-        $this->captcha = new RainCaptcha();
-       $data['captcha_url'] = $this->captcha->getImage(); */
+        if($this->userData != null){
+            $data['user'] = $this->getUserInfo();
+        }
        
         View::renderTemplate('header');
         $this->feedback->render();
-        View::renderModule('/Authentifier/Views/User/user_update', $data);
+        View::renderModule('/Authentifier/Views/Profile/profile_update_form', $data);
         View::renderTemplate('footer');
     }
     
-    public function profileAction()
+    public function profileUpdateAction()
     {
-        /*
-            if ($usernameExist = $this->userSQL->exist($input_valids['user_name']) != null)
-                 $this->feedback->add("Username already exists");
-                 
-            if ($mailExist = $this->userSQL->exist($input_valids['user_mail']) != null)
-                    $this->feedback->add("Mail adress already in use");
-            
-             //Vérification du captcha si on veut en mettre un 
-            $captcha = new RainCaptcha();
-            if (!$captcha_valid = $captcha->checkAnswer(Request::post('user_captcha')))
-                $this->feedback->add("Captcha error");
-            
-            
-             // Si l'inscription a échouée, on renvoie vers le formulaire
-            if($this->feedback->get() > 0){
-                Session::set('post', $_POST);
-                header('Location: ' . DIR . 'modifier/profileForm');
-            }
-            else
-                header('Location: ' . DIR);
-        */
+        if($newUserName = Request::post('user_name'))
+        $update['user_name'] = $newUserName;
+        if($newMailAdress = Request::post('user_mail'))
+            $update['user_email'] = $newMailAdress;
+        if($newPassword = Request::post('user_new_password'))
+            $update['user_password_hash'] = password_hash($newPassword,PASSWORD_DEFAULT);
+
+        $update = InputValidation::inputsValidationProfileUpdate($update);
+
+        if(!$update)
+            Url::redirect('authentifier/profileUpdateForm');
+        else {
+            $this->userSQL->updateUserProfile($update, $this->getUserInfo());
+            $this->feedback->add('Account update succefull',FEEDBACK_TYPE_SUCCESS);
+            Url::redirect();
+        }
+
     }
 
 }

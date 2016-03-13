@@ -12,6 +12,7 @@ use Core\Router;
 use Core\View;
 use Helpers\Request;
 use Helpers\Session;
+use Helpers\Url;
 
 
 class Login extends Authentifier
@@ -41,32 +42,42 @@ class Login extends Authentifier
 
         /* Vérifie si le mot de passe est bon */
         $userGoodPassword = password_verify($user_password, $user_password_hash);
-        if(!$userGoodPassword)
+        if(!$userGoodPassword) {
             $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
+            Session::set('post',$_POST);
+            Url::redirect('authentifier/loginForm');
+        }
         else {
             $this->feedback->add('You are logged.', FEEDBACK_TYPE_SUCCESS);
-            Session::set('user_logged_in',true);
+            $this->userProfileSetSession($this->userProfileInfo($user_name));
+            Url::redirect();
         }
-
-        Session::set('post',$_POST);
-
-
-
-            if(!$userGoodPassword){
-                header('Location: ' . DIR . 'authentifier/loginForm');
-            }
-            else
-                header('Location: ' . DIR);
 
 
     }
 
     public function logout(){
-        if(Session::get('user_logged_in')) {
-            Session::destroy('user_logged_in');
+        if($this->userLoggedIn()) {
+            Session::destroy('user_profile_info');
             $this->feedback->add("Vous êtes déconnecté");
         }
         header('Location: /');
     }
 
+    static public function userLoggedIn(){
+        //TODO token
+        return Session::get('user_profile_info')!=null;
+    }
+
+    public function userProfileInfo($user_name){
+        return $this->userSQL->findByLogin($user_name);
+    }
+
+    public function userAllInfo($user_name){
+        return $this->userSQL->findBy($user_name);
+    }
+
+    private function userProfileSetSession($user_name){
+        Session::set('user_profile_info',$user_name);
+    }
 }

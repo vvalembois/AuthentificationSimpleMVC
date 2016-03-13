@@ -11,12 +11,8 @@
 namespace Controllers;
 
 use Core\View;
-use Core\Controller;
-use Helpers\RainCaptcha;
-use Helpers\Request;
 use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
-use Modules\Authentifier\Models\CaptchaModel;
 
 /**
  * Sample controller showing a construct and 2 methods and their typical usage.
@@ -40,12 +36,16 @@ class Welcome extends Authentifier
     {
         $data['title'] = "Page de test";
 
-        if(Session::get('user_logged_in'))
-            $data['user_logged_in'] = true;
+        $data['user_status'] = $this->getUserStatus();
+
 
         View::renderTemplate('header', $data);
         $this->feedback->render();
+        $this->test();
         View::render('index', $data);
         View::renderTemplate('footer', $data);
+    }
+
+    public function test(){
     }
 }

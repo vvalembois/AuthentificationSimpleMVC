@@ -48,17 +48,11 @@ $hooks->run('afterBody');
 				<li><a href="<?= DIR."authentifier/registerForm" ?>">S'inscrire</a></li>
 				<li><a href="<?= DIR."authentifier/loginForm" ?>">Se connecter</a></li>
 			
-				<li><a href="<?= DIR."modifer/profileForm" ?>">Modifier</a></li>
+				<li><a href="<?= DIR."authentifier/profileUpdateForm" ?>">Modifier</a></li>
 				<li><a href="<?= DIR."authentifier/logout" ?>">Se déconnecter</a></li>
 				<li><a>
-					<?php
-					if(\Helpers\Session::get('user_logged_in')){
-						echo "connecté";
-					}
-					else
-						echo "invité";
-
-					?></a>
+					<?= $data['user_status'] ?>
+					</a>
 				</li>
 			</ul>
 		</div>

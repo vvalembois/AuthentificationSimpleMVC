@@ -14,6 +14,7 @@ use Helpers\Gump;
 use Helpers\RainCaptcha;
 use Helpers\Request;
 use Helpers\Session;
+use Helpers\Url;
 use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\UserModel;
@@ -57,7 +58,7 @@ class Register extends Authentifier
      */
     public function registerAction(){
         /* Validation des entrées utilisateurs */
-        $input_valids = InputValidation::inputsValidation($_POST);
+        $input_valids = InputValidation::inputsValidationRegister($_POST);
 
         if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
@@ -99,10 +100,10 @@ class Register extends Authentifier
         /* Si l'inscription a échouée, on renvoie vers le formulaire*/
         if($this->feedback->count() > 0){
             Session::set('post', $_POST);
-            header('Location: ' . DIR . 'authentifier/registerForm');
+            Url::redirect('authentifier/registerForm');
         }
         else {
-            header('Location: ' . DIR);
+            Url::redirect();
         }
     }
 }
