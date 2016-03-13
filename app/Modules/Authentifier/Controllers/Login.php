@@ -38,8 +38,8 @@ class Login extends Authentifier
         $user_password = Request::post('user_password');
 
         /* Récupération du user_password_hash dans la base de donnée */
-        $user_password_hash = $this->userSQL->getUserPasswordHash($user_name)[0]->user_password_hash;
-
+        var_dump($this->userSQL->getUserPasswordHash($user_name));
+        $user_password_hash = $this->userSQL->getUserPasswordHash($user_name);
         /* Vérifie si le mot de passe est bon */
         $userGoodPassword = password_verify($user_password, $user_password_hash);
         if(!$userGoodPassword) {

@@ -128,26 +128,35 @@ class InputValidation
 
         $gump->validation_rules(array(
             'user_name'    => 'alpha_numeric|max_len,100|min_len,4',
-            'user_password'    => 'max_len,100|min_len,6',
-            'user_password_repeat'    => 'max_len,100|min_len,6',
-            'user_mail'       => 'valid_email'
+            'user_new_password'    => 'max_len,100|min_len,6',
+            'user_new_password_repeat'    => 'max_len,100|min_len,6',
+            'user_password' => 'required|max_len,100|min_len,6',
+            'user_email'       => 'valid_email'
         ));
 
         $gump->filter_rules(array(
             'user_name' => 'trim|sanitize_string',
-            'user_password_repeat' => 'trim',
-            'user_mail'    => 'trim|sanitize_email',
-            'user_captcha'    => 'sanitize_string'
+            'user_password' => 'trim',
+            'user_new_password' => 'trim',
+            'user_new_password_repeat' => 'trim',
+            'user_email'    => 'trim|sanitize_email'
         ));
 
         $validated_data = $gump->run($data);
 
         $feedback = new Feedback();
 
+        if(!$passwordEquality = $validated_data['user_new_password']==$validated_data['user_new_password_repeat']) {
+            $feedback->add("Passwords are not the same !",FEEDBACK_TYPE_WARNING);
+        }
+
         if ($validated_data == false) {
             foreach($gump->get_readable_errors() as $error)
                 $feedback->add($error,FEEDBACK_TYPE_WARNING);
         }
+
+        if(!$validated_data || !$passwordEquality)
+            return false;
 
         return $validated_data;
     }

@@ -511,3 +511,54 @@
 #8 {main}</pre>
 
            <hr />
+<p>Error on Mar 13, 2016 19:30PM - password_verify() expects parameter 2 to be string, array given in /app/app/Modules/Authentifier/Controllers/Profile.php on line 62</p><p>Error on Mar 13, 2016 19:31PM - password_verify() expects parameter 2 to be string, array given in /app/app/Modules/Authentifier/Controllers/Profile.php on line 62</p><p>Error on Mar 13, 2016 19:32PM - password_verify() expects parameter 2 to be string, array given in /app/app/Modules/Authentifier/Controllers/Profile.php on line 62</p><p>Error on Mar 13, 2016 19:34PM - Illegal string offset 'user_password_hash' in /app/app/Modules/Authentifier/Controllers/Login.php on line 41</p><p>Error on Mar 13, 2016 19:35PM - Illegal string offset 'user_password_hash' in /app/app/Modules/Authentifier/Controllers/Login.php on line 41</p><p>Error on Mar 13, 2016 19:35PM - Illegal string offset 'user_password_hash' in /app/app/Modules/Authentifier/Controllers/Login.php on line 41</p><p>Error on Mar 13, 2016 19:35PM - Illegal string offset 'user_password_hash' in /app/app/Modules/Authentifier/Controllers/Login.php on line 41</p><p>Error on Mar 13, 2016 19:35PM - Illegal string offset 'user_password_hash' in /app/app/Modules/Authentifier/Controllers/Login.php on line 42</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 13, 2016 19:42PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_new_password' in 'field list'</p>
+
+           <p><strong>Code:</strong> 42S22</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 173</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(173): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(74): Helpers\Database->update('users', Array, Array)
+#2 /app/app/Modules/Authentifier/Controllers/Profile.php(74): Modules\Authentifier\Models\UserModel->updateUserProfile(Array, Array)
+#3 [internal function]: Modules\Authentifier\Controllers\Profile->profileUpdateAction()
+#4 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#5 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#6 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#7 /app/index.php(81): require('/app/app/Core/r...')
+#8 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 13, 2016 19:47PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_password' in 'field list'</p>
+
+           <p><strong>Code:</strong> 42S22</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 173</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(173): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(74): Helpers\Database->update('users', Array, Array)
+#2 /app/app/Modules/Authentifier/Controllers/Profile.php(80): Modules\Authentifier\Models\UserModel->updateUserProfile(Array, Array)
+#3 [internal function]: Modules\Authentifier\Controllers\Profile->profileUpdateAction()
+#4 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#5 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#6 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#7 /app/index.php(81): require('/app/app/Core/r...')
+#8 {main}</pre>
+
+           <hr />
+<p>Error on Mar 13, 2016 19:53PM - file_get_contents(): php_network_getaddresses: getaddrinfo failed: Temporary failure in name resolution in /app/app/Helpers/RainCaptcha.php on line 64</p>
