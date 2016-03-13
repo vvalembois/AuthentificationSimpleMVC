@@ -94,16 +94,18 @@ class Register extends Authentifier
                 }
             }
         }
-
-        /* On */
-
         /* Si l'inscription a échouée, on renvoie vers le formulaire*/
         if($this->feedback->count() > 0){
             Session::set('post', $_POST);
             Url::redirect('authentifier/registerForm');
         }
         else {
+            (new Login())->loginAction($input_valids['user_name'], $input_valids['user_password']);
             Url::redirect();
         }
+
+        /* On */
+
+
     }
 }

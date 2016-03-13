@@ -32,10 +32,12 @@ class Login extends Authentifier
         View::renderTemplate('footer',$data);
     }
 
-    public function loginAction(){
+    public function loginAction($user_name = false, $user_password = false){
         // TODO filtrage et validation des inputs
-        $user_name = Request::post('user_name');
-        $user_password = Request::post('user_password');
+        if(!$user_name)
+            $user_name = Request::post('user_name');
+        if(!$user_password)
+            $user_password = Request::post('user_password');
 
         /* Récupération du user_password_hash dans la base de donnée */
         var_dump($this->userSQL->getUserPasswordHash($user_name));

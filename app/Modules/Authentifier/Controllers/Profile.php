@@ -56,10 +56,7 @@ class Profile extends Authentifier
 
         $update = InputValidation::inputsValidationProfileUpdate($update);
 
-        var_dump($update);
-        var_dump(Session::get('user_profile_info'));
-
-        if(!$userGoodPassword = password_verify($update['user_password'], $this->userSQL->getUserPasswordHash(Session::get('user_profile_info')['user_name']))){
+        if($update && !$userGoodPassword = password_verify($update['user_password'], $this->userSQL->getUserPasswordHash(Session::get('user_profile_info')['user_name']))){
             $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
         }
 
@@ -75,13 +72,16 @@ class Profile extends Authentifier
                 $updateUser['user_name'] = $update['user_name'];
             if(Session::get('user_profile_info')['user_email'] != $update['user_email'])
                 $updateUser['user_email'] = $update['user_email'];
-            if(isset($update['user_new_password']));
-                $updateUser['user_password_hash'] = password_hash($update['user_new_password'],PASSWORD_DEFAULT);
+            $newPassword = $update['user_new_password'];
+            if(isset($newPassword))
+                $updateUser['user_password_hash'] = password_hash($newPassword,PASSWORD_DEFAULT);
             $this->userSQL->updateUserProfile($updateUser, $this->getUserInfo());
             $this->feedback->add('Account update succefull',FEEDBACK_TYPE_SUCCESS);
+            (new Login)->loginAction($update['user_name'], $newPassword);
+
             Url::redirect();
         }
-
+        Url::redirect('authentifier/profileUpdateForm');
     }
 
 }
