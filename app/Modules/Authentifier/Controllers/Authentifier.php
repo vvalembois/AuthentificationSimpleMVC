@@ -38,7 +38,7 @@ class Authentifier extends Controller{
 
 		// Get user session
 		if(Login::userLoggedIn()){
-			$this->userData = Session::get('user_profile_info');
+			$this->userData = $this->userSQL->selectProfile(Session::get('user_id'));
 		}
 
 	}
@@ -68,7 +68,7 @@ class Authentifier extends Controller{
 	public function getUserStatus()
 	{
 		if(Login::userLoggedIn())
-			return "Logged  ".$this->userData['user_name'];
+			return "Logged  ".$this->userSQL->selectProfile($this->userData)['user_name'];
 		else
 			return "Vous n'êtes pas connecté.";
 	}

@@ -33,31 +33,41 @@ class Login extends Authentifier
         View::renderTemplate('footer',$data);
     }
 
-    public function loginAction($user_name = false, $user_password = false){
-        // TODO filtrage et validation des inputs
-        if(!$user_name)
-            $user_name = Request::post('user_name');
-        if(!$user_password)
-            $user_password = Request::post('user_password');
+    public function loginAction(){
+        // Get user inputs
+        $user_data['user_name'] = Request::post('user_name');
+        $user_data['user_password'] =Request::post('user_password');
 
-        /* Récupération du user_password_hash dans la base de donnée */
-        var_dump($this->userSQL->getUserPasswordHash($user_name));
-        $user_password_hash = $this->userSQL->getUserPasswordHash($user_name);
+        // Check and filter user inputs
+        $user_data = InputValidation::inputsValidationLogin($user_data);
 
-        /* Vérifie si le mot de passe est bon */
-        $userGoodPassword = $this->userSQL->checkPassword($user_password, $user_name);
+        // If user inputs validated
+        if($user_data)
+            $this->loginActionDatabase($user_data['user_name'], $user_data['user_password']);
+    }
 
-        if(!$userGoodPassword) {
-            $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
-            Session::set('post',$_POST);
-            Url::redirect('authentifier/loginForm');
+    public function loginActionDatabase($user_name = false, $user_password = false){
+
+        // Get the user_id
+        $user_id = $this->userSQL->selectID($user_name);
+
+        // Check the user password
+        $user_check_password = false;
+        if($user_id) {
+            $user_check_password = $this->userSQL->checkPassword($user_password, $user_id);
         }
-        else {
+
+        // Login successful
+        if($user_check_password) {
             $this->feedback->add('You are logged.', FEEDBACK_TYPE_SUCCESS);
-            $this->userProfileSetSession($this->userProfileInfo($user_name));
+            $this->userProfileSetSession($user_id);
             Url::redirect();
         }
-
+        else { // Login failed
+            $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
+            Session::set('post',Request::post(''));
+            Url::redirect('authentifier/loginForm');
+        }
 
     }
 
@@ -71,18 +81,14 @@ class Login extends Authentifier
 
     static public function userLoggedIn(){
         //TODO token
-        return Session::get('user_profile_info')!=null;
-    }
-
-    public function userProfileInfo($user_name){
-        return $this->userSQL->selectProfile($user_name);
+        return Session::get('user_id')!=null;
     }
 
     public function userAllInfo($user_name){
         return $this->userSQL->selectAll($user_name);
     }
 
-    private function userProfileSetSession($user_name){
-        Session::set('user_profile_info',$user_name);
+    private function userProfileSetSession($user_id){
+        Session::set('user_id',$user_id);
     }
 }

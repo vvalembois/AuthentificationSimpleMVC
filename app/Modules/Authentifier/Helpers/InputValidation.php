@@ -160,4 +160,32 @@ class InputValidation
 
         return $validated_data;
     }
+
+    public static function inputsValidationLogin($data){
+        $gump = new GUMP();
+
+        $data = $gump->sanitize($data); // You don't have to sanitize, but it's safest to do so.
+
+        $gump->validation_rules(array(
+            'user_name'    => 'required|alpha_numeric|max_len,100|min_len,4',
+            'user_password'    => 'required|max_len,100|min_len,6'
+        ));
+
+        $gump->filter_rules(array(
+            'user_name' => 'trim|sanitize_string',
+            'user_password' => 'trim'
+        ));
+
+        $validated_data = $gump->run($data);
+
+        $feedback = new Feedback();
+
+        if ($validated_data == false) {
+            foreach($gump->get_readable_errors() as $error)
+                $feedback->add($error,FEEDBACK_TYPE_WARNING);
+        }
+
+        if(!$validated_data) return false;
+        return $validated_data;
+    }
 }

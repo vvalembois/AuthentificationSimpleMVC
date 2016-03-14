@@ -31,8 +31,9 @@ class Profile extends Authentifier
     
     public function profileUpdateForm()
     {
+        $data = [];
         if($this->userData != null){
-            $data['user'] = $this->getUserInfo();
+            $data['user'] = $this->userSQL->selectProfile(Session::get('user_id'));
         }
         View::renderTemplate('header');
         $this->feedback->render();
@@ -42,49 +43,65 @@ class Profile extends Authentifier
     
     public function profileUpdateAction()
     {
-        if($newUserName = Request::post('user_name'))
-            $update['user_name'] = $newUserName;
-        if($newMailAdress = Request::post('user_mail'))
-            $update['user_email'] = $newMailAdress;
-        if($newPassword = Request::post('user_new_password'))
-            $update['user_new_password'] = $newPassword;
-        if($newPasswordRepeat = Request::post('user_new_password_repeat'))
-            $update['user_new_password_repeat'] = $newPasswordRepeat;
-        if($oldPassword = Request::post('user_password'))
-            $update['user_password'] = $oldPassword;
+        $user_data = [];
 
-        $update = InputValidation::inputsValidationProfileUpdate($update);
+        if(Login::userLoggedIn()) {
+            $user_data['user_id'] = Session::get('user_id');
+            $user_data['user_name'] = Request::post('user_name');
+            $user_data['user_email'] = Request::post('user_mail');
+            $user_data['user_new_password'] = Request::post('user_new_password');
+            $user_data['user_new_password_repeat'] = Request::post('user_new_password_repeat');
+            $user_data['user_password'] = Request::post('user_password');
 
-        if($update && !$userGoodPassword = $this->userSQL->checkPassword($update['user_password'], Session::get('user_profile_info')['user_name'])){
+            $user_data = InputValidation::inputsValidationProfileUpdate($user_data);
+
+            if ($user_data)
+                $this->profileUpdateActionDatabase($user_data);
+        }
+    }
+
+    public function profileUpdateActionDatabase($user_data){
+        // check password
+        if(!$userGoodPassword = $this->userSQL->checkPassword($user_data['user_password'], $user_data['user_id'])){
             $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
         }
-
-        if(Session::get('user_profile_info')['user_name']!= $update['user_name'] && $user_name_exist = $this->userSQL->exist($update['user_name']))
-            $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
-        if(Session::get('user_profile_info')['user_email']!= $update['user_email'] && $user_mail_exist = $this->userSQL->exist($update['user_email']))
-            $this->feedback->add('Mail adress already exist.', FEEDBACK_TYPE_WARNING);
-
-        if(!$update || $user_name_exist || $user_mail_exist | !$userGoodPassword)
-            Url::redirect('authentifier/profileUpdateForm');
         else {
-            if(Session::get('user_profile_info')['user_name'] != $update['user_name'])
-                $updateUser['user_name'] = $update['user_name'];
-            if(Session::get('user_profile_info')['user_email'] != $update['user_email'])
-                $updateUser['user_email'] = $update['user_email'];
-            $newPassword = $update['user_new_password'];
-            if(isset($newPassword))
-                $updateUser['user_password_hash'] = password_hash($newPassword,PASSWORD_DEFAULT);
-            if($updateUser != null) {
-                $this->userSQL->updateUserProfile($updateUser, $this->getUserInfo());
-                $this->feedback->add('Account update succefull', FEEDBACK_TYPE_SUCCESS);
-                (new Login)->loginAction($update['user_name'], $newPassword);
+            // check user name available
+            if ($this->userData['user_name'] != $user_data['user_name'] && $user_name_exist = $this->userSQL->exist($user_data['user_name']))
+                $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
+
+            // check user email available
+            if ($this->userData['user_email'] != $user_data['user_email'] && $user_mail_exist = $this->userSQL->exist($user_data['user_email']))
+                $this->feedback->add('Mail adress already exist.', FEEDBACK_TYPE_WARNING);
+        }
+
+        $user_data_update = [];
+        // If all user data are ok
+        if(!$user_name_exist && !$user_mail_exist && $userGoodPassword){
+            if($this->userData['user_name'] != $user_data['user_name'])
+                $user_data_update['user_name'] = $user_data['user_name'];
+            if($this->userData['user_email'] != $user_data['user_email'])
+                $user_data_update['user_email'] = $user_data['user_email'];
+            $newPassword = $user_data['user_new_password'];
+
+            if(!isset($newPassword)){
+                $user_data_update['user_password_hash'] = password_hash($newPassword,PASSWORD_DEFAULT);
+
             }
-            else{
+            if(empty($user_data_update)) {
                 $this->feedback->add('No changes to update', FEEDBACK_TYPE_INFO);
                 Url::redirect('authentifier/profileUpdateForm');
             }
+            else{
+                $this->userSQL->updateUserProfile($user_data_update, $this->userData);
+                $this->feedback->add('Account update succefull', FEEDBACK_TYPE_SUCCESS);
+                (new Login)->loginAction($this->userData['user_name'], $newPassword);
+            }
+
             Url::redirect();
         }
+
+        //redirect on form
         Url::redirect('authentifier/profileUpdateForm');
     }
 }

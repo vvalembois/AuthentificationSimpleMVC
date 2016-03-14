@@ -38,53 +38,69 @@ class UserModel extends Model
         return $this->db->lastInsertId('user_id');
     }
 
-    public function selectAll($user_name_or_email){
+    public function selectAll($user_id){
         return ($this->db->select('SELECT * FROM '.PREFIX.'users
-        WHERE user_name = :user_name_or_email
-        OR user_email = :user_name_or_email'
-        ,array(":user_name_or_email"=>$user_name_or_email),
+        WHERE user_id = :user_id'
+        ,array(":user_id"=>$user_id),
             \PDO::FETCH_ASSOC)[0]
         );
     }
-    public function selectProfile($user_name_or_email){
+
+    public function selectProfile($user_id){
         return ($this->db->select(
             'SELECT user_id, user_name, user_email FROM '.PREFIX.'users
-            WHERE user_name = :user_name_or_email
-            OR user_email = :user_name_or_email'
-            ,array(":user_name_or_email"=>$user_name_or_email),
+            WHERE user_id = :user_id'
+            ,array(":user_id"=>$user_id),
             \PDO::FETCH_ASSOC)[0]
         );
     }
 
     public function selectID($user_name_or_email){
-        return ($this->db->select(
+        $user_id = ($this->db->select(
             'SELECT user_id FROM '.PREFIX.'users
             WHERE user_name = :user_name_or_email
             OR user_email = :user_name_or_email'
             ,array(":user_name_or_email"=>$user_name_or_email),
+            \PDO::FETCH_ASSOC)
+        );
+        if(!empty($user_id))
+            return $user_id[0]['user_id'];
+        return false;
+    }
+
+    public function exist($user_name_or_email){
+        return ($this->selectID($user_name_or_email))!= false;
+    }
+
+    public function getUserPasswordHash($user_id){
+        $user_password_hash = ($this->db->select(
+            'SELECT user_password_hash FROM '.PREFIX.'users
+            WHERE user_id = :user_id'
+            ,array(":user_id"=>$user_id),
+            \PDO::FETCH_ASSOC)
+        );
+        if(!empty($user_password_hash))
+            return $user_password_hash[0]['user_password_hash'];
+        return false;
+    }
+
+    public function checkPassword($password, $user_id){
+        return password_verify($password,$this->getUserPasswordHash($user_id));
+    }
+
+    public function updateUserProfile(array $user_data_update, $profile){
+        $this->db->update('users', $user_data_update,$profile);
+    }
+
+    public function selectSession($user_id){
+        return ($this->db->select('SELECT session_id FROM '.PREFIX.'users
+        WHERE user_id = :user_id'
+            ,array(":user_id"=>$user_id),
             \PDO::FETCH_ASSOC)[0]
         );
     }
 
-    public function exist($user_name_or_email){
-        return !empty($this->selectID($user_name_or_email));
-    }
+    public function sessionCheck($user_id){
 
-    public function getUserPasswordHash($user_name_or_email){
-        return($this->db->select(
-            'SELECT user_password_hash FROM '.PREFIX.'users
-             WHERE user_name = :user_name_or_email
-                    OR user_email = :user_name_or_email'
-            ,array(":user_name_or_email"=>$user_name_or_email),
-            \PDO::FETCH_ASSOC)[0]['user_password_hash']
-        );
-    }
-
-    public function checkPassword($password, $user_name_or_email){
-        return password_verify($password,$this->getUserPasswordHash($user_name_or_email));
-    }
-
-    public function updateUserProfile(array $updtate, $profile){
-        $this->db->update('users', $updtate,$profile);
     }
 }
