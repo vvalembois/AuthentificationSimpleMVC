@@ -75,11 +75,11 @@ class Login extends Authentifier
     }
 
     public function userProfileInfo($user_name){
-        return $this->userSQL->findByLogin($user_name);
+        return $this->userSQL->selectProfile($user_name);
     }
 
     public function userAllInfo($user_name){
-        return $this->userSQL->findBy($user_name);
+        return $this->userSQL->selectAll($user_name);
     }
 
     private function userProfileSetSession($user_name){

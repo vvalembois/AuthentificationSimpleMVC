@@ -38,7 +38,7 @@ class UserModel extends Model
         return $this->db->lastInsertId('user_id');
     }
 
-    public function findBy($user_name_or_email){
+    public function selectAll($user_name_or_email){
         return ($this->db->select('SELECT * FROM '.PREFIX.'users
         WHERE user_name = :user_name_or_email
         OR user_email = :user_name_or_email'
@@ -46,7 +46,7 @@ class UserModel extends Model
             \PDO::FETCH_ASSOC)[0]
         );
     }
-    public function findByLogin($user_name_or_email){
+    public function selectProfile($user_name_or_email){
         return ($this->db->select(
             'SELECT user_id, user_name, user_email FROM '.PREFIX.'users
             WHERE user_name = :user_name_or_email
@@ -56,8 +56,18 @@ class UserModel extends Model
         );
     }
 
+    public function selectID($user_name_or_email){
+        return ($this->db->select(
+            'SELECT user_id FROM '.PREFIX.'users
+            WHERE user_name = :user_name_or_email
+            OR user_email = :user_name_or_email'
+            ,array(":user_name_or_email"=>$user_name_or_email),
+            \PDO::FETCH_ASSOC)[0]
+        );
+    }
+
     public function exist($user_name_or_email){
-        return !empty($this->findBy($user_name_or_email));
+        return !empty($this->selectID($user_name_or_email));
     }
 
     public function getUserPasswordHash($user_name_or_email){
