@@ -70,6 +70,10 @@ class UserModel extends Model
         );
     }
 
+    public function checkPassword($password, $user_name_or_email){
+        return password_verify($password,$this->getUserPasswordHash($user_name_or_email));
+    }
+
     public function updateUserProfile(array $updtate, $profile){
         $this->db->update('users', $updtate,$profile);
     }

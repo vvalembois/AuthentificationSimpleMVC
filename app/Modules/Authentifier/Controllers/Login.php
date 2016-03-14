@@ -13,6 +13,7 @@ use Core\View;
 use Helpers\Request;
 use Helpers\Session;
 use Helpers\Url;
+use Modules\Authentifier\Helpers\InputValidation;
 
 
 class Login extends Authentifier
@@ -42,8 +43,10 @@ class Login extends Authentifier
         /* Récupération du user_password_hash dans la base de donnée */
         var_dump($this->userSQL->getUserPasswordHash($user_name));
         $user_password_hash = $this->userSQL->getUserPasswordHash($user_name);
+
         /* Vérifie si le mot de passe est bon */
-        $userGoodPassword = password_verify($user_password, $user_password_hash);
+        $userGoodPassword = $this->userSQL->checkPassword($user_password, $user_name);
+
         if(!$userGoodPassword) {
             $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
             Session::set('post',$_POST);
