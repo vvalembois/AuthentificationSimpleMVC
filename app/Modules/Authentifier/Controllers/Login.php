@@ -44,6 +44,8 @@ class Login extends Authentifier
         // If user inputs validated
         if($user_data)
             $this->loginActionDatabase($user_data['user_name'], $user_data['user_password']);
+        else
+            Url::redirect('authentifier/loginForm');
     }
 
     public function loginActionDatabase($user_name = false, $user_password = false){

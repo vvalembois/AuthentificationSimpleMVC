@@ -68,7 +68,7 @@ class Authentifier extends Controller{
 	public function getUserStatus()
 	{
 		if(Login::userLoggedIn())
-			return "Logged  ".$this->userSQL->selectProfile($this->userData)['user_name'];
+			return "Logged  ".$this->userData['user_name'];
 		else
 			return "Vous n'êtes pas connecté.";
 	}
