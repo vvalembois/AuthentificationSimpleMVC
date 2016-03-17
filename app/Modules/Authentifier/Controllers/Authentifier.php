@@ -18,7 +18,7 @@ class Authentifier extends Controller{
 	protected $feedback;
 	protected $userSQL;
 	protected $userData;
-	protected $account_type_required;
+
 	public function __construct(){
 		parent::__construct();
 		// Initialisation d'une session
@@ -31,8 +31,6 @@ class Authentifier extends Controller{
 			$this->feedback = new Feedback();
 
 		$this->userSQL = new UserModel();
-
-		$this->account_type_required=0;
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
 		if(!Login::userLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
@@ -80,8 +78,8 @@ class Authentifier extends Controller{
 		return $this->userData;
 	}
 
-	public function checkAccountRequired(){
-		if((Login::userLoggedIn() && (new ProfileModel())->selectAccountType($this->userData['user_id'])>= $this->account_type_required)){
+	public function checkAccountRequired($account_type_required){
+		if((Login::userLoggedIn() && (new ProfileModel())->selectAccountType($this->userData['user_id'])>= $account_type_required)){
 			return true;
 		}
 		return false;

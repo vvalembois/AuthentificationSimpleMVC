@@ -41,24 +41,61 @@ class Register extends Authentifier
     {
         $this->captcha = new RainCaptcha();
         $data['captcha_url'] = $this->captcha->getImage();
-        $data['user_name'] = Session::get('post')['user_name'];
-        $data['user_password'] = Session::get('post')['user_password'];
-        $data['user_password_repeat'] = Session::get('post')['user_password_repeat'];
-        $data['user_mail'] = Session::get('post')['user_mail'];
-        $data['user_mail_repeat'] = Session::get('post')['user_mail_repeat'];
-
+        $data = array_merge($data, $this->registerFormSession());
         View::renderTemplate('header');
         $this->feedback->render();
         View::renderModule('/Authentifier/Views/Register/register_form', $data);
         View::renderTemplate('footer');
     }
 
+
     /**
      * Action effectuée à la réception d'un formulaire d'inscription
      */
-    public function registerAction(){
-        /* Validation des entrées utilisateurs */
-        $input_valids = InputValidation::inputsValidationRegister($_POST);
+    public function registerAction($new_user_data = false)
+    {
+        if(!$new_user_data) {
+            $this->registerFormPost();
+        }
+        if ($new_user_data = $this->registerFormDataValidation($new_user_data)) {
+
+            /* Tentative d'insertion dans la table */
+            if($this->registerActionInsert($new_user_data)){
+                $this->feedback->add("Well done $new_user_data[user_name], you are now registered!", FEEDBACK_TYPE_SUCCESS);
+                Url::redirect();
+            }
+            else {
+                $this->feedback->add("Registration error (database)", FEEDBACK_TYPE_FAIL);
+            }
+        }
+        else{ // Si l'inscription a échouée, on renvoie vers le formulaire
+            Session::set('post', $_POST);
+            Url::redirect('authentifier/registerForm');
+        }
+
+    }
+    private function registerFormSession(){
+        return array(
+            'user_name' => Session::get('post')['user_name'],
+            'user_password' => Session::get('post')['user_password'],
+            'user_password_repeat' => Session::get('post')['user_password_repeat'],
+            'user_mail' => Session::get('post')['user_mail'],
+            'user_mail_repeat' => Session::get('post')['user_mail_repeat']
+        );
+    }
+
+    private function registerFormPost(){
+        return array(
+            'user_name' => Request::post('user_name'),
+            'user_password' => Request::post('user_password'),
+            'user_password_repeat' => Request::post('user_password_repeat'),
+            'user_mail' => Request::post('user_mail'),
+            'user_mail_repeat' => Request::post('user_mail_repeat')
+        );
+    }
+
+    private function registerFormDataValidation($register_form_data){
+        $input_valids = InputValidation::inputsValidationRegister($this->registerFormPost());
 
         if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
@@ -78,34 +115,24 @@ class Register extends Authentifier
             if (!$usernameExist && !$mailExist && $captcha_valid) {
 
                 /* On récupère un tableau avec les paramètres à utiliser */
-                $user_data =
-                    [
-                        'user_name' => $input_valids['user_name'],
-                        'user_email' => $input_valids['user_mail'],
-                        'user_password_hash' => password_hash($input_valids['user_password'], PASSWORD_DEFAULT) /* On crypte le mot de passe */
-                    ];
-
-                /* Tentative d'insertion dans la table */
-                try {
-                    $this->userSQL->insertUser($user_data);
-                    $this->feedback->add("Well done $user_data[user_name], you are now registered!", FEEDBACK_TYPE_SUCCESS);
-                } catch (\Exception $e) {
-                    $this->feedback->add("Registration error (database)", FEEDBACK_TYPE_FAIL);
-                }
+                return array(
+                    'user_name' => $input_valids['user_name'],
+                    'user_email' => $input_valids['user_mail'],
+                    'user_password_hash' => password_hash($input_valids['user_password'], PASSWORD_DEFAULT) /* On crypte le mot de passe */
+                );
             }
         }
-        /* Si l'inscription a échouée, on renvoie vers le formulaire*/
-        if($this->feedback->count() > 0){
-            Session::set('post', $_POST);
-            Url::redirect('authentifier/registerForm');
+        return false;
+    }
+
+    private function registerActionInsert($new_user_data){
+        /* Tentative d'insertion dans la table */
+        try {
+            $this->userSQL->insertUser($new_user_data);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+
         }
-        else {
-            (new Login())->loginAction($input_valids['user_name'], $input_valids['user_password']);
-            Url::redirect();
-        }
-
-        /* On */
-
-
     }
 }
