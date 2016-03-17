@@ -6,6 +6,7 @@ use Core\View;
 use Core\Router;
 use Helpers\Request;
 use Helpers\Session;
+use Modules\Authentifier\Models\ProfileModel;
 use Modules\Feedback\Helpers\Feedback;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModel;
@@ -31,7 +32,7 @@ class Authentifier extends Controller{
 
 		$this->userSQL = new UserModel();
 
-		$this->$account_type_required=0;
+		$this->account_type_required=0;
 
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
 		if(!Login::userLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
@@ -80,7 +81,7 @@ class Authentifier extends Controller{
 	}
 
 	public function checkAccountRequired(){
-		if($this->account_type_required<=$this->userData['user_account_type']){
+		if((Login::userLoggedIn() && (new ProfileModel())->selectAccountType($this->userData['user_id'])>= $this->account_type_required)){
 			return true;
 		}
 		return false;

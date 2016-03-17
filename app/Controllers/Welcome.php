@@ -47,5 +47,11 @@ class Welcome extends Authentifier
     }
 
     public function test(){
+        $this->account_type_required = 1;
+        $test = $this->checkAccountRequired();
+        if ($test)
+            echo "taLeDroit";
+        else
+            echo "taPasDroit";
     }
 }
