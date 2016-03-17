@@ -9,6 +9,7 @@ namespace Modules\Authentifier\Models;
 
 
 use Core\Model;
+use Helpers\Database;
 use Modules\Authentifier\Helpers\InputValidation;
 
 class UserModel extends Model
@@ -33,30 +34,18 @@ class UserModel extends Model
     private $user_reset_timestamp;
     private $user_provider_type;
 
-    public function insertUser($user_data){
-        $this->db->insert(PREFIX.'users', $user_data);
-        return $this->db->lastInsertId('user_id');
-    }
-
-    public function selectAll($user_id){
-        return ($this->db->select('SELECT * FROM '.PREFIX.'users
+    public static function selectAll($user_id){
+        return (Database::get()->select('SELECT * FROM '.PREFIX.'users
         WHERE user_id = :user_id'
         ,array(":user_id"=>$user_id),
             \PDO::FETCH_ASSOC)[0]
         );
     }
 
-    public function selectProfile($user_id){
-        return ($this->db->select(
-            'SELECT user_id, user_name, user_email FROM '.PREFIX.'users
-            WHERE user_id = :user_id'
-            ,array(":user_id"=>$user_id),
-            \PDO::FETCH_ASSOC)[0]
-        );
-    }
 
-    public function selectID($user_name_or_email){
-        $user_id = ($this->db->select(
+
+    public static function selectID($user_name_or_email){
+        $user_id = (Database::get()->select(
             'SELECT user_id FROM '.PREFIX.'users
             WHERE user_name = :user_name_or_email
             OR user_email = :user_name_or_email'
@@ -68,12 +57,12 @@ class UserModel extends Model
         return false;
     }
 
-    public function exist($user_name_or_email){
-        return ($this->selectID($user_name_or_email))!= false;
+    public static function exist($user_name_or_email){
+        return (self::selectID($user_name_or_email))!= false;
     }
 
-    public function getUserPasswordHash($user_id){
-        $user_password_hash = ($this->db->select(
+    public static function getUserPasswordHash($user_id){
+        $user_password_hash = (Database::get()->select(
             'SELECT user_password_hash FROM '.PREFIX.'users
             WHERE user_id = :user_id'
             ,array(":user_id"=>$user_id),
@@ -84,23 +73,19 @@ class UserModel extends Model
         return false;
     }
 
-    public function checkPassword($password, $user_id){
-        return password_verify($password,$this->getUserPasswordHash($user_id));
-    }
 
-    public function updateUserProfile(array $user_data_update, $profile){
-        $this->db->update('users', $user_data_update,$profile);
-    }
 
-    public function selectSession($user_id){
-        return ($this->db->select('SELECT session_id FROM '.PREFIX.'users
+    public static function selectSession($user_id){
+        return (Database::get()->select('SELECT session_id FROM '.PREFIX.'users
         WHERE user_id = :user_id'
             ,array(":user_id"=>$user_id),
             \PDO::FETCH_ASSOC)[0]
         );
     }
 
-    public function sessionCheck($user_id){
+    public static function sessionCheck($user_id, $user_session){
 
     }
+
+
 }

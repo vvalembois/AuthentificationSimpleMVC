@@ -13,6 +13,8 @@ use Helpers\Request;
 use Helpers\Session;
 use Helpers\Url;
 use Modules\Authentifier\Helpers\InputValidation;
+use Modules\Authentifier\Models\ProfileModel;
+use Modules\Authentifier\Models\UserModel;
 
 class Profile extends Authentifier
 {
@@ -33,7 +35,7 @@ class Profile extends Authentifier
     {
         $data = [];
         if($this->userData != null){
-            $data['user'] = $this->userSQL->selectProfile(Session::get('user_id'));
+            $data['user'] = ProfileModel::selectProfile(Session::get('user_id'));
         }
         View::renderTemplate('header');
         $this->feedback->render();
@@ -62,16 +64,16 @@ class Profile extends Authentifier
 
     public function profileUpdateActionDatabase($user_data){
         // check password
-        if(!$userGoodPassword = $this->userSQL->checkPassword($user_data['user_password'], $user_data['user_id'])){
+        if(!$userGoodPassword = UserModel::checkPassword($user_data['user_password'], $user_data['user_id'])){
             $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
         }
         else {
             // check user name available
-            if ($this->userData['user_name'] != $user_data['user_name'] && $user_name_exist = $this->userSQL->exist($user_data['user_name']))
+            if ($this->userData['user_name'] != $user_data['user_name'] && $user_name_exist = UserModel::exist($user_data['user_name']))
                 $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
 
             // check user email available
-            if ($this->userData['user_email'] != $user_data['user_email'] && $user_mail_exist = $this->userSQL->exist($user_data['user_email']))
+            if ($this->userData['user_email'] != $user_data['user_email'] && $user_mail_exist = UserModel::exist($user_data['user_email']))
                 $this->feedback->add('Mail adress already exist.', FEEDBACK_TYPE_WARNING);
         }
 
@@ -93,9 +95,9 @@ class Profile extends Authentifier
                 Url::redirect('authentifier/profileUpdateForm');
             }
             else{
-                $this->userSQL->updateUserProfile($user_data_update, $this->userData);
+                ProfileModel::updateUserProfile($user_data_update, $this->userData);
                 $this->feedback->add('Account update succefull', FEEDBACK_TYPE_SUCCESS);
-                (new Login)->loginAction($this->userData['user_name'], $newPassword);
+                //TODO si la connexion est un succes, il faut connecter l'utilisateur
             }
 
             Url::redirect();

@@ -17,6 +17,7 @@ use Helpers\Session;
 use Helpers\Url;
 use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Helpers\InputValidation;
+use Modules\Authentifier\Models\RegisterModel;
 use Modules\Authentifier\Models\UserModel;
 
 class Register extends Authentifier
@@ -99,11 +100,11 @@ class Register extends Authentifier
 
         if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
-            if ($usernameExist = $this->userSQL->exist($input_valids['user_name']) != null)
+            if ($usernameExist = UserModel::exist($input_valids['user_name']) != null)
                 $this->feedback->add("Username already exists", FEEDBACK_TYPE_WARNING);
 
             /* Vérification de l'inexistance de l'adresse mail dans la base de données */
-            if ($mailExist = $this->userSQL->exist($input_valids['user_mail']) != null)
+            if ($mailExist = UserModel::exist($input_valids['user_mail']) != null)
                 $this->feedback->add("Mail adress already in use", FEEDBACK_TYPE_WARNING);
 
             /* Vérification du captcha */
@@ -128,7 +129,7 @@ class Register extends Authentifier
     private function registerActionInsert($new_user_data){
         /* Tentative d'insertion dans la table */
         try {
-            $this->userSQL->insertUser($new_user_data);
+            RegisterModel::insertUser($new_user_data);
             return true;
         } catch (\Exception $e) {
             return false;

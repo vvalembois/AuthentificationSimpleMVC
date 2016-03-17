@@ -15,4 +15,8 @@ use Modules\Authentifier\Helpers\InputValidation;
 
 class RegisterModel extends Model
 {
+    public static function insertUser($user_data){
+        Database::get()->insert(PREFIX.'users', $user_data);
+        return Database::get()->lastInsertId('user_id');
+    }
 }

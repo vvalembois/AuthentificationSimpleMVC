@@ -14,6 +14,8 @@ use Helpers\Request;
 use Helpers\Session;
 use Helpers\Url;
 use Modules\Authentifier\Helpers\InputValidation;
+use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\UserModel;
 
 
 class Login extends Authentifier
@@ -51,12 +53,12 @@ class Login extends Authentifier
     public function loginActionDatabase($user_name = false, $user_password = false){
 
         // Get the user_id
-        $user_id = $this->userSQL->selectID($user_name);
+        $user_id = UserModel::selectID($user_name);
 
         // Check the user password
         $user_check_password = false;
         if($user_id) {
-            $user_check_password = $this->userSQL->checkPassword($user_password, $user_id);
+            $user_check_password = LoginModel::checkPassword($user_password, $user_id);
         }
 
         // Login successful
@@ -87,7 +89,7 @@ class Login extends Authentifier
     }
 
     public function userAllInfo($user_name){
-        return $this->userSQL->selectAll($user_name);
+        return UserModel::selectAll($user_name);
     }
 
     private function userProfileSetSession($user_id){

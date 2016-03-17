@@ -16,7 +16,6 @@ use Modules\Authentifier\Models\UserModel;
 class Authentifier extends Controller{
 
 	protected $feedback;
-	protected $userSQL;
 	protected $userData;
 
 	public function __construct(){
@@ -30,8 +29,6 @@ class Authentifier extends Controller{
 		if(!isset($this->feedback))
 			$this->feedback = new Feedback();
 
-		$this->userSQL = new UserModel();
-
 		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
 		if(!Login::userLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
 			// TODO renvoyer vers la route loginWithCookie
@@ -39,7 +36,7 @@ class Authentifier extends Controller{
 
 		// Get user session
 		if(Login::userLoggedIn()){
-			$this->userData = $this->userSQL->selectProfile(Session::get('user_id'));
+			$this->userData = ProfileModel::selectProfile(Session::get('user_id'));
 		}
 
 	}
@@ -47,8 +44,6 @@ class Authentifier extends Controller{
 	public function routes(){
 		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
 	}
-
-	/* TODO il doit être possible de mettre les fonctions utiles ci-dessous dans un helper interne au module*/
 
 	private static function checkSessionConcurrency(){
 		// TODO tester dans la base de donnée l'id de session de l'utilisateur
@@ -79,7 +74,7 @@ class Authentifier extends Controller{
 	}
 
 	public function checkAccountRequired($account_type_required){
-		if((Login::userLoggedIn() && (new ProfileModel())->selectAccountType($this->userData['user_id'])>= $account_type_required)){
+		if((Login::userLoggedIn() && ProfileModel::selectAccountType($this->userData['user_id'])>= $account_type_required)){
 			return true;
 		}
 		return false;

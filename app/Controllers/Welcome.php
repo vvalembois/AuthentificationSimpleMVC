@@ -50,7 +50,7 @@ class Welcome extends Authentifier
         $account_type_required = 2;
         $test = $this->checkAccountRequired($account_type_required);
         if ($test)
-            echo "taLeDroit";
+            echo "taLeeDroit";
         else
             echo "taPasDroit";
     }
