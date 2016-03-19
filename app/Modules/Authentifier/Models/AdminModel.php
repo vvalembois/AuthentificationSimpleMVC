@@ -9,6 +9,7 @@ namespace Modules\Authentifier\Models;
 
 
 use Core\Model;
+use Helpers\Database;
 
 class AdminModel extends Model
 {
