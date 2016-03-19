@@ -1,5 +1,6 @@
 # Module d'authentification Simple MVC
 
+Supprimer le répertoire mysql avant de up, puis executer le script de création de table
 
 ## Introduction
 
