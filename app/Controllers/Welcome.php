@@ -48,9 +48,9 @@ class Welcome extends Authentifier
 
     public function test(){
         $account_type_required = 2;
-        $test = $this->checkAccountRequired($account_type_required);
+        $test = $this->checkAccountTypeRequired($account_type_required);
         if ($test)
-            echo "taLeeDroit";
+            echo "taLeDroit";
         else
             echo "taPasDroit";
     }

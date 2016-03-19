@@ -47,7 +47,7 @@ $hooks->run('afterBody');
 				<li><a href="<?= DIR ?>">Home</a></li>
 				<li><a href="<?= DIR."authentifier/registerForm" ?>">S'inscrire</a></li>
 				<li><a href="<?= DIR."authentifier/loginForm" ?>">Se connecter</a></li>
-				<li><a href="<?= DIR."authentifier/index" ?>">Tout les utilisateurs</a></li>
+				<li><a href="<?= DIR."authentifier/admin/users_management_panel" ?>">Tout les utilisateurs</a></li>
 
 				<li><a href="<?= DIR."authentifier/profileUpdateForm" ?>">Modifier</a></li>
 				<li><a href="<?= DIR."authentifier/logout" ?>">Se déconnecter</a></li>
