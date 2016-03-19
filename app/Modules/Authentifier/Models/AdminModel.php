@@ -14,7 +14,10 @@ use Helpers\Database;
 class AdminModel extends Model
 {
     public static function selectAllUsers(){
-        return (Database::get()->select('SELECT user_name, user_email FROM '.PREFIX.'users', array(), \PDO::FETCH_ASSOC));
+        $users = Database::get()->select('SELECT user_name, user_email FROM '.PREFIX.'users',array(),\PDO::FETCH_ASSOC);
+        if(!empty($users))
+            return $users;
+        return false;
     }
     
     public static function deleteUser($user_id){
