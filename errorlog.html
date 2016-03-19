@@ -232,4 +232,29 @@
 #9 {main}</pre>
 
            <hr />
-<p>Error on Mar 19, 2016 17:22PM - Invalid argument supplied for foreach() in /app/app/Modules/Authentifier/Controllers/Admin.php on line 38</p>
+<p>Error on Mar 19, 2016 17:22PM - Invalid argument supplied for foreach() in /app/app/Modules/Authentifier/Controllers/Admin.php on line 38</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 19, 2016 17:37PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000] [1049] Unknown database 'authentifier'</p>
+
+           <p><strong>Code:</strong> 1049</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 61</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(61): PDO->__construct('mysql:host=loca...', 'admin', '********')
+#1 /app/app/Modules/Authentifier/Models/AdminModel.php(17): Helpers\Database::get()
+#2 /app/app/Modules/Authentifier/Controllers/Admin.php(29): Modules\Authentifier\Models\AdminModel::selectAllUsers()
+#3 [internal function]: Modules\Authentifier\Controllers\Admin->usersManagementPanel()
+#4 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#5 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#6 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#7 /app/index.php(81): require('/app/app/Core/r...')
+#8 {main}</pre>
+
+           <hr />
+<p>Error on Mar 19, 2016 17:38PM - Invalid argument supplied for foreach() in /app/app/Modules/Authentifier/Controllers/Admin.php on line 38</p>

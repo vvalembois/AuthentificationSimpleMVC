@@ -6,7 +6,7 @@ web:
         # application web en développement
         - ${PWD}/:/app
         # le stockage des bases de données mysql sur l'hote
-        - ${PWD}/mysql/:/var/lib/mysql
+        - ${PWD}/../mysql/:/var/lib/mysql
     environment:
         - ALLOW_OVERRIDE=true
         - UID=1000
