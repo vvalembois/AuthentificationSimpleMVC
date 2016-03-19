@@ -11,6 +11,7 @@ namespace Modules\Authentifier\Models;
 use Core\Model;
 use Helpers\RainCaptcha;
 use Helpers\Request;
+use Helpers\Database;
 use Modules\Authentifier\Helpers\InputValidation;
 
 class RegisterModel extends Model

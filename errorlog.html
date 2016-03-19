@@ -50,4 +50,30 @@
 #9 {main}</pre>
 
            <hr />
-<p>Error on Mar 17, 2016 21:17PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:17PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:18PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:18PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:18PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p>
+<p>Error on Mar 17, 2016 21:17PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:17PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:18PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:18PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:18PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><p>Error on Mar 17, 2016 21:19PM - Invalid argument supplied for foreach() in /app/app/Helpers/Database.php on line 96</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 19, 2016 9:49AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42S02]: Base table or view not found: 1146 Table 'authentifier.users' doesn't exist</p>
+
+           <p><strong>Code:</strong> 42S02</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(53): Helpers\Database->select('SELECT user_id ...', Array, 2)
+#2 /app/app/Modules/Authentifier/Models/UserModel.php(61): Modules\Authentifier\Models\UserModel::selectID('Quentin')
+#3 /app/app/Modules/Authentifier/Controllers/Register.php(103): Modules\Authentifier\Models\UserModel::exist('Quentin')
+#4 /app/app/Modules/Authentifier/Controllers/Register.php(61): Modules\Authentifier\Controllers\Register->registerFormDataValidation(false)
+#5 [internal function]: Modules\Authentifier\Controllers\Register->registerAction()
+#6 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#7 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#8 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#9 /app/index.php(81): require('/app/app/Core/r...')
+#10 {main}</pre>
+
+           <hr />
