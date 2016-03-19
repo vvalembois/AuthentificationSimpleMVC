@@ -12,6 +12,10 @@ use Core\Model;
 
 class AdminModel extends Model
 {
+    public static function selectAllUsers(){
+        return (Database::get()->select('SELECT user_name, user_email FROM '.PREFIX.'users', array(), \PDO::FETCH_ASSOC));
+    }
+    
     public static function deleteUser($user_id){
         //TODO
     }
