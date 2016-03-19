@@ -13,6 +13,7 @@ use Helpers\Request;
 use Helpers\Session;
 use Helpers\Url;
 use Modules\Authentifier\Helpers\InputValidation;
+use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\ProfileModel;
 use Modules\Authentifier\Models\UserModel;
 
@@ -64,7 +65,7 @@ class Profile extends Authentifier
 
     public function profileUpdateActionDatabase($user_data){
         // check password
-        if(!$userGoodPassword = UserModel::checkPassword($user_data['user_password'], $user_data['user_id'])){
+        if(!$userGoodPassword = LoginModel::checkPassword($user_data['user_password'], $user_data['user_id'])){
             $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
         }
         else {
