@@ -73,7 +73,7 @@ class Authentifier extends Controller{
 		return $this->userData;
 	}
 
-	public function checkAccountRequired($account_type_required){
+	public function checkAccountTypeRequired($account_type_required){
 		if((Login::userLoggedIn() && ProfileModel::selectAccountType($this->userData['user_id'])>= $account_type_required)){
 			return true;
 		}
