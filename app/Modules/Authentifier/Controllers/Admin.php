@@ -78,20 +78,41 @@ class Admin extends Authentifier
     public function usersManagementDeleteAction(){
         $user_id = Request::post('user_id');
         $confirmed = Request::post('confirmed');
-        if(isset($user_id) && isset($confirmed) && $confirmed=='true') {
+        if(isset($user_id) && isset($confirmed)) {
             $user = AdminModel::findByUserID($user_id);
             if ($user instanceof AdminModel) {
-                $user->delete();
+                if($confirmed=='true'){
+                    $user->delete();
+                    $this->feedback->add('User '.$user->getUserName().' deleted.',FEEDBACK_TYPE_SUCCESS);
+                }
+
+                else{
+                    $this->feedback->add('User '.$user->getUserName().' not deleted.',FEEDBACK_TYPE_INFO);
+                }
             }
         }
         Url::redirect('authentifier/admin/users_management_panel');
     }
 
     private function usersManagementUpdate(AdminModel $user){
-        // TODO envoyer vers une page de modification
+        View::renderTemplate('header');
+        $this->feedback->render();
+
+        $data['user_id'] = $user->getUserId();
+        $data['user_name'] = $user->getUserName();
+        View::renderModule('/Authentifier/Views/Admin/users_management_update_panel', $data);
+
+        View::renderTemplate('footer');
     }
 
     private function usersManagementDetails(AdminModel $user){
+        View::renderTemplate('header');
+        $this->feedback->render();
+
+        $data = $user->getArray();
+        View::renderModule('/Authentifier/Views/Admin/users_management_details_panel', $data);
+
+        View::renderTemplate('footer');
         // TODO afficher le profil de l'utilisateur en question
     }
 }
