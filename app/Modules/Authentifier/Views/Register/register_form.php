@@ -16,11 +16,16 @@
         <input class="form-control" type="password" id="user_password_repeat" name="user_password_repeat" value='<?= $data['user_password_repeat']?>' value='<?= $data['user_']?>' autocomplete="off" placeholder="Retapez votre mot de passe ..." required/>
 
         <br/>
-        <img class="col-xs-4 col-xs-offset-4 img-thumbnail" src= <?= $data['captcha_url'] ?>>
-        <label class=" col-xs-offset-4" for="user_captcha">Recopiez le texte de l'image :</label>
-        <input class="form-control" type="text" id="user_captcha" name="user_captcha" autocomplete="off" placeholder="Saisissez le texte de l'image ..." required/>
-
-        <br/>
+        <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+                <label class="" for="user_captcha">Recopiez le texte de l'image :</label>
+                <input class="form-control" type="text" id="user_captcha" name="user_captcha" autocomplete="off" placeholder="Saisissez le texte de l'image ..." required/>
+                <button class="form-control btn btn-primary" type="button" onclick="document.getElementById('captcha').src = '<?php $captcha = new \Helpers\RainCaptcha(); echo $captcha->getImage(); ?>&morerandom=' + Math.floor(Math.random() * 10000);">Get another CAPTCHA image</button>
+            </div>
+            <div class="col-xs-6">
+                <img id ="captcha" class="img-thumbnail" src= <?= $data['captcha_url'] ?>>
+            </div>
+        </div>
         <input class="form-control btn btn-primary" type="submit" value="S'inscrire">
 
     </form>
