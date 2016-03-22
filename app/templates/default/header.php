@@ -45,12 +45,12 @@ $hooks->run('afterBody');
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li><a href="<?= DIR ?>">Home</a></li>
-				<li><a href="<?= DIR."authentifier/registerForm" ?>">S'inscrire</a></li>
-				<li><a href="<?= DIR."authentifier/loginForm" ?>">Se connecter</a></li>
-				<li><a href="<?= DIR."authentifier/admin/users_management_panel" ?>">Tout les utilisateurs</a></li>
+				<li><a href="<?= DIR."authentifier/registerForm" ?>">Sign up</a></li>
+				<li><a href="<?= DIR."authentifier/loginForm" ?>">Login</a></li>
+				<li><a href="<?= DIR."authentifier/admin/users_management_panel" ?>">Administration panel</a></li>
 
-				<li><a href="<?= DIR."authentifier/profileUpdateForm" ?>">Modifier</a></li>
-				<li><a href="<?= DIR."authentifier/logout" ?>">Se déconnecter</a></li>
+				<li><a href="<?= DIR."authentifier/profileUpdateForm" ?>">Update your profile</a></li>
+				<li><a href="<?= DIR."authentifier/logout" ?>">Logout</a></li>
 				<li><a>
 					<?= $data['user_status'] ?>
 					</a>
