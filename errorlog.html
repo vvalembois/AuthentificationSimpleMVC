@@ -282,3 +282,238 @@
 #8 {main}</pre>
 
            <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 19, 2016 20:00PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[HY000]: General error: 1366 Incorrect integer value: 'user_failed_logins + 1' for column 'user_failed_logins' at row 1</p>
+
+           <p><strong>Code:</strong> HY000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 173</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(173): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/LoginModel.php(31): Helpers\Database->update('users', Array, Array)
+#2 /app/app/Modules/Authentifier/Controllers/Login.php(71): Modules\Authentifier\Models\LoginModel::loginFailed('3')
+#3 /app/app/Modules/Authentifier/Controllers/Login.php(48): Modules\Authentifier\Controllers\Login->loginActionDatabase('administrator', '********')
+#4 [internal function]: Modules\Authentifier\Controllers\Login->loginAction()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 19, 2016 20:04PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_failed_model' in 'field list'</p>
+
+           <p><strong>Code:</strong> 42S22</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 173</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(173): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/LoginModel.php(32): Helpers\Database->update('users', Array, Array)
+#2 /app/app/Modules/Authentifier/Controllers/Login.php(71): Modules\Authentifier\Models\LoginModel::loginFailed(false)
+#3 /app/app/Modules/Authentifier/Controllers/Login.php(48): Modules\Authentifier\Controllers\Login->loginActionDatabase('admin', '********')
+#4 [internal function]: Modules\Authentifier\Controllers\Login->loginAction()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<p>Error on Mar 19, 2016 20:04PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 30</p><p>Error on Mar 19, 2016 20:05PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 30</p><p>Error on Mar 19, 2016 20:05PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 31</p><p>Error on Mar 19, 2016 20:05PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 31</p><p>Error on Mar 19, 2016 20:07PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 29</p><p>Error on Mar 19, 2016 20:07PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 29</p><p>Error on Mar 19, 2016 20:08PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 31</p><p>Error on Mar 19, 2016 20:08PM - Illegal string offset 'user_failed_logins' in /app/app/Modules/Authentifier/Models/LoginModel.php on line 31</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:25PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com' at line 1</p>
+
+           <p><strong>Code:</strong> 42000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(44): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(62): Modules\Authentifier\Models\UserModelTest::findByUserEMail('alex62d@gmail.c...')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:25PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com' at line 1</p>
+
+           <p><strong>Code:</strong> 42000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(44): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(62): Modules\Authentifier\Models\UserModelTest::findByUserEMail('alex62d@gmail.c...')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:25PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\@gmail.com' at line 1</p>
+
+           <p><strong>Code:</strong> 42000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(44): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(62): Modules\Authentifier\Models\UserModelTest::findByUserEMail('alex62d\\@gmail....')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:25PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\@gmail.com' at line 1</p>
+
+           <p><strong>Code:</strong> 42000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(44): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(62): Modules\Authentifier\Models\UserModelTest::findByUserEMail('alex62d\\@gmail....')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:26PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com' at line 1</p>
+
+           <p><strong>Code:</strong> 42000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(44): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(62): Modules\Authentifier\Models\UserModelTest::findByUserEMail('alex62d@gmail.c...')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:27PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com' at line 1</p>
+
+           <p><strong>Code:</strong> 42000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(44): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(62): Modules\Authentifier\Models\UserModelTest::findByUserEMail('alex62d@gmail.c...')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 20, 2016 13:29PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[42S22]: Column not found: 1054 Unknown column 'alex62d' in 'where clause'</p>
+
+           <p><strong>Code:</strong> 42S22</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 104</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(104): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModelTest.php(39): Helpers\Database->select('SELECT * FROM u...', Array, 8, 'Modules\\Authent...')
+#2 /app/app/Controllers/Welcome.php(65): Modules\Authentifier\Models\UserModelTest::findByUserName('alex62d')
+#3 /app/app/Controllers/Welcome.php(45): Controllers\Welcome->test()
+#4 [internal function]: Controllers\Welcome->index()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Wel...')
+#7 /app/app/Core/routes.php(29): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />
+<p>Error on Mar 20, 2016 18:06PM - call_user_func_array() expects parameter 1 to be a valid callback, class 'Modules\Authentifier\Controllers\Login' does not have a method 'logout' in /app/app/Core/Router.php on line 126</p><p>Error on Mar 20, 2016 18:36PM - get_class_vars() expects parameter 1 to be string, object given in /app/app/Modules/Authentifier/Controllers/Login.php on line 62</p><p>Error on Mar 20, 2016 19:48PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 19:48PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 19:48PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 23:11PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 23:12PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 23:12PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 23:12PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 23:12PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 20, 2016 23:13PM - get_object_vars() expects parameter 1 to be object, null given in /app/app/Controllers/Welcome.php on line 55</p><p>Error on Mar 22, 2016 19:50PM - get_object_vars() expects exactly 1 parameter, 2 given in /app/app/Modules/Authentifier/Controllers/Admin.php on line 37</p><p>Error on Mar 22, 2016 19:50PM - get_object_vars() expects exactly 1 parameter, 2 given in /app/app/Modules/Authentifier/Controllers/Admin.php on line 37</p><p>Error on Mar 22, 2016 19:51PM - get_object_vars() expects exactly 1 parameter, 2 given in /app/app/Modules/Authentifier/Controllers/Admin.php on line 37</p><p>Error on Mar 22, 2016 19:58PM - Invalid argument supplied for foreach() in /app/app/Modules/Authentifier/Controllers/Admin.php on line 37</p><p>Error on Mar 22, 2016 21:39PM - Missing argument 1 for Modules\Authentifier\Controllers\Admin::userDelete(), called in /app/app/Modules/Authentifier/Controllers/Admin.php on line 53 and defined in /app/app/Modules/Authentifier/Controllers/Admin.php on line 60</p><p>Error on Mar 22, 2016 21:40PM - Missing argument 1 for Modules\Authentifier\Controllers\Admin::userDelete(), called in /app/app/Modules/Authentifier/Controllers/Admin.php on line 53 and defined in /app/app/Modules/Authentifier/Controllers/Admin.php on line 60</p><p>Error on Mar 22, 2016 21:40PM - Missing argument 1 for Modules\Authentifier\Controllers\Admin::userDelete(), called in /app/app/Modules/Authentifier/Controllers/Admin.php on line 53 and defined in /app/app/Modules/Authentifier/Controllers/Admin.php on line 60</p>

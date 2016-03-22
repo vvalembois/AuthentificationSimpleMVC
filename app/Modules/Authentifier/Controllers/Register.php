@@ -19,6 +19,7 @@ use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\RegisterModel;
 use Modules\Authentifier\Models\UserModel;
+use Modules\Authentifier\Models\UserModelTest;
 
 class Register extends Authentifier
 {
@@ -69,12 +70,11 @@ class Register extends Authentifier
                 $this->feedback->add("Registration error (database)", FEEDBACK_TYPE_FAIL);
             }
         }
-        else{ // Si l'inscription a échouée, on renvoie vers le formulaire
-            Session::set('post', $_POST);
-            Url::redirect('authentifier/registerForm');
-        }
-
+        // Si l'inscription a échouée, on renvoie vers le formulaire
+        Session::set('post', $_POST);
+        Url::redirect('authentifier/registerForm');
     }
+
     private function registerFormSession(){
         return array(
             'user_name' => Session::get('post')['user_name'],
@@ -100,11 +100,11 @@ class Register extends Authentifier
 
         if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
-            if ($usernameExist = UserModel::exist($input_valids['user_name']) != null)
+            if ($usernameExist = UserModelTest::findByUserName($input_valids['user_name']) != null)
                 $this->feedback->add("Username already exists", FEEDBACK_TYPE_WARNING);
 
             /* Vérification de l'inexistance de l'adresse mail dans la base de données */
-            if ($mailExist = UserModel::exist($input_valids['user_mail']) != null)
+            if ($mailExist = UserModelTest::findByUserEMail($input_valids['user_mail']) != null)
                 $this->feedback->add("Mail adress already in use", FEEDBACK_TYPE_WARNING);
 
             /* Vérification du captcha */

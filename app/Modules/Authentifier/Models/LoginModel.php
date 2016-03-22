@@ -9,17 +9,31 @@ namespace Modules\Authentifier\Models;
 
 
 use Core\Model;
+use Helpers\Database;
 use Helpers\Session;
+use Modules\Authentifier\Controllers\User;
 
-class LoginModel extends Model
+class LoginModel extends UserModelTest
 {
     public static function userIsLoggedIn()
     {
-        // TODO vérifier que la user_session correspond dans la base de donnée
-        return Session::get('user_logged_in');
+        $user_id = Session::get('user_id');
+        return self::checkLoginSession($user_id, Session::id());
     }
 
-    public static function checkPassword($password, $user_id){
-        return password_verify($password,UserModel::getUserPasswordHash($user_id));
+    public function connection(){
+        Session::regenerate();
+        $this->session_id = Session::id();
+        Database::get()->update('users', array('session_id'=>$this->session_id), array('user_id' => $this->user_id));
+    }
+
+    public function loginFailed(){
+        $this->user_failed_logins ++;
+        Database::get()->update('users',array('user_failed_logins'=>$this->user_failed_logins),array('user_id' => $this->user_id));
+    }
+
+    public static function checkLoginSession($user_id, $session_id){
+        $user = UserModelTest::findByUserID($user_id);
+        return ($user ? $user->checkSessionId($session_id) : false);
     }
 }

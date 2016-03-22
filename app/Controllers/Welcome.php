@@ -13,6 +13,10 @@ namespace Controllers;
 use Core\View;
 use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
+use Modules\Authentifier\Controllers\Login;
+use Modules\Authentifier\Models\AdminModel;
+use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\UserModelTest;
 
 /**
  * Sample controller showing a construct and 2 methods and their typical usage.
@@ -47,11 +51,5 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        $account_type_required = 2;
-        $test = $this->checkAccountTypeRequired($account_type_required);
-        if ($test)
-            echo "taLeDroit";
-        else
-            echo "taPasDroit";
     }
 }

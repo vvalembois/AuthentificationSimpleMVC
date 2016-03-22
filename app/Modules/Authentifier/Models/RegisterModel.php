@@ -9,15 +9,22 @@ namespace Modules\Authentifier\Models;
 
 
 use Core\Model;
+use Helpers\Data;
 use Helpers\RainCaptcha;
 use Helpers\Request;
 use Helpers\Database;
 use Modules\Authentifier\Helpers\InputValidation;
 
-class RegisterModel extends Model
+class RegisterModel extends UserModelTest
 {
     public static function insertUser($user_data){
         Database::get()->insert(PREFIX.'users', $user_data);
         return Database::get()->lastInsertId('user_id');
+    }
+
+    public function setUserActive($user_activation_hash){
+        if($this->checkUserActivationHash($user_activation_hash))
+            Database::get()->update('users',array('user_activation_hash' => $this->user_activation_hash), array('user_id' => $this->user_id));
+
     }
 }

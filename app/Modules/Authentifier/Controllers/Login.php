@@ -16,6 +16,7 @@ use Helpers\Url;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModel;
+use Modules\Authentifier\Models\UserModelTest;
 
 
 class Login extends Authentifier
@@ -50,42 +51,38 @@ class Login extends Authentifier
             Url::redirect('authentifier/loginForm');
     }
 
-    public function loginActionDatabase($user_name = false, $user_password = false){
+    public function loginActionDatabase($user_name, $user_password){
+        $user = null;
+        if(isset($user_name) && isset($user_password)){
+            $user = LoginModel::findByUserName($user_name);
 
-        // Get the user_id
-        $user_id = UserModel::selectID($user_name);
-
-        // Check the user password
-        $user_check_password = false;
-        if($user_id) {
-            $user_check_password = LoginModel::checkPassword($user_password, $user_id);
+            if($user instanceof LoginModel && $user->checkUserPassword($user_password)){
+                if($user->checkUserActive()){
+                    $this->feedback->add('You are logged.',FEEDBACK_TYPE_SUCCESS);
+                    Session::set('user_id',$user->getUserId());
+                    $user->connection();
+                    Url::redirect();
+                }
+                else
+                    $this->feedback->add('Your need to activate your account.', FEEDBACK_TYPE_FAIL);
+            }
+            else
+                $this->feedback->add('Wrong username or password !',FEEDBACK_TYPE_FAIL);
         }
-
-        // Login successful
-        if($user_check_password) {
-            $this->feedback->add('You are logged.', FEEDBACK_TYPE_SUCCESS);
-            $this->userProfileSetSession($user_id);
-            Url::redirect();
-        }
-        else { // Login failed
-            $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
-            Session::set('post',Request::post(''));
-            Url::redirect('authentifier/loginForm');
-        }
-
+        Url::redirect('authentifier/loginForm');
     }
 
     public function logout(){
         if($this->userLoggedIn()) {
-            Session::destroy('user_profile_info');
+            Session::destroy('user_id');
+            Session::regenerate();
             $this->feedback->add("Vous êtes déconnecté");
         }
-        header('Location: /');
+        Url::redirect();
     }
 
     static public function userLoggedIn(){
-        //TODO token
-        return Session::get('user_id')!=null;
+        return LoginModel::checkLoginSession(Session::get('user_id'),Session::id());
     }
 
     public function userAllInfo($user_name){

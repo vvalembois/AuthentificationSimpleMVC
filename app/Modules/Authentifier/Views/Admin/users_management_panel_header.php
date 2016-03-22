@@ -1,8 +1,13 @@
 <div>
-    <h3>Liste des users</h3>
+    <h3>Users list</h3>
+
     <table class="table">
-        <tr>
-            <td class="header">Name</td>
-            <td class="header">Email</td>
-        </tr>
+        <thead>
+
+            <tr>
+                <th class="header">Name</th>
+                <th class="header">Email</th>
+                <th class="header">Actions</th>
+            </tr>
+        </thead>
         <tbody>

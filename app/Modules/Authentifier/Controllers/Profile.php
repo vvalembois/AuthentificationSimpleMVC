@@ -16,6 +16,7 @@ use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\ProfileModel;
 use Modules\Authentifier\Models\UserModel;
+use Modules\Authentifier\Models\UserModelTest;
 
 class Profile extends Authentifier
 {
@@ -59,13 +60,18 @@ class Profile extends Authentifier
             $user_data = InputValidation::inputsValidationProfileUpdate($user_data);
 
             if ($user_data)
-                $this->profileUpdateActionDatabase($user_data);
+                if($this->profileUpdateActionDatabase($user_data)) {
+                    Url::redirect();
+                }
+                else {
+                    Url::redirect('authentifier/updateForm');
+                }
         }
     }
 
     public function profileUpdateActionDatabase($user_data){
         // check password
-        if(!$userGoodPassword = LoginModel::checkPassword($user_data['user_password'], $user_data['user_id'])){
+        if(!$userGoodPassword = UserModelTest::findByUserID($user_data['user_id'], $user_data['user_password'])){
             $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
         }
         else {
@@ -93,7 +99,7 @@ class Profile extends Authentifier
             }
             if(empty($user_data_update)) {
                 $this->feedback->add('No changes to update', FEEDBACK_TYPE_INFO);
-                Url::redirect('authentifier/profileUpdateForm');
+                return false;
             }
             else{
                 ProfileModel::updateUserProfile($user_data_update, $this->userData);
@@ -101,10 +107,9 @@ class Profile extends Authentifier
                 //TODO si la connexion est un succes, il faut connecter l'utilisateur
             }
 
-            Url::redirect();
+            return true;
         }
 
-        //redirect on form
-        Url::redirect('authentifier/profileUpdateForm');
+        return false;
     }
 }

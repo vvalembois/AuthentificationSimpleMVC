@@ -34,6 +34,13 @@ class UserModel extends Model
     private $user_reset_timestamp;
     private $user_provider_type;
 
+    public static function selectAllUsers(){
+        $users = Database::get()->select('SELECT user_name, user_email FROM '.PREFIX.'users',array(),\PDO::FETCH_ASSOC);
+        if(!empty($users))
+            return $users;
+        return false;
+    }
+
     public static function selectAll($user_id){
         return (Database::get()->select('SELECT * FROM '.PREFIX.'users
         WHERE user_id = :user_id'

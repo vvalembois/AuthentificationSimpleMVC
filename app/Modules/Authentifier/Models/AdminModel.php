@@ -8,23 +8,25 @@
 namespace Modules\Authentifier\Models;
 
 
-use Core\Model;
 use Helpers\Database;
 
-class AdminModel extends Model
+class AdminModel extends UserModelTest
 {
-    public static function selectAllUsers(){
-        $users = Database::get()->select('SELECT user_name, user_email FROM '.PREFIX.'users',array(),\PDO::FETCH_ASSOC);
+    public static function listUsers(){
+        $users = array();
+        foreach(static::findAll() as $user){
+            $users[] = array('user_id'=>$user->user_id, 'user_name'=>$user->user_name, 'user_email'=>$user->user_email);
+        }
         if(!empty($users))
             return $users;
-        return false;
+        return null;
     }
     
-    public static function deleteUser($user_id){
-        //TODO
+    public function delete(){
+        return Database::get()->delete(USERS_DB_TABLE,array('user_id'=>$this->user_id));
     }
 
-    public static function updateAccountType($user_id, $new_account_type){
-        //TODO
+    public function updateAccountType($new_account_type){
+        Database::get()->update(USERS_DB_TABLE,array('user_account_type'=>$new_account_type), array('user_id'=>$this->user_id));
     }
 }

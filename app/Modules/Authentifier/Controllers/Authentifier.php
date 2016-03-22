@@ -7,6 +7,7 @@ use Core\Router;
 use Helpers\Request;
 use Helpers\Session;
 use Modules\Authentifier\Models\ProfileModel;
+use Modules\Authentifier\Models\UserModelTest;
 use Modules\Feedback\Helpers\Feedback;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModel;
@@ -64,7 +65,7 @@ class Authentifier extends Controller{
 	public function getUserStatus()
 	{
 		if(Login::userLoggedIn())
-			return "Logged  ".$this->userData['user_name'];
+			return "Logged  ".UserModelTest::findByUserID(Session::get('user_id'))->getUserName();
 		else
 			return "Vous n'êtes pas connecté.";
 	}
