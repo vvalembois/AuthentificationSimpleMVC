@@ -14,6 +14,7 @@ use Core\View;
 use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Controllers\Login;
+use Modules\Authentifier\Controllers\Profile;
 use Modules\Authentifier\Models\AdminModel;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModelTest;
@@ -45,11 +46,19 @@ class Welcome extends Authentifier
 
         View::renderTemplate('header', $data);
         $this->feedback->render();
-        $this->test();
         View::render('index', $data);
+        $this->test();
         View::renderTemplate('footer', $data);
     }
 
     public function test(){
+        $data['user_name'] = "Jean";
+        $data['user_email'] = "Jean@hotmail.fr";
+        $data['last_connection'] = "29/02/2016";
+        $data['time_register'] = "12";
+        $data['user_account_type'] = "0";
+        //test vu administration
+        View::renderModule('/Authentifier/Views/Profile/user_profile', $data);
+
     }
 }
