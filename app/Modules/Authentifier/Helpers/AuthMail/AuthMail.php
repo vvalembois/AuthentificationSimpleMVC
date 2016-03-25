@@ -45,7 +45,8 @@ class AuthMail extends Mail
         $this->addAddress($user->getUserEmail());
         $this->subject('Activation compte '.$user->getUserName());
         $data = [];
-        $this->body($text);
+        $data = array_merge($data, $user->getArray());
+        $this->body(Templates\RegisterActivationMail::getTemplate($data));
         return $this->send();
     }
 
