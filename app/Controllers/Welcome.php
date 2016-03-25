@@ -11,14 +11,8 @@
 namespace Controllers;
 
 use Core\View;
-use Helpers\PhpMailer\Mail;
-use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
-use Modules\Authentifier\Controllers\Login;
-use Modules\Authentifier\Controllers\Profile;
 use Modules\Authentifier\Helpers\AuthMail\AuthMail;
-use Modules\Authentifier\Models\AdminModel;
-use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModelTest;
 
 /**
@@ -61,6 +55,6 @@ class Welcome extends Authentifier
         View::renderModule('/Authentifier/Views/Profile/user_profile', $data);
 
         //test mail
-        AuthMail::sendMailForActivation('authentifiersmvc@gmail.com');
+        (new AuthMail())->sendMailForActivation(UserModelTest::findByUserName('alex62d'));
     }
 }

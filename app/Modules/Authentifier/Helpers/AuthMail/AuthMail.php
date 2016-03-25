@@ -15,26 +15,38 @@ use Modules\Authentifier\Models\UserModelTest;
 class AuthMail extends Mail
 {
 
+
     public function __construct()
     {
         parent::__construct();
+        new AuthMailConfig();
+
+        $this->IsSMTP(); // enable SMTP
         $this->From = MAIL_ACCOUNT;
-        $this->Mailer = smtp;
+        $this->FromName = MAIL_SENDER;
+        $this->Mailer = MAIL_METHOD;
+        $this->SMTPSecure = MAIL_SMTP_SECURE;
+        $this->SMTPAuth = MAIL_SMTP_AUTH;
+        $this->SMTPDebug = 0;  // debugging: 1 = errors and messages, 2 = messages only
         $this->Host = MAIL_SMTP_SERVER;
+        $this->Port = MAIL_SMTP_PORT;
+        $this->Username = MAIL_ACCOUNT;
         $this->Password = MAIL_ACCOUNT_PASSWORD;
+
     }
 
     /**
      * Envoi un mail d'activation de compte pour le nouvel utilisateur
      * @param $user
      */
-    public function sendMailForActivation($user){
-        $mail = new Mail();
-        $mail->addAddress(UserModelTest::findByUserEMail($user));
-        $mail->subject('Activation compte');
-        $mail->body('<h1>test</h1>');
-        $mail->send();
-        echo "Send";
+    public function sendMailForActivation(UserModelTest $user){
+
+        $text = '<h1>Activate you account</h1><p>Welcome to '.SITETITLE. $user->getUserName(). '! for visit the website, You need to visit this url for validate your account <a href="'. rand(0,100)*rand(100,1000).'">this link test</a></p>';
+        $this->addAddress($user->getUserEmail());
+        $this->subject('Activation compte '.$user->getUserName());
+        $data = [];
+        $this->body($text);
+        return $this->send();
     }
 
     /**
