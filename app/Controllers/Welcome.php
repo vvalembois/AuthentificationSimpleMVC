@@ -11,6 +11,7 @@
 namespace Controllers;
 
 use Core\View;
+use Helpers\PhpMailer\Mail;
 use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Controllers\Login;
@@ -56,8 +57,10 @@ class Welcome extends Authentifier
         $data['last_connection'] = "29/02/2016";
         $data['time_register'] = "12";
         $data['user_account_type'] = "0";
-        //test vu administration
+        //test administration
         View::renderModule('/Authentifier/Views/Profile/user_profile', $data);
 
+        //test mail
+        AuthMail::sendMailForActivation('authentifiersmvc@gmail.com');
     }
 }
