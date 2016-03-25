@@ -15,6 +15,7 @@ use Helpers\RainCaptcha;
 use Helpers\Request;
 use Helpers\Session;
 use Helpers\Url;
+use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\RegisterModel;

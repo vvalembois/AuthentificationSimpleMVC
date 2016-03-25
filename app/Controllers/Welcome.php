@@ -15,6 +15,7 @@ use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Controllers\Login;
 use Modules\Authentifier\Controllers\Profile;
+use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Models\AdminModel;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModelTest;
