@@ -43,8 +43,6 @@ class Welcome extends Authentifier
         $data['title'] = "Page de test";
 
         $data['user_status'] = $this->getUserStatus();
-
-
         View::renderTemplate('header', $data);
         $this->feedback->render();
         View::render('index', $data);
