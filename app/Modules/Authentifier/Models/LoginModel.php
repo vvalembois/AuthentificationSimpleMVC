@@ -28,8 +28,8 @@ class LoginModel extends UserModelTest
     }
 
     public function loginFailed(){
-        $this->user_failed_logins ++;
-        $this->user_last_failed_login = time();
+        $this->user_failed_logins ++;////////
+        $this->user_last_failed_login = time();//////
         $this->user_last_failed_login_ip = $_SERVER['REMOTE_ADDR'];
         Database::get()->update('users',array('user_failed_logins'=>$this->user_failed_logins, 'user_last_failed_login'=>$this->user_last_failed_login, 'user_last_failed_login_ip'=>$this->user_last_failed_login_ip),array('user_id' => $this->user_id));
     }
