@@ -24,7 +24,7 @@ class RegisterModel extends UserModelTest
 
     public function setUserActive($user_activation_hash){
         if($this->checkUserActivationHash($user_activation_hash)) {
-            Database::get()->update('users', array('user_activation_hash' => $this->user_activation_hash), array('user_id' => $this->user_id));
+            Database::get()->update('users', array('user_active' => 1), array('user_id' => $this->user_id));
             return true;
         }
         return false;
