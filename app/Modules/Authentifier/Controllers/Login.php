@@ -54,6 +54,7 @@ class Login extends Authentifier
 
     public function loginActionDatabase($user_name, $user_password)
     {
+        $user = null;
         if (isset($user_name) && isset($user_password)) {
             $user = LoginModel::findByUserName($user_name);
 
@@ -83,7 +84,7 @@ class Login extends Authentifier
             }
         }
 
-        $user = null;
+
         Url::redirect('authentifier/loginForm');
     }
 
