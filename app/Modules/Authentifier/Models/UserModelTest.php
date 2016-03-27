@@ -30,7 +30,8 @@ class UserModelTest extends Model
     protected $user_suspension_timestamp;
     protected $user_last_login_timestamp;
     protected $user_failed_logins;
-    protected $user_last_failed_logins;
+    protected $user_last_failed_login;
+    protected $user_last_failed_login_ip;
     protected $user_activation_hash;
     protected $user_password_reset_hash;
     protected $user_reset_timestamp;
@@ -66,7 +67,8 @@ class UserModelTest extends Model
             'user_account_type' => $this->user_account_type,
             'user_has_avatar' => $this->user_has_avatar,
             'user_remember_me_token' => $this->user_remember_me_token,
-            'user_activation_hash' => $this->user_activation_hash
+            'user_activation_hash' => $this->user_activation_hash,
+            'user_last_failed_login_ip' => $this->user_last_failed_login_ip
         );
     }
 
@@ -190,9 +192,9 @@ class UserModelTest extends Model
     /**
      * @return mixed
      */
-    public function getUserLastFailedLogins()
+    public function getUserLastFailedLogin()
     {
-        return $this->user_last_failed_logins;
+        return $this->user_last_failed_login;
     }
 
     /**

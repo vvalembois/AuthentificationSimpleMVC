@@ -91,7 +91,19 @@ class AuthMail extends Mail
      * @param $user_id
      */
     public function sendMailForLoginFail(UserModelTest $user){
+        /**
+         * Set the subject
+         */
+        $this->subject($user->getUserName().', too many login failed.');
+        /**
+         * Prepare the template
+         */
+        $data = $user->getArray();
+        $data['titlesite'] = SITETITLE;
 
+        $this->body($this->getTemplate('login_fail_mail', $data));
+
+        return $this->sendTo($user->getUserEmail());
     }
 
     /**

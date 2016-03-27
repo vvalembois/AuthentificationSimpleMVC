@@ -13,6 +13,7 @@ use Core\View;
 use Helpers\Request;
 use Helpers\Session;
 use Helpers\Url;
+use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\UserModel;
@@ -51,23 +52,33 @@ class Login extends Authentifier
             Url::redirect('authentifier/loginForm');
     }
 
-    public function loginActionDatabase($user_name, $user_password){
+    public function loginActionDatabase($user_name, $user_password)
+    {
         $user = null;
-        if(isset($user_name) && isset($user_password)){
+        if (isset($user_name) && isset($user_password)) {
             $user = LoginModel::findByUserName($user_name);
 
-            if($user instanceof LoginModel && $user->checkUserPassword($user_password)){
-                if($user->checkUserActive()){
-                    $this->feedback->add('You are logged.',FEEDBACK_TYPE_SUCCESS);
-                    Session::set('user_id',$user->getUserId());
-                    $user->connection();
-                    Url::redirect();
+            if ($user instanceof LoginModel) {
+                if ($user->getUserFailedLogins() >= 3 && ($user->getUserLastFailedLogin() > (time() - 30))) {
+                    $this->feedback->add('Too many login try failed, please wait ' . (30 - (time() - $user->getUserLastFailedLogin())) . 'seconds', FEEDBACK_TYPE_FAIL);
+                } else if ($user->checkUserPassword($user_password)) {
+                    if ($user->checkUserActive()) {
+                        $this->feedback->add('You are logged.', FEEDBACK_TYPE_SUCCESS);
+                        Session::set('user_id', $user->getUserId());
+                        $user->connection();
+                        Url::redirect();
+                    } else {
+                        $this->feedback->add('You need to activate your account.', FEEDBACK_TYPE_FAIL);
+                    }
+                } else {
+                    $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);
+                    $user->loginFailed();
+                    if($user->getUserFailedLogins() >= 3){
+                        $mail = new AuthMail();
+                        $mail->sendMailForLoginFail($user);
+                    }
                 }
-                else
-                    $this->feedback->add('You need to activate your account.', FEEDBACK_TYPE_FAIL);
             }
-            else
-                $this->feedback->add('Wrong username or password !',FEEDBACK_TYPE_FAIL);
         }
         Url::redirect('authentifier/loginForm');
     }

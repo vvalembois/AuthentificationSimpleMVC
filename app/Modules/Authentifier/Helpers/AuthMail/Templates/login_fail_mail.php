@@ -1,3 +1,1 @@
-<h1>connection attempt your account</h1>
-
-<p>several connexion attempt failed your account. The last attempt was made with this IP : {{failed_connection_last_ip}}  </p>
+<p>Several connexion attempt failed your account. The last attempt was made with this IP : {{user_last_failed_login_ip}}  </p>

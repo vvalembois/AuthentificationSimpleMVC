@@ -24,12 +24,14 @@ class LoginModel extends UserModelTest
     public function connection(){
         Session::regenerate();
         $this->session_id = Session::id();
-        Database::get()->update('users', array('session_id'=>$this->session_id), array('user_id' => $this->user_id));
+        Database::get()->update('users', array('session_id'=>$this->session_id, 'user_failed_logins'=>0), array('user_id' => $this->user_id));
     }
 
     public function loginFailed(){
         $this->user_failed_logins ++;
-        Database::get()->update('users',array('user_failed_logins'=>$this->user_failed_logins),array('user_id' => $this->user_id));
+        $this->user_last_failed_login = time();
+        $this->user_last_failed_login_ip = $_SERVER['REMOTE_ADDR'];
+        Database::get()->update('users',array('user_failed_logins'=>$this->user_failed_logins, 'user_last_failed_login'=>$this->user_last_failed_login, 'user_last_failed_login_ip'=>$this->user_last_failed_login_ip),array('user_id' => $this->user_id));
     }
 
     public static function checkLoginSession($user_id, $session_id){
