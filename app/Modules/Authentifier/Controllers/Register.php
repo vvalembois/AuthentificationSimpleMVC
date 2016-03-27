@@ -67,9 +67,9 @@ class Register extends Authentifier
 
             /* Tentative d'insertion dans la table */
             if($user = $this->registerActionInsert($new_user_data)){
+                $this->mail->sendMailForActivation($user);
                 $this->feedback->add("Well done $new_user_data[user_name], you are now registered!", FEEDBACK_TYPE_SUCCESS);
                 $this->feedback->add("You need to activate your account, activation link has been sent to you by email to ".$new_user_data['user_email'].".", FEEDBACK_TYPE_INFO);
-                $this->mail->sendMailForActivation($user);
                 Url::redirect();
             }
             else {
@@ -86,8 +86,10 @@ class Register extends Authentifier
         $user_activation_hash = Request::get('activation');
         $user = RegisterModel::findByUserName($user_name);
 
-        if($user instanceof RegisterModel && $user->setUserActive($user_activation_hash))
-                $this->feedback->add('Your account is now activated!', FEEDBACK_TYPE_SUCCESS);
+        if($user instanceof RegisterModel && $user->setUserActive($user_activation_hash)) {
+            $this->mail->sendMailForValidation($user);
+            $this->feedback->add($user->getUserName() . ', your account is now activated!', FEEDBACK_TYPE_SUCCESS);
+        }
         else
                 $this->feedback->add('Activation failed', FEEDBACK_TYPE_FAIL);
         Url::redirect();
