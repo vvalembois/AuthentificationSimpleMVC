@@ -4,6 +4,7 @@ namespace Modules\Authentifier\Helpers\AuthMail;
 
 use Core\View;
 use Helpers\PhpMailer\Mail;
+use Helpers\Url;
 use Modules\Authentifier\Models\UserModelTest;
 
 /**
@@ -41,28 +42,47 @@ class AuthMail extends Mail
      */
     public function sendMailForActivation(UserModelTest $user){
 
-        $text = '<h1>Activate you account</h1><p>Welcome to '.SITETITLE. $user->getUserName(). '! for visit the website, You need to visit this url for validate your account <a href="'. rand(0,100)*rand(100,1000).'">this link test</a></p>';
-        $this->addAddress($user->getUserEmail());
-        $this->subject('Activation compte '.$user->getUserName());
-        $data = [];
-        $data = array_merge($data, $user->getArray());
-        $this->body(Templates\RegisterActivationMail::getTemplate($data));
-        return $this->send();
+        /**
+         * Set the subject
+         */
+        $this->subject($user->getUserName().', you need to activate your account');
+        /**
+         * Prepare the template
+         */
+        $data = $user->getArray();
+        $data['titlesite'] = SITETITLE;
+        $data['activation_link'] = "http://".$_SERVER['HTTP_HOST'].DIR."authentifier/registerActivation?user=".$user->getUserName()."&activation=".$user->getUserActivationHash();
+
+        $this->body($this->getTemplate('register_activation_mail', $data));
+
+        return $this->sendTo($user->getUserEmail());
     }
 
     /**
-     * Envoi d'un mail pour la confirmation de la création de compte
+     * Envoi d'un mail pour la validation d'activation de compte
      * @param $user_id
      */
-    public function sendMailForConfirmation($user_id){
+    public function sendMailForValidation(UserModelTest $user){
+        /**
+         * Set the subject
+         */
+        $this->subject($user->getUserName().', your account is activated.');
+        /**
+         * Prepare the template
+         */
+        $data = $user->getArray();
+        $data['titlesite'] = SITETITLE;
 
+        $this->body($this->getTemplate('register_validation_mail', $data));
+
+        return $this->sendTo($user->getUserEmail());
     }
 
     /**
      * Envoi d'un mail pour les mots de passes oubliés
      * @param $user_name
      */
-    public function sendMailForPassword($user_name){
+    public function sendMailForPassword(UserModelTest $user){
 
     }
 
@@ -70,7 +90,27 @@ class AuthMail extends Mail
      * Envoi d'un mail lorsqu'il y a X connexions echouée
      * @param $user_id
      */
-    public function sendMailForLoginFail($user_id){
+    public function sendMailForLoginFail(UserModelTest $user){
 
+    }
+
+    /**
+     * Get the body of mail with your template
+     * @param $template_name
+     * @param array $data
+     * @return mixed|string
+     */
+    private function getTemplate($template_name, array $data){
+        $template = file_get_contents('app/Modules/Authentifier/Helpers/AuthMail/Templates/'.$template_name.'.php');
+        foreach($data as $key => $value){
+            $template = preg_replace('~{{'.$key.'}}~', $value, $template);
+        }
+        return $template;
+    }
+
+    private function sendTo($user_email){
+        // add the user's email adress as recipient
+        $this->addAddress($user_email);
+        return $this->send();
     }
 }

@@ -53,8 +53,5 @@ class Welcome extends Authentifier
         $data['user_account_type'] = "0";
         //test administration
         View::renderModule('/Authentifier/Views/Profile/user_profile', $data);
-
-        //test mail
-        (new AuthMail())->sendMailForActivation(UserModelTest::findByUserName('alex62d'));
     }
 }

@@ -64,7 +64,7 @@ class Login extends Authentifier
                     Url::redirect();
                 }
                 else
-                    $this->feedback->add('Your need to activate your account.', FEEDBACK_TYPE_FAIL);
+                    $this->feedback->add('You need to activate your account.', FEEDBACK_TYPE_FAIL);
             }
             else
                 $this->feedback->add('Wrong username or password !',FEEDBACK_TYPE_FAIL);

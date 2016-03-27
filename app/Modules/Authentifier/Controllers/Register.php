@@ -10,6 +10,7 @@ namespace Modules\Authentifier\Controllers;
 
 use Core\Router;
 use Core\View;
+use Helpers\Database;
 use Helpers\Gump;
 use Helpers\RainCaptcha;
 use Helpers\Request;
@@ -24,17 +25,19 @@ use Modules\Authentifier\Models\UserModelTest;
 
 class Register extends Authentifier
 {
-
+    private $mail;
 
     public function __construct()
     {
         parent::__construct();
+        $this->mail = new AuthMail();
     }
 
     public function routes()
     {
         Router::any('authentifier/registerForm', 'Modules\Authentifier\Controllers\Register@registerForm');
         Router::any('authentifier/registerAction', 'Modules\Authentifier\Controllers\Register@registerAction');
+        Router::any('authentifier/registerActivation', 'Modules\Authentifier\Controllers\Register@registerActivation');
     }
 
     /**
@@ -63,8 +66,10 @@ class Register extends Authentifier
         if ($new_user_data = $this->registerFormDataValidation($new_user_data)) {
 
             /* Tentative d'insertion dans la table */
-            if($this->registerActionInsert($new_user_data)){
+            if($user = $this->registerActionInsert($new_user_data)){
                 $this->feedback->add("Well done $new_user_data[user_name], you are now registered!", FEEDBACK_TYPE_SUCCESS);
+                $this->feedback->add("You need to activate your account, activation link has been sent to you by email to ".$new_user_data['user_email'].".", FEEDBACK_TYPE_INFO);
+                $this->mail->sendMailForActivation($user);
                 Url::redirect();
             }
             else {
@@ -74,6 +79,18 @@ class Register extends Authentifier
         // Si l'inscription a échouée, on renvoie vers le formulaire
         Session::set('post', $_POST);
         Url::redirect('authentifier/registerForm');
+    }
+
+    public function registerActivation(){
+        $user_name = Request::get('user');
+        $user_activation_hash = Request::get('activation');
+        $user = RegisterModel::findByUserName($user_name);
+
+        if($user instanceof RegisterModel && $user->setUserActive($user_activation_hash))
+                $this->feedback->add('Your account is now activated!', FEEDBACK_TYPE_SUCCESS);
+        else
+                $this->feedback->add('Activation failed', FEEDBACK_TYPE_FAIL);
+        Url::redirect();
     }
 
     private function registerFormSession(){
@@ -120,7 +137,8 @@ class Register extends Authentifier
                 return array(
                     'user_name' => $input_valids['user_name'],
                     'user_email' => $input_valids['user_mail'],
-                    'user_password_hash' => password_hash($input_valids['user_password'], PASSWORD_DEFAULT) /* On crypte le mot de passe */
+                    'user_password_hash' => password_hash($input_valids['user_password'], PASSWORD_DEFAULT), /* On crypte le mot de passe */
+                    'user_activation_hash' =>  sha1(uniqid(mt_rand(), true))
                 );
             }
         }
@@ -130,8 +148,7 @@ class Register extends Authentifier
     private function registerActionInsert($new_user_data){
         /* Tentative d'insertion dans la table */
         try {
-            RegisterModel::insertUser($new_user_data);
-            return true;
+            return RegisterModel::insertUser($new_user_data);
         } catch (\Exception $e) {
             return false;
 

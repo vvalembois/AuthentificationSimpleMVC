@@ -65,7 +65,8 @@ class UserModelTest extends Model
             'user_deleted' => $this->user_deleted,
             'user_account_type' => $this->user_account_type,
             'user_has_avatar' => $this->user_has_avatar,
-            'user_remember_me_token' => $this->user_remember_me_token
+            'user_remember_me_token' => $this->user_remember_me_token,
+            'user_activation_hash' => $this->user_activation_hash
         );
     }
 
@@ -192,6 +193,14 @@ class UserModelTest extends Model
     public function getUserLastFailedLogins()
     {
         return $this->user_last_failed_logins;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserActivationHash()
+    {
+        return $this->user_activation_hash;
     }
 
     /**

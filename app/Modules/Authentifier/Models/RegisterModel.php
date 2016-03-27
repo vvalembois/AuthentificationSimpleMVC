@@ -19,12 +19,14 @@ class RegisterModel extends UserModelTest
 {
     public static function insertUser($user_data){
         Database::get()->insert(PREFIX.'users', $user_data);
-        return Database::get()->lastInsertId('user_id');
+        return RegisterModel::findByUserID(Database::get()->lastInsertId('user_id'));
     }
 
     public function setUserActive($user_activation_hash){
-        if($this->checkUserActivationHash($user_activation_hash))
-            Database::get()->update('users',array('user_activation_hash' => $this->user_activation_hash), array('user_id' => $this->user_id));
-
+        if($this->checkUserActivationHash($user_activation_hash)) {
+            Database::get()->update('users', array('user_activation_hash' => $this->user_activation_hash), array('user_id' => $this->user_id));
+            return true;
+        }
+        return false;
     }
 }
