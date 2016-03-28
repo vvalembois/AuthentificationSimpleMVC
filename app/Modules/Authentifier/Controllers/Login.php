@@ -22,7 +22,7 @@ class Login extends Authentifier
 
     public function routes(){
         Router::any('authentifier/loginForm', 'Modules\Authentifier\Controllers\Login@loginForm');
-        Router::any('authentifier/loginAction', 'Modules\Authentifier\Controllers\Login@loginAction');
+        Router::post('authentifier/loginAction', 'Modules\Authentifier\Controllers\Login@loginAction');
         Router::any('authentifier/logout', 'Modules\Authentifier\Controllers\Login@logout');
     }
 
@@ -57,16 +57,16 @@ class Login extends Authentifier
 
             if ($user instanceof LoginModel) {
                 if ($user->getUserFailedLogins() >= 3 && ($user->getUserLastFailedLogin() > (time() - 30))) {
-                    $this->feedback->add('Too many login try failed, please wait ' . (30 - (time() - $user->getUserLastFailedLogin())) . 'seconds', FEEDBACK_TYPE_FAIL);
+                    $this->feedback->add('You had too many failed login, wait ' . (30 - (time() - $user->getUserLastFailedLogin())) . ' seconds.', FEEDBACK_TYPE_FAIL);
                 } else if ($user->checkUserPassword($user_password)) {
                     if ($user->checkUserActive()) {
-                        $this->feedback->add('You are logged.', FEEDBACK_TYPE_SUCCESS);
+                        $user->connection();
                         Session::set('user_id', $user->getUserId());
                         Session::set('user_name', $user->getUserName());
-                        $user->connection();
+                        $this->feedback->add('You are now logged as '.$user->getUserName().'.', FEEDBACK_TYPE_SUCCESS);
                         Url::redirect();
                     } else {
-                        $this->feedback->add('You need to activate your account.', FEEDBACK_TYPE_FAIL);
+                        $this->feedback->add('You need to activate your account with the email you received at '.$user->getUserEmail(), FEEDBACK_TYPE_FAIL);
                     }
                 } else {
                     $this->feedback->add('Wrong username or password !', FEEDBACK_TYPE_FAIL);

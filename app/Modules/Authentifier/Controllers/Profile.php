@@ -21,7 +21,7 @@ class Profile extends Authentifier
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct(1);
     }
     
     
@@ -33,6 +33,7 @@ class Profile extends Authentifier
     }
 
     public function userProfile(){
+        $this->checkAccountTypeRequired();
         $user = ProfileModel::findByUserID(Session::get('user_id'));
         View::renderTemplate('header');
         $this->feedback->render();
@@ -44,7 +45,7 @@ class Profile extends Authentifier
     
     public function profileUpdateForm()
     {
-
+        $this->checkAccountTypeRequired();
         $data = [];
         $user = null;
         if(Login::userLoggedIn()) {
@@ -84,11 +85,10 @@ class Profile extends Authentifier
 
             if ($user_data)
                 if($this->profileUpdateActionDatabase($user_data)) {
+                    (new Login())->loginActionDatabase($user_data['user_name'], $user_data['user_password']);
                     Url::redirect();
                 }
-                else {
-                    Url::redirect('authentifier/profileUpdateForm');
-                }
+            Url::redirect('authentifier/profileUpdateForm');
         }
     }
 

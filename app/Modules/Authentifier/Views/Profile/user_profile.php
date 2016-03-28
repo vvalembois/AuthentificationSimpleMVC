@@ -6,8 +6,8 @@
         <ul class="list-group">
             <li class="list-group-item">Name : <?= $data['user_name'] ?></li>
             <li class="list-group-item">Email : <?= $data['user_email'] ?></li>
-            <li class="list-group-item">Last connection : <?= $data['last_connection'] ?></li>
-            <li class="list-group-item">Register time : <?= $data['time_register'] ?></li>
+            <li class="list-group-item">Last connection : <?= $data['user_last_login_timestamp'] ?> minutes </li>
+            <li class="list-group-item">Creation date : <?= $data['user_creation_timestamp'] ?></li>
             <li class="list-group-item">Administrator level : <?= $data['user_account_type'] ?></li>
         </ul>
     </section>

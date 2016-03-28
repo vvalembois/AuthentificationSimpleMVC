@@ -48,8 +48,9 @@ class LoginModel extends UserModel
 
     public function connection(){
         Session::regenerate();
+        setcookie('user_id','test',time()+86400 * 7,'/',null,null,true); // set for 7 days TODO login with cookie
         $this->session_id = Session::id();
-        Database::get()->update('users', array('session_id'=>$this->session_id, 'user_failed_logins'=>0), array('user_id' => $this->user_id));
+        Database::get()->update('users', array('session_id'=>$this->session_id, 'user_failed_logins'=>0, 'user_last_login_timestamp' => time()), array('user_id' => $this->user_id));
     }
 
     public function loginFailed(){

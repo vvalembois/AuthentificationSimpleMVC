@@ -13,7 +13,6 @@ use Modules\Feedback\Helpers\Feedback;
 class Authentifier extends Controller{
 
 	protected $feedback;
-	protected $user;
     protected $required_user_type;
 
 	public function __construct($required_user_type = 0){
@@ -74,11 +73,18 @@ class Authentifier extends Controller{
     protected function checkAccountTypeRequired($required_user_type = false){
         if(!$required_user_type)
             $required_user_type = $this->required_user_type;
-        $this->setUser();
-        if($required_user_type <= 0 || ($this->user instanceof LoginModel && $this->user->getUserAccountType() >= $required_user_type))
+        $user = null;
+        if(Login::userLoggedIn()){
+            $user = LoginModel::findByUserID(Session::get('user_id'));
+        }
+        if($required_user_type <= 0 || ($user instanceof LoginModel && $user->getUserAccountType() >= $required_user_type))
             return true;
-        $this->feedback->add('You can\'t visit this part of the site without the good right level', FEEDBACK_TYPE_FAIL);
-        Url::previous();
+        if($required_user_type == 1)
+            $this->feedback->add("You need to be logged to visit this part of the site", FEEDBACK_TYPE_FAIL);
+        else
+            $this->feedback->add('You can\'t visit this part of the site without the good right level', FEEDBACK_TYPE_FAIL);
+
+        Url::redirect();
         return false;
     }
 

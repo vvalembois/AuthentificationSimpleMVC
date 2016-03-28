@@ -19,7 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `authentifier`
 --
-DROP DATABASE `authentifier`;
 CREATE DATABASE IF NOT EXISTS `authentifier` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `authentifier`;
 
@@ -38,7 +37,7 @@ CREATE TABLE `users` (
   `user_email` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'user''s email, unique',
   `user_active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'user''s activation status',
   `user_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'user''s deletion status',
-  `user_account_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'user''s account type (basic, premium, etc)',
+  `user_account_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'user''s account type (basic, premium, etc)',
   `user_has_avatar` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user has a local avatar, 0 if not',
   `user_remember_me_token` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'user''s remember-me cookie token',
   `user_creation_timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'timestamp of the creation of user''s account',
@@ -84,5 +83,5 @@ ALTER TABLE `users`
 
 INSERT INTO `users` (`session_id`, `user_name`, `user_password_hash`, `user_email`, `user_active`, `user_deleted`, `user_account_type`, `user_has_avatar`, `user_remember_me_token`, `user_creation_timestamp`, `user_suspension_timestamp`, `user_last_login_timestamp`, `user_failed_logins`, `user_last_failed_login`, `user_last_failed_login_ip`, `user_activation_hash`, `user_password_reset_hash`, `user_password_reset_timestamp`, `user_provider_type`) VALUES
 (NULL, 'administrator', '$2y$10$iYYZiXhBe6x3NChnyDz9IuasAoMYb62dOyUJYyLpwtVqN.tVXNQqi', 'administrator@auth.auth', 0, 0, 2, 0, NULL, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL),
-(NULL, 'user', '$2y$10$5zo6EbzDcDo8pmYzNVrLMeUUoylijloxm6fBC2ftq62NKDYsbf6oy', 'user@auth.auth', 0, 0, 0, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+(NULL, 'user', '$2y$10$5zo6EbzDcDo8pmYzNVrLMeUUoylijloxm6fBC2ftq62NKDYsbf6oy', 'user@auth.auth', 0, 0, 2, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 

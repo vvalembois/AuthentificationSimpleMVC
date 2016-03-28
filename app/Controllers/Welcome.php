@@ -36,15 +36,18 @@ class Welcome extends Authentifier
      */
     public function index()
     {
+
         $data['title'] = "Page de test";
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
+        $this->test();
         View::renderTemplate('header', $data);
         $this->feedback->render();
         View::render('index', $data);
-        $this->test();
         View::renderTemplate('footer', $data);
     }
 
     public function test(){
+        setcookie("oui","2kok",time() + 100,null,null,null,true);
+        var_dump($_COOKIE);
     }
 }
