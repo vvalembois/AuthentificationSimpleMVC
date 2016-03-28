@@ -18,7 +18,7 @@ class Admin extends Authentifier
 {
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct(2);
     }
 
     public function routes(){
@@ -28,6 +28,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementPanel(){
+        $this->checkAccountTypeRequired();
         View::renderTemplate('header');
         View::renderModule('/Authentifier/Views/Admin/users_management_panel_header', $data);
         $this->feedback->render();
@@ -37,6 +38,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementElement($users){
+        $this->checkAccountTypeRequired();
         if(!empty($users))
             foreach($users as $user)
                 View::renderModule('/Authentifier/Views/Admin/users_management_element', $user);
@@ -47,6 +49,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementPanelAction(){
+        $this->checkAccountTypeRequired();
         $user_id = Request::post('user_id');
         $action = Request::post('action');
         if(isset($user_id) && isset($action)){
@@ -64,6 +67,7 @@ class Admin extends Authentifier
     }
 
     private function usersManagementDeleteConfirmation(AdminModel $user){
+        $this->checkAccountTypeRequired();
         View::renderTemplate('header');
         $this->feedback->render();
 
@@ -76,6 +80,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementDeleteAction(){
+        $this->checkAccountTypeRequired();
         $user_id = Request::post('user_id');
         $confirmed = Request::post('confirmed');
         if(isset($user_id) && isset($confirmed)) {
@@ -95,6 +100,7 @@ class Admin extends Authentifier
     }
 
     private function usersManagementUpdate(AdminModel $user){
+        $this->checkAccountTypeRequired();
         View::renderTemplate('header');
         $this->feedback->render();
 
@@ -106,6 +112,7 @@ class Admin extends Authentifier
     }
 
     private function usersManagementDetails(AdminModel $user){
+        $this->checkAccountTypeRequired();
         View::renderTemplate('header');
         $this->feedback->render();
 

@@ -10,89 +10,222 @@ namespace Modules\Authentifier\Models;
 
 use Core\Model;
 use Helpers\Database;
-use Modules\Authentifier\Helpers\InputValidation;
+use Helpers\Session;
+use Modules\Authentifier\Controllers\User;
 
-class UserModel extends Model
+define('USERS_DB_TABLE','users');
+
+abstract class UserModel extends Model
 {
-    private $user_id;
-    private $user_name;
-    private $session_id;
-    private $user_password_hash;
-    private $user_email;
-    private $user_active;
-    private $user_deleted;
-    private $user_account_type;
-    private $user_has_avatar;
-    private $user_remember_me_token;
-    private $user_creation_timestamp;
-    private $user_suspension_timestamp;
-    private $user_last_login_timestamp;
-    private $user_failed_logins;
-    private $user_last_failed_logins;
-    private $user_activation_hash;
-    private $user_password_reset_hash;
-    private $user_reset_timestamp;
-    private $user_provider_type;
+    protected $user_id;
+    protected $user_name;
+    protected $session_id;
+    protected $user_password_hash;
+    protected $user_email;
+    protected $user_active;
+    protected $user_deleted;
+    protected $user_account_type;
+    protected $user_has_avatar;
+    protected $user_remember_me_token;
+    protected $user_creation_timestamp;
+    protected $user_suspension_timestamp;
+    protected $user_last_login_timestamp;
+    protected $user_failed_logins;
+    protected $user_last_failed_login;
+    protected $user_last_failed_login_ip;
+    protected $user_activation_hash;
+    protected $user_password_reset_hash;
+    protected $user_reset_timestamp;
+    protected $user_provider_type;
 
-    public static function selectAllUsers(){
-        $users = Database::get()->select('SELECT user_name, user_email FROM '.PREFIX.'users',array(),\PDO::FETCH_ASSOC);
-        if(!empty($users))
-            return $users;
-        return false;
+    abstract public function getArray();
+
+    public static function findByUserName($user_name){
+        $user_sql = Database::get()->select('SELECT * FROM '.PREFIX.USERS_DB_TABLE.' WHERE user_name = "'.$user_name.'";',array(),\PDO::FETCH_CLASS, static::class);
+        return (!empty($user_sql) ? $user_sql[0] : null);
     }
 
-    public static function selectAll($user_id){
-        return (Database::get()->select('SELECT * FROM '.PREFIX.'users
-        WHERE user_id = :user_id'
-        ,array(":user_id"=>$user_id),
-            \PDO::FETCH_ASSOC)[0]
-        );
+    public static function findByUserEMail($user_email){
+        $user_sql = Database::get()->select('SELECT * FROM '.PREFIX.'users WHERE user_email ="'.$user_email.'";',array(),\PDO::FETCH_CLASS, static::class);
+        return (!empty($user_sql) ? $user_sql[0] : null);
     }
 
-
-
-    public static function selectID($user_name_or_email){
-        $user_id = (Database::get()->select(
-            'SELECT user_id FROM '.PREFIX.'users
-            WHERE user_name = :user_name_or_email
-            OR user_email = :user_name_or_email'
-            ,array(":user_name_or_email"=>$user_name_or_email),
-            \PDO::FETCH_ASSOC)
-        );
-        if(!empty($user_id))
-            return $user_id[0]['user_id'];
-        return false;
+    public static function findByUserID($user_id){
+        $user_sql = Database::get()->select('SELECT * FROM '.PREFIX.'users WHERE user_id ="'.$user_id.'";',array(),\PDO::FETCH_CLASS, static::class);
+        return (!empty($user_sql) ? $user_sql[0] : null);
     }
 
-    public static function exist($user_name_or_email){
-        return (self::selectID($user_name_or_email))!= false;
-    }
-
-    public static function getUserPasswordHash($user_id){
-        $user_password_hash = (Database::get()->select(
-            'SELECT user_password_hash FROM '.PREFIX.'users
-            WHERE user_id = :user_id'
-            ,array(":user_id"=>$user_id),
-            \PDO::FETCH_ASSOC)
-        );
-        if(!empty($user_password_hash))
-            return $user_password_hash[0]['user_password_hash'];
-        return false;
+    public static function findAll(){
+        $user_sql = Database::get()->select('SELECT * FROM '.PREFIX.'users ;',array(),\PDO::FETCH_CLASS, static::class);
+        return (!empty($user_sql) ? $user_sql : null);
     }
 
 
-
-    public static function selectSession($user_id){
-        return (Database::get()->select('SELECT session_id FROM '.PREFIX.'users
-        WHERE user_id = :user_id'
-            ,array(":user_id"=>$user_id),
-            \PDO::FETCH_ASSOC)[0]
-        );
+    /**
+     * @return mixed
+     */
+    public function getUserSuspensionTimestamp()
+    {
+        return $this->user_suspension_timestamp;
     }
 
-    public static function sessionCheck($user_id, $user_session){
-
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUserName()
+    {
+        return $this->user_name;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function checkSessionId($session_id)
+    {
+        return $this->session_id == $session_id;
+    }
+
+    public function setSessionId($session_id){
+        $this->session_id = $session_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function checkUserPassword($user_password)
+    {
+        return password_verify($user_password, $this->user_password_hash);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserEmail()
+    {
+        return $this->user_email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function checkUserActive()
+    {
+        return $this->user_active != 0 ;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserDeleted()
+    {
+        return $this->user_deleted;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserAccountType()
+    {
+        return $this->user_account_type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserHasAvatar()
+    {
+        return $this->user_has_avatar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserRememberMeToken()
+    {
+        return $this->user_remember_me_token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserCreationTimestamp()
+    {
+        return $this->user_creation_timestamp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserLastLoginTimestamp()
+    {
+        return $this->user_last_login_timestamp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserFailedLogins()
+    {
+        return $this->user_failed_logins;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserLastFailedLogin()
+    {
+        return $this->user_last_failed_login;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserActivationHash()
+    {
+        return $this->user_activation_hash;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function checkUserActivationHash($user_activation_hash)
+    {
+        return $user_activation_hash == $this->user_activation_hash;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function checkUserPasswordResetHash($user_password_reset_hash)
+    {
+        return $this->user_password_reset_hash == $user_password_reset_hash;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserResetTimestamp()
+    {
+        return $this->user_reset_timestamp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserProviderType()
+    {
+        return $this->user_provider_type;
+    }
+
+    public function save(){
+        Database::get()->update('users',$this->getArray(),array('user_id' => $this->user_id));
+    }
 }

@@ -11,6 +11,7 @@
 namespace Controllers;
 
 use Core\View;
+use Helpers\Session;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Models\UserModelTest;
@@ -36,8 +37,7 @@ class Welcome extends Authentifier
     public function index()
     {
         $data['title'] = "Page de test";
-
-        $data['user_status'] = $this->getUserStatus();
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header', $data);
         $this->feedback->render();
         View::render('index', $data);
@@ -46,12 +46,5 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        $data['user_name'] = "Jean";
-        $data['user_email'] = "Jean@hotmail.fr";
-        $data['last_connection'] = "29/02/2016";
-        $data['time_register'] = "12";
-        $data['user_account_type'] = "0";
-        //test administration
-        View::renderModule('/Authentifier/Views/Profile/user_profile', $data);
     }
 }

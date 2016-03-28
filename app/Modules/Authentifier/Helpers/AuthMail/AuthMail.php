@@ -5,7 +5,7 @@ namespace Modules\Authentifier\Helpers\AuthMail;
 use Core\View;
 use Helpers\PhpMailer\Mail;
 use Helpers\Url;
-use Modules\Authentifier\Models\UserModelTest;
+use Modules\Authentifier\Models\UserModel;
 
 /**
  * Created by PhpStorm.
@@ -40,7 +40,7 @@ class AuthMail extends Mail
      * Envoi un mail d'activation de compte pour le nouvel utilisateur
      * @param $user
      */
-    public function sendMailForActivation(UserModelTest $user){
+    public function sendMailForActivation(UserModel $user){
 
         /**
          * Set the subject
@@ -62,7 +62,7 @@ class AuthMail extends Mail
      * Envoi d'un mail pour la validation d'activation de compte
      * @param $user_id
      */
-    public function sendMailForValidation(UserModelTest $user){
+    public function sendMailForValidation(UserModel $user){
         /**
          * Set the subject
          */
@@ -82,7 +82,7 @@ class AuthMail extends Mail
      * Envoi d'un mail pour les mots de passes oubliés
      * @param $user_name
      */
-    public function sendMailForPassword(UserModelTest $user){
+    public function sendMailForPassword(UserModel $user){
 
     }
 
@@ -90,7 +90,7 @@ class AuthMail extends Mail
      * Envoi d'un mail lorsqu'il y a X connexions echouée
      * @param $user_id
      */
-    public function sendMailForLoginFail(UserModelTest $user){
+    public function sendMailForLoginFail(UserModel $user){
         /**
          * Set the subject
          */

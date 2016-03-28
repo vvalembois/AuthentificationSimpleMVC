@@ -2,30 +2,21 @@
 namespace Modules\Authentifier\Controllers;
 
 use Core\Controller;
-use Core\View;
 use Core\Router;
-use Helpers\Request;
+use Core\View;
 use Helpers\Session;
-use Modules\Authentifier\Models\ProfileModel;
-use Modules\Authentifier\Models\UserModelTest;
-use Modules\Feedback\Helpers\Feedback;
+use Helpers\Url;
 use Modules\Authentifier\Models\LoginModel;
-use Modules\Authentifier\Models\UserModel;
-
+use Modules\Feedback\Helpers\Feedback;
 
 
 class Authentifier extends Controller{
 
 	protected $feedback;
-	protected $userData;
+	protected $user;
+    protected $required_user_type;
 
-
-	public function routes(){
-		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
-	}
-
-
-	public function __construct(){
+	public function __construct($required_user_type = 0){
 		parent::__construct();
 		// Initialisation d'une session
 		Session::init();
@@ -41,12 +32,22 @@ class Authentifier extends Controller{
 			// TODO renvoyer vers la route loginWithCookie
 		}
 
-		// Get user session
-		if(Login::userLoggedIn()){
-			$this->userData = ProfileModel::selectProfile(Session::get('user_id'));
-		}
+        // set the required user type
+        $this->required_user_type = $required_user_type;
 
 	}
+
+
+	protected function setUser(){
+        $user = LoginModel::findByLogin();
+        if($user instanceof LoginModel && $user->checkSessionId(Session::id()))
+		    $this->user = $user;
+	}
+	
+	public function routes(){
+		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
+	}
+
 	private static function checkSessionConcurrency(){
 		// TODO tester dans la base de donnée l'id de session de l'utilisateur
 	}
@@ -63,37 +64,37 @@ class Authentifier extends Controller{
         return null;
 	}
 
-	/**
-	 * Donne le Statut de L'utilisateur
-	 * @return	String
-	 */
-	public function getUserStatus()
-	{
-		if(Login::userLoggedIn())
-			return "Logged  ".UserModelTest::findByUserID(Session::get('user_id'))->getUserName();
-		else
-			return "Vous n'êtes pas connecté.";
-	}
 
-	/**
-	 * Retourne les infos de l'utilisateur
-	 * @param mixed $key La clé du champ souhaité
-	 * @return mixed La valeur du champ souhaité ou rien (si inexistant)
-	 */
-	public function getUserInfo(){
-		return $this->userData;
-	}
+    /**
+     * You need to use this function on the begin of your controller method which required a certain account type
+     * You can initialise a default required account type with the constructor parameter $required_user_type or use a new with this method param
+     * @param int|false $required_user_type the required user type for have right to continue
+     * @return bool true if the users have required right, else false
+     */
+    protected function checkAccountTypeRequired($required_user_type = false){
+        if(!$required_user_type)
+            $required_user_type = $this->required_user_type;
+        $this->setUser();
+        if($required_user_type <= 0 || ($this->user instanceof LoginModel && $this->user->getUserAccountType() >= $required_user_type))
+            return true;
+        $this->feedback->add('You can\'t visit this part of the site without the good right level', FEEDBACK_TYPE_FAIL);
+        Url::previous();
+        return false;
+    }
 
-	/**
-	 * Verifie ...
-	 * @param $account_type_required
-	 * @return bool
-	 */
-	public function checkAccountTypeRequired($account_type_required){
-		if((Login::userLoggedIn() && ProfileModel::selectAccountType($this->userData['user_id'])>= $account_type_required)){
-			return true;
-		}
-		return false;
-	}
+    protected function render($path, $data = false, $error = false){
+        $this->checkAccountTypeRequired();
+        View::render($path, $data = false, $error = false);
+    }
+
+    protected function renderModule($path, $data = false, $error = false){
+        $this->checkAccountTypeRequired();
+        View::renderModule($path, $data = false, $error = false);
+    }
+
+    protected function renderTemplate($path, $data = false, $error = false){
+        $this->checkAccountTypeRequired();
+        View::renderTemplate($path, $data = false, $error = false);
+    }
 
 }

@@ -15,8 +15,6 @@ use Helpers\Url;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\LoginModel;
 use Modules\Authentifier\Models\ProfileModel;
-use Modules\Authentifier\Models\UserModel;
-use Modules\Authentifier\Models\UserModelTest;
 
 class Profile extends Authentifier
 {
@@ -29,39 +27,58 @@ class Profile extends Authentifier
     
     public function routes()
     {
+        Router::any('authentifier/userProfile', 'Modules\Authentifier\Controllers\Profile@userProfile');
         Router::any('authentifier/profileUpdateForm', 'Modules\Authentifier\Controllers\Profile@profileUpdateForm');
         Router::any('authentifier/profileUpdateAction', 'Modules\Authentifier\Controllers\Profile@profileUpdateAction');
     }
 
-    /**
-     * Lance la page Pour modifier le profil
-     */
+    public function userProfile(){
+        $user = ProfileModel::findByUserID(Session::get('user_id'));
+        View::renderTemplate('header');
+        $this->feedback->render();
+        if($user instanceof ProfileModel){
+            View::renderModule('/Authentifier/Views/Profile/user_profile', $user->getArray());
+        }
+        View::renderTemplate('footer');
+    }
+    
     public function profileUpdateForm()
     {
+
         $data = [];
-        if($this->userData != null){
-            $data['user'] = ProfileModel::selectProfile(Session::get('user_id'));
+        $user = null;
+        if(Login::userLoggedIn()) {
+            $user = ProfileModel::findByUserID(Session::get('user_id'));
+        }
+        if($user instanceof ProfileModel){
+            $data['user'] = $user->getArray();
         }
         View::renderTemplate('header');
         $this->feedback->render();
         View::renderModule('/Authentifier/Views/Profile/profile_update_form', $data);
         View::renderTemplate('footer');
     }
-
-    /**
-     * Action de Modification
-     */
+    
     public function profileUpdateAction()
     {
         $user_data = [];
 
         if(Login::userLoggedIn()) {
             $user_data['user_id'] = Session::get('user_id');
-            $user_data['user_name'] = Request::post('user_name');
-            $user_data['user_email'] = Request::post('user_mail');
-            $user_data['user_new_password'] = Request::post('user_new_password');
-            $user_data['user_new_password_repeat'] = Request::post('user_new_password_repeat');
-            $user_data['user_password'] = Request::post('user_password');
+
+            if(Request::post('user_name') != null)
+                $user_data['user_name'] = Request::post('user_name');
+
+            if(Request::post('user_mail') != null)
+                $user_data['user_email'] = Request::post('user_mail');
+
+            if(Request::post('user_new_password')!=null)
+                $user_data['user_new_password'] = Request::post('user_new_password');
+            if(Request::post('user_new_password_repeat') != null)
+                $user_data['user_new_password_repeat'] = Request::post('user_new_password_repeat');
+
+            if(Request::post('user_password') != null)
+                $user_data['user_password'] = Request::post('user_password');
 
             $user_data = InputValidation::inputsValidationProfileUpdate($user_data);
 
@@ -70,56 +87,72 @@ class Profile extends Authentifier
                     Url::redirect();
                 }
                 else {
-                    Url::redirect('authentifier/updateForm');
+                    Url::redirect('authentifier/profileUpdateForm');
                 }
         }
     }
 
-    /**
-     *  Enregistrement des modifications dans la base de donnees
-     *  @param $user_data (mixed La valeur du champ souhaité)
-     */
     public function profileUpdateActionDatabase($user_data){
-        // check password
-        if(!$userGoodPassword = UserModelTest::findByUserID($user_data['user_id'], $user_data['user_password'])){
-            $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
-        }
-        else {
-            // check user name available
-            if ($this->userData['user_name'] != $user_data['user_name'] && $user_name_exist = UserModel::exist($user_data['user_name']))
-                $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
+        // find user
+        $user = LoginModel::findByUserID($user_data['user_id']);
 
-            // check user email available
-            if ($this->userData['user_email'] != $user_data['user_email'] && $user_mail_exist = UserModel::exist($user_data['user_email']))
-                $this->feedback->add('Mail adress already exist.', FEEDBACK_TYPE_WARNING);
-        }
-
-        $user_data_update = [];
-        // If all user data are ok
-        if(!$user_name_exist && !$user_mail_exist && $userGoodPassword){
-            if($this->userData['user_name'] != $user_data['user_name'])
-                $user_data_update['user_name'] = $user_data['user_name'];
-            if($this->userData['user_email'] != $user_data['user_email'])
-                $user_data_update['user_email'] = $user_data['user_email'];
-            $newPassword = $user_data['user_new_password'];
-
-            if(!isset($newPassword)){
-                $user_data_update['user_password_hash'] = password_hash($newPassword,PASSWORD_DEFAULT);
-
+        // if user exist
+        if($user instanceof LoginModel) {
+            // check password
+            if(!$userGoodPassword = $user->checkUserPassword($user_data['user_password'])) {
+                $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
             }
-            if(empty($user_data_update)) {
-                $this->feedback->add('No changes to update', FEEDBACK_TYPE_INFO);
-                return false;
+            if($userGoodPassword){
+                $user_data_update = [];
+                // check user name is new
+                if(isset($user_data['user_name']) && $user->getUserName()!=$user_data['user_name']){
+                    // check if this new username isn't already use
+                    if($user_name_already_exist = ProfileModel::findByUserName($user_data['user_name']) != null){
+                        $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
+                    }
+                    else{
+                        $user_data_update['user_name'] = $user_data['user_name'];
+                    }
+                }
+                // check user email is new
+                if(isset($user_data['user_email']) && $user->getUserEmail()!=$user_data['user_email']){
+                    // check if this new username isn't already use
+                    if($user_email_already_exist = ProfileModel::findByUserEMail($user_data['user_email']) != null){
+                        $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
+                    }
+                    else{
+                        $user_data_update['user_email'] = $user_data['user_email'];
+                    }
+                }
+                //check if password is new
+                if(isset($user_data['user_new_password'])){
+                    if(isset($user_data['user_new_password_repeat']) && $user_data['user_new_password']==$user_data['user_new_password_repeat']){
+                        $user_data_update['user_password_hash'] = password_hash($user_data['user_new_password'], PASSWORD_DEFAULT);
+                    }
+                    else{
+                        $user_new_password_not_same = true;
+                    }
+                }
+                if(!$user_new_password_not_same || !$user_name_already_exist || !$user_email_already_exist){
+                    if($nothing_update = empty($user_data_update)){
+                        $this->feedback->add('Nothing to update', FEEDBACK_TYPE_INFO);
+                    }
+                    else{
+                        $user = ProfileModel::findByUserID($user->getUserId());
+                        if($user instanceof ProfileModel){
+                            $user->updateUserProfile($user_data_update);
+                            $this->feedback->add('Update successful',FEEDBACK_TYPE_SUCCESS);
+                            return true;
+                        }
+                    }
+
+                }
             }
-            else{
-                ProfileModel::updateUserProfile($user_data_update, $this->userData);
-                $this->feedback->add('Account update succefull', FEEDBACK_TYPE_SUCCESS);
-                //TODO si la connexion est un succes, il faut connecter l'utilisateur
+            else {
+                $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
             }
 
-            return true;
         }
-
         return false;
     }
 }

@@ -10,8 +10,6 @@ namespace Modules\Authentifier\Controllers;
 
 use Core\Router;
 use Core\View;
-use Helpers\Database;
-use Helpers\Gump;
 use Helpers\RainCaptcha;
 use Helpers\Request;
 use Helpers\Session;
@@ -19,9 +17,8 @@ use Helpers\Url;
 use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Helpers\InputValidation;
+use Modules\Authentifier\Models\ProfileModel;
 use Modules\Authentifier\Models\RegisterModel;
-use Modules\Authentifier\Models\UserModel;
-use Modules\Authentifier\Models\UserModelTest;
 
 class Register extends Authentifier
 {
@@ -81,9 +78,6 @@ class Register extends Authentifier
         Url::redirect('authentifier/registerForm');
     }
 
-    /**
-     * Verifie si le compte est active
-     */
     public function registerActivation(){
         $user_name = Request::get('user');
         $user_activation_hash = Request::get('activation');
@@ -98,7 +92,6 @@ class Register extends Authentifier
         Url::redirect();
     }
 
-
     private function registerFormSession(){
         return array(
             'user_name' => Session::get('post')['user_name'],
@@ -108,7 +101,6 @@ class Register extends Authentifier
             'user_mail_repeat' => Session::get('post')['user_mail_repeat']
         );
     }
-
 
     private function registerFormPost(){
         return array(
@@ -125,11 +117,11 @@ class Register extends Authentifier
 
         if ($input_valids) {
             /* Vérification de l'inexistance du nom d'utilisateur dans la base de données */
-            if ($usernameExist = UserModelTest::findByUserName($input_valids['user_name']) != null)
+            if ($usernameExist = ProfileModel::findByUserName($input_valids['user_name']) != null)
                 $this->feedback->add("Username already exists", FEEDBACK_TYPE_WARNING);
 
             /* Vérification de l'inexistance de l'adresse mail dans la base de données */
-            if ($mailExist = UserModelTest::findByUserEMail($input_valids['user_mail']) != null)
+            if ($mailExist = ProfileModel::findByUserEMail($input_valids['user_mail']) != null)
                 $this->feedback->add("Mail adress already in use", FEEDBACK_TYPE_WARNING);
 
             /* Vérification du captcha */
@@ -152,11 +144,6 @@ class Register extends Authentifier
         return false;
     }
 
-    /**
-     * Essaye d'inserrer dans la table
-     * @param $new_user_data
-     * @return bool
-     */
     private function registerActionInsert($new_user_data){
         /* Tentative d'insertion dans la table */
         try {

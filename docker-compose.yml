@@ -1,18 +1,14 @@
 web:
     image: lamp
-#    image: lamp-iutlens
     ports:
-        - "80:80"
+        - "8080:80"
     volumes:
         # application web en développement
         - ${PWD}/:/app
-        # configuration de php pour le tp
-        #- ${PWD}/php.ini:/etc/php5/apache2/conf.d/30-custom.ini
-        # le stockage des base de données mysql sur l'hote mdp:TdFz0nokQBos
-        - ${PWD}/mysql/:/var/lib/mysql
+        # le stockage des bases de données mysql sur l'hote
+        - ${PWD}/../mysql/:/var/lib/mysql
     environment:
         - ALLOW_OVERRIDE=true
-        - UID=501  
-        # et votre GID (group identifiant)
-        - GID=20
+        - UID=1000
+        - GID=1000
         - MYSQL_PASS=tolkien
