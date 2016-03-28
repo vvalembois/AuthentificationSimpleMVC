@@ -81,6 +81,9 @@ class Register extends Authentifier
         Url::redirect('authentifier/registerForm');
     }
 
+    /**
+     * Verifie si le compte est active
+     */
     public function registerActivation(){
         $user_name = Request::get('user');
         $user_activation_hash = Request::get('activation');
@@ -95,6 +98,7 @@ class Register extends Authentifier
         Url::redirect();
     }
 
+
     private function registerFormSession(){
         return array(
             'user_name' => Session::get('post')['user_name'],
@@ -104,6 +108,7 @@ class Register extends Authentifier
             'user_mail_repeat' => Session::get('post')['user_mail_repeat']
         );
     }
+
 
     private function registerFormPost(){
         return array(
@@ -147,6 +152,11 @@ class Register extends Authentifier
         return false;
     }
 
+    /**
+     * Essaye d'inserrer dans la table
+     * @param $new_user_data
+     * @return bool
+     */
     private function registerActionInsert($new_user_data){
         /* Tentative d'insertion dans la table */
         try {

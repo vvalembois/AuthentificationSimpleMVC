@@ -19,6 +19,12 @@ class Authentifier extends Controller{
 	protected $feedback;
 	protected $userData;
 
+
+	public function routes(){
+		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
+	}
+
+
 	public function __construct(){
 		parent::__construct();
 		// Initialisation d'une session
@@ -41,11 +47,6 @@ class Authentifier extends Controller{
 		}
 
 	}
-	
-	public function routes(){
-		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
-	}
-
 	private static function checkSessionConcurrency(){
 		// TODO tester dans la base de donnée l'id de session de l'utilisateur
 	}
@@ -62,6 +63,10 @@ class Authentifier extends Controller{
         return null;
 	}
 
+	/**
+	 * Donne le Statut de L'utilisateur
+	 * @return	String
+	 */
 	public function getUserStatus()
 	{
 		if(Login::userLoggedIn())
@@ -70,10 +75,20 @@ class Authentifier extends Controller{
 			return "Vous n'êtes pas connecté.";
 	}
 
+	/**
+	 * Retourne les infos de l'utilisateur
+	 * @param mixed $key La clé du champ souhaité
+	 * @return mixed La valeur du champ souhaité ou rien (si inexistant)
+	 */
 	public function getUserInfo(){
 		return $this->userData;
 	}
 
+	/**
+	 * Verifie ...
+	 * @param $account_type_required
+	 * @return bool
+	 */
 	public function checkAccountTypeRequired($account_type_required){
 		if((Login::userLoggedIn() && ProfileModel::selectAccountType($this->userData['user_id'])>= $account_type_required)){
 			return true;

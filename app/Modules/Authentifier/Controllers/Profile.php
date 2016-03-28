@@ -32,7 +32,10 @@ class Profile extends Authentifier
         Router::any('authentifier/profileUpdateForm', 'Modules\Authentifier\Controllers\Profile@profileUpdateForm');
         Router::any('authentifier/profileUpdateAction', 'Modules\Authentifier\Controllers\Profile@profileUpdateAction');
     }
-    
+
+    /**
+     * Lance la page Pour modifier le profil
+     */
     public function profileUpdateForm()
     {
         $data = [];
@@ -44,7 +47,10 @@ class Profile extends Authentifier
         View::renderModule('/Authentifier/Views/Profile/profile_update_form', $data);
         View::renderTemplate('footer');
     }
-    
+
+    /**
+     * Action de Modification
+     */
     public function profileUpdateAction()
     {
         $user_data = [];
@@ -69,6 +75,10 @@ class Profile extends Authentifier
         }
     }
 
+    /**
+     *  Enregistrement des modifications dans la base de donnees
+     *  @param $user_data (mixed La valeur du champ souhaité)
+     */
     public function profileUpdateActionDatabase($user_data){
         // check password
         if(!$userGoodPassword = UserModelTest::findByUserID($user_data['user_id'], $user_data['user_password'])){

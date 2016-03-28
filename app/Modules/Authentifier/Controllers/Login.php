@@ -29,6 +29,9 @@ class Login extends Authentifier
         Router::any('authentifier/logout', 'Modules\Authentifier\Controllers\Login@logout');
     }
 
+    /**
+     * Lance la page Pour le login
+     */
     public function loginForm(){
         $data = [];
         View::renderTemplate('header',$data);
@@ -37,6 +40,9 @@ class Login extends Authentifier
         View::renderTemplate('footer',$data);
     }
 
+    /**
+     * Action de login
+     */
     public function loginAction(){
         // Get user inputs
         $user_data['user_name'] = Request::post('user_name');
@@ -52,6 +58,10 @@ class Login extends Authentifier
             Url::redirect('authentifier/loginForm');
     }
 
+    /**
+     * Verif des donnees lors du login
+     *  @param $user_name, $user_password
+     */
     public function loginActionDatabase($user_name, $user_password)
     {
         $user = null;
@@ -88,6 +98,9 @@ class Login extends Authentifier
         Url::redirect('authentifier/loginForm');
     }
 
+    /**
+     * Deconnection de l'utilisateur et redirection sur la page d'accueil
+     */
     public function logout(){
         if($this->userLoggedIn()) {
             Session::destroy('user_id');
@@ -97,13 +110,23 @@ class Login extends Authentifier
         Url::redirect();
     }
 
+    /**
+     * Retourne un booleen qui verifie si un utilisateur est connecte
+     * @return booleen
+     */
     static public function userLoggedIn(){
         return LoginModel::checkLoginSession(Session::get('user_id'),Session::id());
     }
 
+    /**
+     * Retourne toutes les informations de l'utilisateur
+     * @param le nom de l'utilisateur
+     * @return tableau d'information
+     */
     public function userAllInfo($user_name){
         return UserModel::selectAll($user_name);
     }
+
 
     private function userProfileSetSession($user_id){
         Session::set('user_id',$user_id);
