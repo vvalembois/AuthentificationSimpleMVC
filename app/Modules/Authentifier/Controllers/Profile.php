@@ -85,6 +85,8 @@ class Profile extends Authentifier
 
             if ($user_data)
                 if($this->profileUpdateActionDatabase($user_data)) {
+                    if(isset($user_data['user_password']))
+                        $user_data['user_password'] = $user_data['user_new_password'];
                     (new Login())->loginActionDatabase($user_data['user_name'], $user_data['user_password']);
                     Url::redirect();
                 }

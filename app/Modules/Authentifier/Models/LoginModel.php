@@ -78,6 +78,9 @@ class LoginModel extends UserModel
         return false;
     }
 
+    /**
+     * @param bool|false $remember_cookie Set true if the user want us to remember him and accept cookies
+     */
     public function connection($remember_cookie = false){
         // Session
         Session::regenerate();
@@ -102,6 +105,10 @@ class LoginModel extends UserModel
         Database::get()->update('users', $update_data, array('user_id' => $this->user_id));
     }
 
+    /**
+     * This method permit to logout and clear the session and cookies
+     * @param bool|true $remember_cookie Set this param false if you want to not destroy the cookie (for specific uses like multi device login currently not available)
+     */
     public function logout($remember_cookie = true)
     {
         // Session
