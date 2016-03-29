@@ -47,7 +47,7 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        setcookie("oui","2kok",time() + 100,null,null,null,true);
+        echo "cookies : ";
         var_dump($_COOKIE);
     }
 }

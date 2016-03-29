@@ -153,6 +153,10 @@ abstract class UserModel extends Model
         return $this->user_remember_me_token;
     }
 
+    public function checkUserRememberMeToken($remember_me_token){
+        return $this->user_remember_me_token == $remember_me_token;
+    }
+
     /**
      * @return mixed
      */

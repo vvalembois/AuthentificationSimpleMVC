@@ -38,18 +38,19 @@ class Login extends Authentifier
         // Get user inputs
         $user_data['user_name'] = Request::post('user_name');
         $user_data['user_password'] =Request::post('user_password');
+        $user_data['remember_me'] = Request::post('remember_me');
 
         // Check and filter user inputs
         $user_data = InputValidation::inputsValidationLogin($user_data);
 
         // If user inputs validated
         if($user_data)
-            $this->loginActionDatabase($user_data['user_name'], $user_data['user_password']);
+            $this->loginActionDatabase($user_data['user_name'], $user_data['user_password'], $user_data['remember_me']);
         else
             Url::redirect('authentifier/loginForm');
     }
 
-    public function loginActionDatabase($user_name, $user_password)
+    public function loginActionDatabase($user_name, $user_password, $remember_cookie = false)
     {
         $user = null;
         if (isset($user_name) && isset($user_password)) {
@@ -60,9 +61,7 @@ class Login extends Authentifier
                     $this->feedback->add('You had too many failed login, wait ' . (30 - (time() - $user->getUserLastFailedLogin())) . ' seconds.', FEEDBACK_TYPE_FAIL);
                 } else if ($user->checkUserPassword($user_password)) {
                     if ($user->checkUserActive()) {
-                        $user->connection();
-                        Session::set('user_id', $user->getUserId());
-                        Session::set('user_name', $user->getUserName());
+                        $user->connection($remember_cookie);
                         $this->feedback->add('You are now logged as '.$user->getUserName().'.', FEEDBACK_TYPE_SUCCESS);
                         Url::redirect();
                     } else {
@@ -87,17 +86,16 @@ class Login extends Authentifier
     }
 
     public function logout(){
-        if($this->userLoggedIn()) {
-            Session::destroy('user_id');
-            Session::destroy('user_name');
-            Session::regenerate();
-            $this->feedback->add("You're now logout.");
-        }
+            $user = LoginModel::findBySession();
+            if($user instanceof LoginModel) {
+                $user->logout();
+                $this->feedback->add("You're now logout.");
+            }
         Url::redirect();
     }
 
     static public function userLoggedIn(){
-        return LoginModel::checkLoginSession(Session::get('user_id'),Session::id());
+        return LoginModel::userIsLoggedIn();
     }
 
     private function userProfileSetSession($user_id){

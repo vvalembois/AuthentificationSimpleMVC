@@ -21,7 +21,7 @@ class Authentifier extends Controller{
 		Session::init();
 
 		// Tester si une session 'concurrente' existe, auquel cas on deconnecte l'utilisateur
-		Authentifier::checkSessionConcurrency();
+		LoginModel::userIsLoggedIn();
 
 		if(!isset($this->feedback))
 			$this->feedback = new Feedback();
@@ -38,17 +38,13 @@ class Authentifier extends Controller{
 
 
 	protected function setUser(){
-        $user = LoginModel::findByLogin();
+        $user = LoginModel::findBySession();
         if($user instanceof LoginModel && $user->checkSessionId(Session::id()))
 		    $this->user = $user;
 	}
 	
 	public function routes(){
 		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
-	}
-
-	private static function checkSessionConcurrency(){
-		// TODO tester dans la base de donnée l'id de session de l'utilisateur
 	}
 
 	/**
