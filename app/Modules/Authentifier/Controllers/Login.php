@@ -27,7 +27,7 @@ class Login extends Authentifier
     }
 
     public function loginForm(){
-        $data = [];
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header',$data);
         $this->feedback->render();
         View::renderModule('/Authentifier/Views/Login/login_form', $data);

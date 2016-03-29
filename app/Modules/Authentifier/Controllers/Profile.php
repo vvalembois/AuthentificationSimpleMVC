@@ -35,16 +35,19 @@ class Profile extends Authentifier
     public function userProfile(){
         $this->checkAccountTypeRequired();
         $user = ProfileModel::findByUserID(Session::get('user_id'));
-        View::renderTemplate('header');
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
+        View::renderTemplate('header',$data);
         $this->feedback->render();
         if($user instanceof ProfileModel){
-            View::renderModule('/Authentifier/Views/Profile/user_profile', $user->getArray());
+
+            View::renderModule('/Authentifier/Views/Profile/user_profile', array_merge($user->getArray(), $user->getUserLastLoginTimestampArray()));
         }
         View::renderTemplate('footer');
     }
     
     public function profileUpdateForm()
     {
+
         $this->checkAccountTypeRequired();
         $data = [];
         $user = null;
@@ -54,7 +57,8 @@ class Profile extends Authentifier
         if($user instanceof ProfileModel){
             $data['user'] = $user->getArray();
         }
-        View::renderTemplate('header');
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
+        View::renderTemplate('header',$data);
         $this->feedback->render();
         View::renderModule('/Authentifier/Views/Profile/profile_update_form', $data);
         View::renderTemplate('footer');
@@ -94,6 +98,10 @@ class Profile extends Authentifier
         }
     }
 
+    /**
+     * @param $user_data
+     * @return bool
+     */
     public function profileUpdateActionDatabase($user_data){
         // find user
         $user = LoginModel::findByUserID($user_data['user_id']);

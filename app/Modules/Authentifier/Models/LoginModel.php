@@ -40,10 +40,12 @@ class LoginModel extends UserModel
         if($user instanceof LoginModel) {
             if ($user->checkSessionId(Session::id())) {
                 return $user;
+
             }
-            else
-                $user->logout(false);
+            $user->logout(false);
         }
+        // We need to clean the login session because of an exception when an administrator delete a logged user
+        self::loginSessionDestroy();
         return null;
     }
 
@@ -63,6 +65,11 @@ class LoginModel extends UserModel
         return null;
     }
 
+
+    /**
+     * Check if the visitor is logged in, else if he can login with a cookie
+     * @return bool return true if the visitor is logged in
+     */
     public static function userIsLoggedIn()
     {
         if(LoginModel::findBySession() instanceof LoginModel) {
@@ -112,16 +119,30 @@ class LoginModel extends UserModel
     public function logout($remember_cookie = true)
     {
         // Session
-        Session::destroy('user_id');
-        Session::destroy('user_name');
-        Session::regenerate();
+        self::loginSessionDestroy();
 
         // Cookie
         if ($remember_cookie){
-            Cookies::destroy('user_id');
-            Cookies::destroy('user_name');
-            Cookies::destroy('user_token');
+            $this->loginCookiesDestroy();
         }
+    }
+
+    /**
+     * Clean the login session
+     */
+    public static function loginSessionDestroy(){
+        Session::destroy('user_id');
+        Session::destroy('user_name');
+        Session::regenerate();
+    }
+
+    /**
+     * Clean the login cookies
+     */
+    public static function loginCookiesDestroy(){
+        Cookies::destroy('user_id');
+        Cookies::destroy('user_name');
+        Cookies::destroy('user_token');
     }
 
     public function loginFailed(){

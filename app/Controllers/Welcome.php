@@ -47,7 +47,5 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        echo "cookies : ";
-        var_dump($_COOKIE);
     }
 }

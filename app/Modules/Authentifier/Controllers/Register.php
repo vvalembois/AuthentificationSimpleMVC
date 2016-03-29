@@ -45,7 +45,8 @@ class Register extends Authentifier
         $this->captcha = new RainCaptcha();
         $data['captcha_url'] = $this->captcha->getImage();
         $data = array_merge($data, $this->registerFormSession());
-        View::renderTemplate('header');
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
+        View::renderTemplate('header',$data);
         $this->feedback->render();
         View::renderModule('/Authentifier/Views/Register/register_form', $data);
         View::renderTemplate('footer');

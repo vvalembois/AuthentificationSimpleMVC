@@ -20,7 +20,7 @@ class Authentifier extends Controller{
 		// Initialisation d'une session
 		Session::init();
 
-		// Tester si une session 'concurrente' existe, auquel cas on deconnecte l'utilisateur
+		// Tester si une session existe, la garder si elle est bonne, la detruire si elle est mauvaise
 		LoginModel::userIsLoggedIn();
 
 		if(!isset($this->feedback))

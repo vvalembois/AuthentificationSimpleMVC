@@ -39,13 +39,26 @@ class ProfileModel extends UserModel
     }
 
     public function getArray(){
+
         return array(
             'user_name' => $this->user_name,
             'user_email' => $this->user_email,
             'user_account_type' => $this->user_account_type,
             'user_has_avatar' => $this->user_has_avatar, //TODO
-            'user_last_login_timestamp' => (int)((time() - $this->user_last_login_timestamp) / 60), // en minutes
+            'user_last_login_timestamp' => $this->user_last_login_timestamp,
             'user_creation_timestamp' => $this->user_creation_timestamp
         );
+    }
+
+    public function getUserLastLoginTimestampArray(){
+        $last_login = array();
+        $last_login['user_last_login'] = time() - $this->getUserLastLoginTimestamp();
+        $last_login['user_last_login_minutes'] = $last_login['user_last_login'] / 60;
+        $last_login['user_last_login_hours'] = $last_login['user_last_login_minutes'] / 60;
+        $last_login['user_last_login_days'] = $last_login['user_last_login_hours'] / 24;
+        $last_login['user_last_login_minutes'] = $last_login['user_last_login_minutes']%60;
+        $last_login['user_last_login_hours'] = $last_login['user_last_login_hours']%24;
+        $last_login['user_last_login_days'] = (int)$last_login['user_last_login_days'];
+        return $last_login;
     }
 }

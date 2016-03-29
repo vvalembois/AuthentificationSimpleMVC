@@ -12,18 +12,6 @@ use Helpers\Database;
 
 class AdminModel extends UserModel
 {
-
-
-
-    public static function listUsers(){
-        $users = array();
-        foreach(static::findAll() as $user){
-            $users[] = array('user_id'=>$user->user_id, 'user_name'=>$user->user_name, 'user_email'=>$user->user_email);
-        }
-        if(!empty($users))
-            return $users;
-        return null;
-    }
     
     public function delete(){
         return Database::get()->delete(USERS_DB_TABLE,array('user_id'=>$this->user_id));
@@ -36,6 +24,7 @@ class AdminModel extends UserModel
 
     public function getArray(){
         return array(
+            'user_id' => $this->user_id,
             'user_name' => $this->user_name,
             'session_id' => $this->session_id,
             'user_email' => $this->user_email,
