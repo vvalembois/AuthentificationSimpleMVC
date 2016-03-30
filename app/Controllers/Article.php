@@ -91,15 +91,15 @@ class Article extends Authentifier
         $this->checkRequiredUserType(2);
 
         if($user instanceof LoginModel) {
-            if (Request::post('art_titre')!= null && Request::post('art_content')!= null) {
+            if (Request::post('art_title')!= null && Request::post('art_content')!= null) {
                 $new_article = new ArticleModel();
-                $new_article->setArtTitle(Request::post('art_titre'));
+                $new_article->setArtTitle(Request::post('art_title'));
                 $new_article->setArtAuthor($user->getUserId());
                 $new_article->setArtContent(Request::post('art_content'));
                 $new_article->save();
             }
         }
-        Url::redirect();
+        Url::redirect("articles_list");
     }
 
     /**Update Article*/

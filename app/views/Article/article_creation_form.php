@@ -1,5 +1,5 @@
 <div class="row">
-    <form class="col-xs-8 col-xs-offset-2 form-group-sm" action="Article/article_creation_action" method="post">
+    <form class="col-xs-8 col-xs-offset-2 form-group-sm" action="article_creation_action" method="post">
         <label for="art_title">Title :</label>
         <input class="form-control" type="text" id="art_title" name="art_title" value='<?= $data['art_title']?>' autocomplete="off" placeholder="Type your title..." required/>
 
