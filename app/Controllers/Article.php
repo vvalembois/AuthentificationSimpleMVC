@@ -25,15 +25,6 @@ use Modules\Authentifier\Models\UserModelTest;
  */
 class Article extends Authentifier
 {
-    /*
-     * methode :
-     *  affichage d'un article  + view ,
-     *  affichage d'une liste d'article
-     *  creation d'un article + view
-     *  update d'un article plus vue
-     *  delete d'un article plus vue
-     */
-
     public function __construct()
     {
         parent::__construct();
@@ -56,11 +47,13 @@ class Article extends Authentifier
     /**Article List*/
     public function articleListElement($article){
         $user = LoginModel::findBySession();
-        if ($article instanceof ArticleModel){
-            if($user instanceof LoginModel && $user->getUserAccountType() > 5)
-                View::render('Article/articles_list_element_admin', $article->getArray()); //avec les boutons
-            else
-                View::render('Article/articles_list_element', $article->getArray()); //sans les boutons
+        if(!empty($article)){
+            if ($article instanceof ArticleModel){
+                if($user instanceof LoginModel && $user->getUserAccountType() > 5)
+                    View::render('Article/articles_list_element_admin', $article->getArray());
+                else
+                    View::render('Article/articles_list_element', $article->getArray());
+            }
         }
     }
 

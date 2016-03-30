@@ -45,11 +45,11 @@ $hooks->run('afterBody');
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li><a href="<?= DIR ?>">Home</a></li>
+				<li><a href="<?= DIR."articles_list"?>">Articles List</a></li>
+				<li><a href="<?= DIR."article_creation_form"?>">Create Article</a></li>
+				<li><a href="<?= DIR."article_update_form"?>">Update Article</a></li>
 				<li><a href="<?= DIR."authentifier/registerForm" ?>">Sign up</a></li>
 				<li><a href="<?= DIR."authentifier/loginForm" ?>">Login</a></li>
-				<li><a href="<?= DIR."authentifier/admin/users_management_panel" ?>">Administration panel</a></li>
-				<li><a href="<?= DIR."authentifier/userProfile" ?>">Profile</a></li>
-				<li><a href="<?= DIR."authentifier/profileUpdateForm" ?>">Update your profile</a></li>
 				<li><a href="<?= DIR."authentifier/logout" ?>">Logout</a></li>
 				<li><a>
 					<?= $data['user_status'] ?>
@@ -60,9 +60,9 @@ $hooks->run('afterBody');
 						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Articles
 							<span class="caret"></span></button>
 						<ul class="dropdown-menu">
-							<li><a href="<?= DIR."articles_list"?>">Articles List</a></li>
-							<li><a href="<?= DIR."article_creation_form"?>">Create Article</a></li>
-							<li><a href="<?= DIR."article_update_form"?>">Update Article</a></li>
+							<li><a href="<?= DIR."authentifier/admin/users_management_panel" ?>">Administration panel</a></li>
+							<li><a href="<?= DIR."authentifier/userProfile" ?>">Profile</a></li>
+							<li><a href="<?= DIR."authentifier/profileUpdateForm" ?>">Update your profile</a></li>
 						</ul>
 					</div>
 				</li>
