@@ -63,6 +63,10 @@ class ArticleModel extends Model
         return Database::get()->update('article', $this->getArray(),array('art_id' => $this->art_id));
     }
 
+    public function delete(){
+        return Database::get()->delete('article',array('art_id'=>$this->art_id));
+    }
+
     public function save(){
         if($this->art_id != null){
             $this->update();

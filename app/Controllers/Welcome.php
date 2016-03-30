@@ -52,8 +52,8 @@ class Welcome extends Authentifier
         $article = ArticleModel::findById(4);
         var_dump($article);
         echo "<br>";
-        $article->setArtTitle("gros beatard");
-        $article->save();
+        $article->delete();
+
         var_dump($article);
     }
 }
