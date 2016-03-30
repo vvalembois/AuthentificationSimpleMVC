@@ -22,46 +22,23 @@ class ArticleModel extends Model
     private $art_image;
     private $art_reader_counter;
 
-    /**
-     * ArticleModel constructor.
-     * @param $art_title
-     * @param $art_author
-     * @param $art_creation_date
-     * @param $art_update_date
-     * @param $art_content
-     * @param $art_image
-     * @param $art_reader_counter
-     * @param $art_id
-     */
-    public function __construct($art_title, $art_author, $art_creation_date, $art_update_date, $art_content, $art_image, $art_reader_counter)
-    {
-        $this->art_title = $art_title;
-        $this->art_author = $art_author;
-        $this->art_creation_date = $art_creation_date;
-        $this->art_update_date = $art_update_date;
-        $this->art_content = $art_content;
-        $this->art_image = $art_image;
-        $this->art_reader_counter = $art_reader_counter;
-    }
-
-
     public static function findById($id){
-        $article_sql = Database::get()->select('SELECT * FROM article WHERE art_id = "'.$id.'";',array(),\PDO::FETCH_CLASS, static::class);
+        $article_sql = Database::get()->select('SELECT * FROM article WHERE art_id = "'.$id.'";',array(),\PDO::FETCH_CLASS, self::class);
         return (!empty($article_sql) ? $article_sql[0] : null);
     }
 
     public static function findByTitle($title){
-        $article_sql = Database::get()->select('SELECT * FROM article WHERE art_title = "'.$title.'";',array(),\PDO::FETCH_CLASS, static::class);
+        $article_sql = Database::get()->select('SELECT * FROM article WHERE art_title = "'.$title.'";',array(),\PDO::FETCH_CLASS, self::class);
         return (!empty($article_sql) ? $article_sql[0] : null);
     }
 
     public static function findByAuthor($author_id){
-        $article_sql = Database::get()->select('SELECT * FROM article WHERE art_author = "'.$author_id.'";',array(),\PDO::FETCH_CLASS, static::class);
+        $article_sql = Database::get()->select('SELECT * FROM article WHERE art_author = "'.$author_id.'";',array(),\PDO::FETCH_CLASS, self::class);
         return (!empty($article_sql) ? $article_sql[0] : null);
     }
 
     public static function findAll(){
-        $article_sql = Database::get()->select('SELECT * FROM article',array(),\PDO::FETCH_CLASS, static::class);
+        $article_sql = Database::get()->select('SELECT * FROM article',array(),\PDO::FETCH_CLASS, self::class);
         return (!empty($article_sql) ? $article_sql : null);
     }
 
@@ -77,8 +54,8 @@ class ArticleModel extends Model
         );
     }
 
-    public function insertArticle($article){
-        Database::get()->insert('article', $article->getArray());
+    public function insertArticle(){
+        Database::get()->insert('article', $this->getArray());
         return ArticleModel::findById(Database::get()->lastInsertId('art_id'));
     }
 
@@ -146,5 +123,59 @@ class ArticleModel extends Model
         return $this->art_reader_counter;
     }
 
+    /**
+     * @param mixed $art_title
+     */
+    public function setArtTitle($art_title)
+    {
+        $this->art_title = $art_title;
+    }
 
+    /**
+     * @param mixed $art_creation_date
+     */
+    public function setArtCreationDate($art_creation_date)
+    {
+        $this->art_creation_date = $art_creation_date;
+    }
+
+    /**
+     * @param mixed $art_update_date
+     */
+    public function setArtUpdateDate($art_update_date)
+    {
+        $this->art_update_date = $art_update_date;
+    }
+
+    /**
+     * @param mixed $art_content
+     */
+    public function setArtContent($art_content)
+    {
+        $this->art_content = $art_content;
+    }
+
+    /**
+     * @param mixed $art_image
+     */
+    public function setArtImage($art_image)
+    {
+        $this->art_image = $art_image;
+    }
+
+    /**
+     * @param mixed $art_reader_counter
+     */
+    public function addArtReaderCounter()
+    {
+        $this->art_reader_counter++;
+    }
+
+    /**
+     * @param mixed $art_author
+     */
+    public function setArtAuthor($art_author)
+    {
+        $this->art_author = $art_author;
+    }
 }

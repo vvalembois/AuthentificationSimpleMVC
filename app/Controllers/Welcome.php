@@ -49,6 +49,11 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        var_dump(ArticleModel::findAll());
+        $article = new ArticleModel();
+        $article->setArtTitle("Test");
+        $article->setArtAuthor(1);
+        $article->setArtContent("blblblb");
+        $article->insertArticle();
+        var_dump($article);
     }
 }
