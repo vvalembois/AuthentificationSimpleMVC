@@ -15,8 +15,10 @@ use Core\Model;
 use Helpers\Session;
 use Models\ArticleModel;
 use Modules\Authentifier\Controllers\Authentifier;
+use Modules\Authentifier\Controllers\User;
 use Modules\Authentifier\Helpers\AuthMail\AuthMail;
-use Modules\Authentifier\Models\UserModelTest;
+use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\UserModel;
 
 /**
  * Sample controller showing a construct and 2 methods and their typical usage.
@@ -49,5 +51,10 @@ class Welcome extends Authentifier
     }
 
     public function test(){
+        $user = LoginModel::findByUserName('okokok');
+        if($user instanceof LoginModel) {
+            $user->setUserEmail('aaaa@eaaa.aa');
+            $user->save();
+        }
     }
 }

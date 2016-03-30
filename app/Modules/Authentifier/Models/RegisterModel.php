@@ -29,20 +29,4 @@ class RegisterModel extends UserModel
         }
         return false;
     }
-
-    public function getArray(){
-        return array(
-            'user_name' => $this->user_name,
-            'session_id' => $this->session_id,
-            'user_email' => $this->user_email,
-            'user_password_hash' => $this->user_password_hash,
-            'user_active' => $this->user_active,
-            'user_deleted' => $this->user_deleted,
-            'user_account_type' => $this->user_account_type,
-            'user_has_avatar' => $this->user_has_avatar,
-            'user_remember_me_token' => $this->user_remember_me_token,
-            'user_activation_hash' => $this->user_activation_hash,
-            'user_last_failed_login_ip' => $this->user_last_failed_login_ip
-        );
-    }
 }

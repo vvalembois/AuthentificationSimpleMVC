@@ -89,7 +89,7 @@ class Profile extends Authentifier
 
             if ($user_data)
                 if($this->profileUpdateActionDatabase($user_data)) {
-                    if(isset($user_data['user_password']))
+                    if(isset($user_data['user_new_password']))
                         $user_data['user_password'] = $user_data['user_new_password'];
                     (new Login())->loginActionDatabase($user_data['user_name'], $user_data['user_password']);
                     Url::redirect();
@@ -106,6 +106,8 @@ class Profile extends Authentifier
         // find user
         $user = LoginModel::findByUserID($user_data['user_id']);
 
+        $update = false;
+
         // if user exist
         if($user instanceof LoginModel) {
             // check password
@@ -113,7 +115,7 @@ class Profile extends Authentifier
                 $this->feedback->add('Wrong password',FEEDBACK_TYPE_FAIL);
             }
             if($userGoodPassword){
-                $user_data_update = [];
+
                 // check user name is new
                 if(isset($user_data['user_name']) && $user->getUserName()!=$user_data['user_name']){
                     // check if this new username isn't already use
@@ -121,7 +123,8 @@ class Profile extends Authentifier
                         $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
                     }
                     else{
-                        $user_data_update['user_name'] = $user_data['user_name'];
+                        $user->setUserName($user_data['user_name']);
+                        $update = true;
                     }
                 }
                 // check user email is new
@@ -131,31 +134,28 @@ class Profile extends Authentifier
                         $this->feedback->add('Username already exist.', FEEDBACK_TYPE_WARNING);
                     }
                     else{
-                        $user_data_update['user_email'] = $user_data['user_email'];
+                       $user->setUserEmail($user_data['user_email']);
+                        $update = true;
                     }
                 }
                 //check if password is new
                 if(isset($user_data['user_new_password'])){
                     if(isset($user_data['user_new_password_repeat']) && $user_data['user_new_password']==$user_data['user_new_password_repeat']){
-                        $user_data_update['user_password_hash'] = password_hash($user_data['user_new_password'], PASSWORD_DEFAULT);
+                        $user->setUserPasswordHash(password_hash($user_data['user_new_password'], PASSWORD_DEFAULT));
+                        $update = true;
                     }
-                    else{
+                else{
                         $user_new_password_not_same = true;
                     }
                 }
-                if(!$user_new_password_not_same || !$user_name_already_exist || !$user_email_already_exist){
-                    if($nothing_update = empty($user_data_update)){
+                if(!$user_new_password_not_same || !$user_name_already_exist || !$user_email_already_exist) {
+                    if (!$update) {
                         $this->feedback->add('Nothing to update', FEEDBACK_TYPE_INFO);
+                    } else {
+                        $user->save();
+                        $this->feedback->add('Update successful', FEEDBACK_TYPE_SUCCESS);
+                        return true;
                     }
-                    else{
-                        $user = ProfileModel::findByUserID($user->getUserId());
-                        if($user instanceof ProfileModel){
-                            $user->updateUserProfile($user_data_update);
-                            $this->feedback->add('Update successful',FEEDBACK_TYPE_SUCCESS);
-                            return true;
-                        }
-                    }
-
                 }
             }
             else {

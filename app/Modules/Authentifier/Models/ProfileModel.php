@@ -25,8 +25,8 @@ class ProfileModel extends UserModel
         return false;
     }
 
-    public function updateUserProfile(array $user_data_update){
-        return Database::get()->update('users', $user_data_update,array('user_id' => $this->user_id));
+    public function updateUserProfile(){
+        return $this->save();
     }
 
     public static function selectProfile($user_id){
@@ -35,18 +35,6 @@ class ProfileModel extends UserModel
             WHERE user_id = :user_id'
             ,array(":user_id"=>$user_id),
             \PDO::FETCH_ASSOC)[0]
-        );
-    }
-
-    public function getArray(){
-
-        return array(
-            'user_name' => $this->user_name,
-            'user_email' => $this->user_email,
-            'user_account_type' => $this->user_account_type,
-            'user_has_avatar' => $this->user_has_avatar, //TODO
-            'user_last_login_timestamp' => $this->user_last_login_timestamp,
-            'user_creation_timestamp' => $this->user_creation_timestamp
         );
     }
 
