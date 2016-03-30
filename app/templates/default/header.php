@@ -55,6 +55,17 @@ $hooks->run('afterBody');
 					<?= $data['user_status'] ?>
 					</a>
 				</li>
+				<li>
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Articles
+							<span class="caret"></span></button>
+						<ul class="dropdown-menu">
+							<li><a href="<?= DIR."articles_list"?>">Articles List</a></li>
+							<li><a href="<?= DIR."article_creation_form"?>">Create Article</a></li>
+							<li><a href="<?= DIR."article_update_form"?>">Update Article</a></li>
+						</ul>
+					</div>
+				</li>
 			</ul>
 		</div>
 	</nav>
