@@ -47,11 +47,12 @@ class Article extends Authentifier
     /**Article List*/
     public function articleListElement($article){
         $user = LoginModel::findBySession();
+        $data = array_merge($article->getArray(), array('art_id' => $article->getArtId()));
         if ($article instanceof ArticleModel){
             if($user instanceof LoginModel && $user->getUserAccountType() > 5)
-                View::render('Article/articles_list_element_admin', array_merge($article->getArray(), array('art_id' => $article->getArtId())));
+                View::render('Article/articles_list_element_admin', $data);
             else
-                View::render('Article/articles_list_element', $article->getArray());
+                View::render('Article/articles_list_element', $data);
         }
     }
 
