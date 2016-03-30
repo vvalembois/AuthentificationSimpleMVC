@@ -132,7 +132,7 @@ class Article extends Authentifier
                 }
             }
 
-            if(Request::post('art_content') != null){
+            if(Request::post('art_content') != null ){
                 if(Request::post("art_content") != null && Request::post('art_content') != ($article->getArtContent())){
                     $article->setArtContent(Request::post('art_content'));
                     $modif=true;
