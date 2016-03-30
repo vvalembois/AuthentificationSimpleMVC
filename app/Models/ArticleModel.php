@@ -54,9 +54,22 @@ class ArticleModel extends Model
         );
     }
 
-    public function insertArticle(){
+    private function insert(){
         Database::get()->insert('article', $this->getArray());
         return ArticleModel::findById(Database::get()->lastInsertId('art_id'));
+    }
+
+    private function update(){
+        return Database::get()->update('article', $this->getArray(),array('art_id' => $this->art_id));
+    }
+
+    public function save(){
+        if($this->art_id != null){
+            $this->update();
+        }
+        else{
+            $this->insert();
+        }
     }
 
     /**

@@ -49,11 +49,11 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        $article = new ArticleModel();
-        $article->setArtTitle("Test");
-        $article->setArtAuthor(1);
-        $article->setArtContent("blblblb");
-        $article->insertArticle();
+        $article = ArticleModel::findById(4);
+        var_dump($article);
+        echo "<br>";
+        $article->setArtTitle("gros beatard");
+        $article->save();
         var_dump($article);
     }
 }
