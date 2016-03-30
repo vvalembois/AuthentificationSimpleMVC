@@ -15,6 +15,26 @@ use Helpers\Hooks;
 Router::any('', 'Controllers\Welcome@index');
 Router::any('test', 'Controllers\Welcome@test');
 
+/** Route pour Afficher liste*/
+Router::any('articles', 'Controllers\Article@articles');
+
+/** Route pour un article*/
+Router::any('article', 'Controllers\Article@article');
+
+/** Route pour creation*/
+Router::any('creation', 'Controllers\Article@creationForm');
+Router::any('creationAction', 'Controllers\Article@creationAction');
+
+
+/** Route pour modif*/
+Router::any('update', 'Controllers\Article@updateForm');
+Router::any('updateAction', 'Controllers\Article@updateAction');
+
+/** Route pour delete*/
+Router::any('update', 'Controllers\Article@delete');
+
+
+
 /** Module routes. */
 $hooks = Hooks::get();
 $hooks->run('routes');
