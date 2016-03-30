@@ -64,7 +64,7 @@ class Article extends Authentifier
 /**Article List*/
     public function articleList($article){
         if ($article instanceof ArticleModel){
-            View::render('Article/articleslist', $article->getArray());
+            View::render('Article/article_list', $article->getArray());
         }
     }
 
@@ -81,7 +81,7 @@ class Article extends Authentifier
     public function articleDetails(){
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/articlesdetail', ArticleModel::findById(Request::get('art_id')));
+        View::render('Article/article_detail', ArticleModel::findById(Request::get('art_id')));
         View::renderTemplate('header', $data);
     }
 
@@ -90,7 +90,7 @@ class Article extends Authentifier
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/creation', $data);
+        View::render('Article/article_creation', $data);
         View::renderTemplate('footer', $data);
     }
 
@@ -116,7 +116,7 @@ class Article extends Authentifier
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/update', ArticleModel::findById(Request::get('art_id')));
+        View::render('Article/article_update', ArticleModel::findById(Request::get('art_id')));
         View::renderTemplate('footer', $data);
     }
 
