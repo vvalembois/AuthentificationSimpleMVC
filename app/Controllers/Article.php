@@ -73,7 +73,7 @@ class Article extends Authentifier
     public function articleDetails(){
         $data['art_id'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/article_details', ArticleModel::findById(Request::get('art_id')));
+        View::render('Article/article_details', ArticleModel::findById(Request::post('art_id')));
         View::renderTemplate('footer', $data);
     }
 
@@ -107,7 +107,7 @@ class Article extends Authentifier
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/article_update_form', ArticleModel::findById(Request::get('art_id')));
+        View::render('Article/article_update_form', ArticleModel::findById(Request::post('art_id')));
         View::renderTemplate('footer', $data);
     }
 
