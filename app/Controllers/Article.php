@@ -49,7 +49,7 @@ class Article extends Authentifier
         $user = LoginModel::findBySession();
         if ($article instanceof ArticleModel){
             if($user instanceof LoginModel && $user->getUserAccountType() > 5)
-                View::render('Article/articles_list_element_admin', $article->getArray());
+                View::render('Article/articles_list_element_admin', array_merge($article->getArray(), array('art_id' => $article->getArtId())));
             else
                 View::render('Article/articles_list_element', $article->getArray());
         }
