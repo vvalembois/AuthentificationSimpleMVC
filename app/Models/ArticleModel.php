@@ -55,13 +55,13 @@ class ArticleModel extends Model
     }
 
     private function insert(){
-        $this->setArtCreationDate(date('d-m-Y H:i:s'));
+        $this->setArtCreationDate(date('Y-m-d H:i:s'));
         Database::get()->insert('article', $this->getArray());
         return ArticleModel::findById(Database::get()->lastInsertId('art_id'));
     }
 
     private function update(){
-        $this->setArtUpdateDate(date('d-m-Y H:i:s'));
+        $this->setArtUpdateDate(date('Y-m-d H:i:s'));
         return Database::get()->update('article', $this->getArray(),array('art_id' => $this->art_id));
     }
 
