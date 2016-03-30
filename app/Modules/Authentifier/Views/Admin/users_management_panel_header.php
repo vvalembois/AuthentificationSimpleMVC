@@ -25,7 +25,7 @@
 
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h4 class="panel-title">Stats : </h4>
+            <h4 class="panel-title">Users : </h4>
         </div>
         <div class="panel-body">
             <table class="table">

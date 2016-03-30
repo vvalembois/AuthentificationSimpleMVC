@@ -10,7 +10,6 @@
                 <thead>
                 <tr>
                     <th class="header">Title</th>
-                    <th class="header">Content</th>
                     <th class="header">Author id</th>
                     <th class="header">Creation Date</th>
                     <th class="header">Update Date</th>

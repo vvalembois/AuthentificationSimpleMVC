@@ -3,7 +3,7 @@
         <input type="hidden" name="art_id" value="<?= $data['art_id']?>"/>
 
         <label for="art_title">Title :</label>
-        <input class="form-control" type="text" id="art_title" name="art_title" value='<?= $data['art_title']?>' autocomplete="off" placeholder="Type your title ..."/>
+        <input class="form-control" type="text" id="art_title" name="art_title" value='<?= $data['art_title']?>' autocomplete="off" placeholder="Type your title ..." />
 
         <label for="art_content">Content :</label>
         <textarea class="form-control" rows="5" id="art_content" name="art_content" autocomplete="off" placeholder="Type your content..." required><?= $data['art_content']?></textarea>

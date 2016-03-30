@@ -17,6 +17,7 @@ use Helpers\Url;
 use Models\ArticleModel;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\ProfileModel;
 use Modules\Authentifier\Models\UserModel;
 use Modules\Authentifier\Models\UserModelTest;
 
@@ -76,7 +77,12 @@ class Article extends Authentifier
         View::renderTemplate('header', $data);
         $article = ArticleModel::findById(Request::post('art_id'));
         if($article instanceof ArticleModel) {
-            View::render('Article/article_details', $article->getArray());
+            $article_data = $article->getArray();
+            $user = ProfileModel::findByUserID($article->getArtAuthor());
+            if($user instanceof ProfileModel)
+                $article_data['art_author'] = $user->getUserName();
+            View::render('Article/article_details', $article_data);
+
             $article->addArtReaderCounter();
             $article->save();
         }
