@@ -57,7 +57,7 @@ class Article extends Authentifier
     }
 
     public function articlesList(){
-        $data['title'] = "Welcome";
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         $articles = ArticleModel::findAll();
         View::renderTemplate('header', $data);
         View::render('Article/articles_list_header');
@@ -72,7 +72,7 @@ class Article extends Authentifier
 
     /**Article Detail*/
     public function articleDetails(){
-        $data['art_id'] = "Welcome";
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header', $data);
         $article = ArticleModel::findById(Request::post('art_id'));
         if($article instanceof ArticleModel) {
@@ -86,7 +86,7 @@ class Article extends Authentifier
     /**Creation Article*/
     public function creationForm(){
         $this->checkRequiredUserType(2);
-        $data['title'] = "Welcome";
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header', $data);
         View::render('Article/article_creation_form', $data);
         View::renderTemplate('footer', $data);
@@ -111,7 +111,7 @@ class Article extends Authentifier
     /**Update Article*/
     public function updateForm(){
         $this->checkRequiredUserType(2);
-        $data['title'] = "Welcome";
+        $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header', $data);
         $article = ArticleModel::findById(Request::post('art_id'));
         if($article instanceof ArticleModel)
@@ -152,7 +152,6 @@ class Article extends Authentifier
     /**Supprimer Article*/
     public function delete(){
         $this->checkRequiredUserType(2);
-        $data['title'] = "Welcome";
         $article = ArticleModel::findById((Request::post('art_id')));
         if($article instanceof ArticleModel){
             $user = LoginModel::findBySession();
