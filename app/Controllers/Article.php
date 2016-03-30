@@ -47,22 +47,23 @@ class Article extends Authentifier
     /**Article List*/
     public function articleListElement($article){
         $user = LoginModel::findBySession();
-        if(!empty($article)){
-            if ($article instanceof ArticleModel){
-                if($user instanceof LoginModel && $user->getUserAccountType() > 5)
-                    View::render('Article/articles_list_element_admin', $article->getArray());
-                else
-                    View::render('Article/articles_list_element', $article->getArray());
-            }
+        if ($article instanceof ArticleModel){
+            if($user instanceof LoginModel && $user->getUserAccountType() > 5)
+                View::render('Article/articles_list_element_admin', $article->getArray());
+            else
+                View::render('Article/articles_list_element', $article->getArray());
         }
     }
 
     public function articlesList(){
         $data['title'] = "Welcome";
+        $articles = ArticleModel::findAll();
         View::renderTemplate('header', $data);
         View::render('Article/articles_list_header');
-        foreach ( ArticleModel::findAll() as $article){
-            Article::articleListElement($article);
+        if(!empty($articles)){
+            foreach ($articles as $article){
+                Article::articleListElement($article);
+            }
         }
         View::render('Article/articles_list_footer');
         View::renderTemplate('footer', $data);
