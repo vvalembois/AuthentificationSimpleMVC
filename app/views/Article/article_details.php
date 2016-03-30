@@ -1,5 +1,4 @@
-<input type="hidden" name="article_id" value="<?= $data['art_id']?>"/>
-
+<input type="hidden" name="art_id" value="<?= $data['art_id']?>"/>
 <li>Title : <?= $data['art_title'] ?></li>
 <li>Content : <?= $data['art_content'] ?></li>
 <li>Id Author : <?= $data['art_author'] ?></li>

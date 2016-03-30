@@ -8,9 +8,9 @@
 
     <td>
         <form method="post">
-            <input type="hidden" name="article_id" value="<?= $data['art_id']?>"/>
+            <input type="hidden" name="art_id" value="<?= $data['art_id']?>"/>
             <button class="btn btn-info" type="submit" formaction="article_details"> Details</button>
-            <button class="btn btn-warning" type="submit" formaction="update_action" >Update</button>
+            <button class="btn btn-warning" type="submit" formaction="article_update_form" >Update</button>
             <button class="btn btn-danger" type="submit" formaction="article_delete" >Delete</button>
         </form>
     </td>

@@ -118,16 +118,16 @@ class Article extends Authentifier
         if($article instanceof ArticleModel){
             $modif =false;
 
-            if(Request::post('art_titre') !=null){
-                if( Request::post("art_titre")!=null && Request::post("art_titre") != ($article-> getArtTitle())){
-                    $article->setArtTitle(Request::post('art_titre'));
+            if(Request::post('art_title') !=null){
+                if( Request::post("art_title")!=null && Request::post("art_title") != ($article-> getArtTitle())){
+                    $article->setArtTitle(Request::post('art_title'));
                     $modif=true;
                 }
             }
 
-            if(Request::post('art_titre') != null){
-                if(Request::post("art_content") !=null && Request::post("art_titre") != ($article-> getArtContent())){
-                    $article->setArtContent((Request::post('art_content')));
+            if(Request::post('art_title') != null){
+                if(Request::post("art_content") !=null && Request::post("art_title") != ($article-> getArtContent())){
+                    $article->setArtContent(Request::post('art_content'));
                     $modif=true;
                 }
             }
