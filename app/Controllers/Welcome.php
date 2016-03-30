@@ -49,11 +49,5 @@ class Welcome extends Authentifier
     }
 
     public function test(){
-        $article = ArticleModel::findById(4);
-        var_dump($article);
-        echo "<br>";
-        $article->delete();
-
-        var_dump($article);
     }
 }

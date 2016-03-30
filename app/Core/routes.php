@@ -22,7 +22,7 @@ Router::any('articles_list', 'Controllers\Article@articlesList');
 Router::any('article_details', 'Controllers\Article@articleDetails');
 
 /** Route pour creation*/
-Router::any('article_creation', 'Controllers\Article@creationForm');
+Router::any('article_creation_form', 'Controllers\Article@creationForm');
 Router::post('article_creation_action', 'Controllers\Article@creationAction');
 
 
@@ -32,6 +32,7 @@ Router::post('update_action', 'Controllers\Article@updateAction');
 
 /** Route pour delete*/
 Router::any('article_delete', 'Controllers\Article@delete');
+
 
 
 

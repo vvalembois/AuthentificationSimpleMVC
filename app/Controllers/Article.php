@@ -56,8 +56,6 @@ class Article extends Authentifier
     /**Article List*/
     public function articleListElement($article){
         $user = LoginModel::findBySession();
-
-
         if ($article instanceof ArticleModel){
             if($user instanceof LoginModel && $user->getUserAccountType() > 5)
                 View::render('Article/articles_list_element_admin', $article->getArray()); //avec les boutons
@@ -79,7 +77,7 @@ class Article extends Authentifier
 
     /**Article Detail*/
     public function articleDetails(){
-        $data['title'] = "Welcome";
+        $data['art_id'] = "Welcome";
         View::renderTemplate('header', $data);
         View::render('Article/article_details', ArticleModel::findById(Request::get('art_id')));
         View::renderTemplate('footer', $data);
@@ -90,7 +88,7 @@ class Article extends Authentifier
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/article_creation', $data);
+        View::render('Article/article_creation_form', $data);
         View::renderTemplate('footer', $data);
     }
 

@@ -1,4 +1,9 @@
-<li><?php var_dump($data);?></li>
+<li>Title : <?= $data['art_title'] ?></li>
+<li>Content : <?= $data['art_content'] ?></li>
+<li>Id Author : <?= $data['art_author'] ?></li>
+<li>Creation Date : <?= $data['art_creation_date'] ?></li>
+<li>Update Date : <?= $data['art_update_date'] ?></li>
+<li>How many people read this article : <?= $data['art_reader_counter'] ?></li>
+<br>
+<input type="hidden" name="article_id" value="<?= $data['art_id']?>"/>
 
-//utiliser pour recuperer l'id de l'article et le renvoyer en post
-<input type="hidden" name="user_id" value="<?= $data['art_id']?>"/>
