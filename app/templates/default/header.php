@@ -47,7 +47,6 @@ $hooks->run('afterBody');
 				<li><a href="<?= DIR ?>">Home</a></li>
 				<li><a href="<?= DIR."articles_list"?>">Articles List</a></li>
 				<li><a href="<?= DIR."article_creation_form"?>">Create Article</a></li>
-				<li><a href="<?= DIR."article_update_form"?>">Update Article</a></li>
 				<li><a href="<?= DIR."authentifier/registerForm" ?>">Sign up</a></li>
 				<li><a href="<?= DIR."authentifier/loginForm" ?>">Login</a></li>
 				<li><a href="<?= DIR."authentifier/logout" ?>">Logout</a></li>

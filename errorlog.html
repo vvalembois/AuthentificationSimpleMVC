@@ -76,4 +76,29 @@
 #9 {main}</pre>
 
            <hr />
-<p>Error on Mar 30, 2016 22:03PM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p>
+<p>Error on Mar 30, 2016 22:03PM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 30, 2016 22:31PM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '30-03-2016 22:31:21' for column 'art_creation_date' at row 1</p>
+
+           <p><strong>Code:</strong> 22007</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 131</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(131): PDOStatement->execute()
+#1 /app/app/Models/ArticleModel.php(59): Helpers\Database->insert('article', Array)
+#2 /app/app/Models/ArticleModel.php(78): Models\ArticleModel->insert()
+#3 /app/app/Controllers/Article.php(104): Models\ArticleModel->save()
+#4 [internal function]: Controllers\Article->creationAction()
+#5 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#6 /app/app/Core/Router.php(217): Core\Router::invokeObject('Controllers\\Art...')
+#7 /app/app/Core/routes.php(50): Core\Router::dispatch()
+#8 /app/index.php(81): require('/app/app/Core/r...')
+#9 {main}</pre>
+
+           <hr />

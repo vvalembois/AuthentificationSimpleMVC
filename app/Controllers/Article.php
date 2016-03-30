@@ -146,7 +146,7 @@ class Article extends Authentifier
             }
         }
 
-        Url::redirect();
+        Url::redirect("articles_list");
     }
 
     /**Supprimer Article*/
@@ -159,6 +159,6 @@ class Article extends Authentifier
             if($user instanceof LoginModel && $user->getUserId() == $article->getArtAuthor() || $user->getUserAccountType() > 5)
                 $article->delete();
         }
-        Url::redirect();
+        Url::redirect("articles_list");
     }
 }
