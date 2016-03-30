@@ -22,6 +22,29 @@ class ArticleModel extends Model
     private $art_image;
     private $art_reader_counter;
 
+    /**
+     * ArticleModel constructor.
+     * @param $art_title
+     * @param $art_author
+     * @param $art_creation_date
+     * @param $art_update_date
+     * @param $art_content
+     * @param $art_image
+     * @param $art_reader_counter
+     * @param $art_id
+     */
+    public function __construct($art_title, $art_author, $art_creation_date, $art_update_date, $art_content, $art_image, $art_reader_counter)
+    {
+        $this->art_title = $art_title;
+        $this->art_author = $art_author;
+        $this->art_creation_date = $art_creation_date;
+        $this->art_update_date = $art_update_date;
+        $this->art_content = $art_content;
+        $this->art_image = $art_image;
+        $this->art_reader_counter = $art_reader_counter;
+    }
+
+
     public static function findById($id){
         $article_sql = Database::get()->select('SELECT * FROM article WHERE art_id = "'.$id.'";',array(),\PDO::FETCH_CLASS, static::class);
         return (!empty($article_sql) ? $article_sql[0] : null);
@@ -44,7 +67,6 @@ class ArticleModel extends Model
 
     public function getArray(){
         return array(
-            'art_id' => $this->art_id,
             'art_title' => $this->art_title,
             'art_author' => $this->art_author,
             'art_creation_date' => $this->art_creation_date,
@@ -53,6 +75,11 @@ class ArticleModel extends Model
             'art_image' => $this->art_image,
             'art_reader_counter' => $this->art_reader_counter,
         );
+    }
+
+    public function insertArticle($article){
+        Database::get()->insert('article', $article->getArray());
+        return ArticleModel::findById(Database::get()->lastInsertId('art_id'));
     }
 
     /**

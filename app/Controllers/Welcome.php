@@ -11,7 +11,9 @@
 namespace Controllers;
 
 use Core\View;
+use Core\Model;
 use Helpers\Session;
+use Models\ArticleModel;
 use Modules\Authentifier\Controllers\Authentifier;
 use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Models\UserModelTest;
@@ -47,5 +49,6 @@ class Welcome extends Authentifier
     }
 
     public function test(){
+        var_dump(ArticleModel::findAll());
     }
 }
