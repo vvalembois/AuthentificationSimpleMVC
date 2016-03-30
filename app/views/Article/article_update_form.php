@@ -1,5 +1,7 @@
 <div class="row">
     <form class="col-xs-8 col-xs-offset-2 form-group-sm" action="update_action" method="post">
+        <input type="hidden" name="art_id" value="<?= $data['art_id']?>"/>
+
         <label for="art_title">Title :</label>
         <input class="form-control" type="text" id="art_title" name="art_title" value='<?= $data['art_title']?>' autocomplete="off" placeholder="Type your title ..."/>
 

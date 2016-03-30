@@ -114,7 +114,7 @@ class Article extends Authentifier
         View::renderTemplate('header', $data);
         $article = ArticleModel::findById(Request::post('art_id'));
         if($article instanceof ArticleModel)
-            View::render('Article/article_update_form', $article->getArray());
+            View::render('Article/article_update_form', array_merge($article->getArray(), array('art_id'=>$article->getArtId())));
         View::renderTemplate('footer', $data);
     }
 
@@ -126,19 +126,18 @@ class Article extends Authentifier
             $modif =false;
 
             if(Request::post('art_title') !=null){
-                if( Request::post("art_title")!=null && Request::post("art_title") != ($article-> getArtTitle())){
+                if( Request::post("art_title")!=null && Request::post('art_title') != ($article->getArtTitle())){
                     $article->setArtTitle(Request::post('art_title'));
                     $modif=true;
                 }
             }
 
-            if(Request::post('art_title') != null){
-                if(Request::post("art_content") !=null && Request::post("art_title") != ($article-> getArtContent())){
+            if(Request::post('art_content') != null){
+                if(Request::post("art_content") != null && Request::post('art_content') != ($article->getArtContent())){
                     $article->setArtContent(Request::post('art_content'));
                     $modif=true;
                 }
             }
-
             if($modif){
                 $user = LoginModel::findBySession();
                 if($user instanceof LoginModel && $user->getUserId() == $article->getArtAuthor() || $user->getUserAccountType() > 5)
