@@ -4,7 +4,7 @@
         <input class="form-control" type="text" id="art_title" name="art_title" value='<?= $data['art_title']?>' autocomplete="off" placeholder="Type your title..." required/>
 
         <label for="art_content">Content :</label>
-        <input class="form-control" type="text" id="art_content" name="art_content" value='<?= $data['art_content']?>' autocomplete="off" placeholder="Type your content..." required/>
+        <textarea class="form-control" rows="5" id="art_content" name="art_content" value='<?= $data['art_content']?>' autocomplete="off" placeholder="Type your content..." required></textarea>
 
         <br>
 
