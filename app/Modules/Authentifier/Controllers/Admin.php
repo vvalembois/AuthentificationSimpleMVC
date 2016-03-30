@@ -20,7 +20,7 @@ class Admin extends Authentifier
 {
     public function __construct()
     {
-        parent::__construct(2);
+        parent::__construct(125);
     }
 
     public function routes(){
@@ -32,7 +32,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementPanel(){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
 
         $user_list = AdminModel::findAll();
@@ -48,7 +48,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementElement(array $users){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         if(!empty($users))
             foreach($users as $user)
                 if($user instanceof AdminModel) {
@@ -64,13 +64,13 @@ class Admin extends Authentifier
     }
 
     public function userUpdateForm(){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         //TODO
     }
 
     public function usersManagementPanelAction(){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $user_id = Request::post('user_id');
         $action = Request::post('action');
         if(isset($user_id) && isset($action)){
@@ -78,7 +78,7 @@ class Admin extends Authentifier
 
             if($user instanceof AdminModel) {
                 if($user->getUserId() != LoginModel::findBySession()->getUserId())
-                    $this->checkAccountTypeRequired($user->getUserAccountType()+1); // You can update a user only if he have an inferior greats level
+                    $this->checkRequiredUserType($user->getUserAccountType()+1); // You can update a user only if he have an inferior greats level
                 if ($action == 'delete') {
                     $this->usersManagementDeleteConfirmation($user);
                 } elseif ($action == 'update') {
@@ -91,7 +91,7 @@ class Admin extends Authentifier
     }
 
     private function usersManagementDeleteConfirmation(AdminModel $user){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header',$data);
         $this->feedback->render();
@@ -105,7 +105,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementDeleteAction(){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $user_id = Request::post('user_id');
         $confirmed = Request::post('confirmed');
         if(isset($user_id) && isset($confirmed)) {
@@ -125,7 +125,7 @@ class Admin extends Authentifier
     }
 
     private function usersManagementUpdate(AdminModel $user){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         View::renderTemplate('header');
         $this->feedback->render();
 
@@ -136,7 +136,7 @@ class Admin extends Authentifier
     }
 
     public function usersManagementUpdateAction(){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $user_id = Request::post('user_id');
         if(isset($user_id)) {
             $user = AdminModel::findByUserID($user_id);
@@ -156,7 +156,7 @@ class Admin extends Authentifier
     }
 
     private function usersManagementDetails(AdminModel $user){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header',$data);
         $this->feedback->render();

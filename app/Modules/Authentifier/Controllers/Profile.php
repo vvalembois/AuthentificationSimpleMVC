@@ -33,7 +33,7 @@ class Profile extends Authentifier
     }
 
     public function userProfile(){
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $user = ProfileModel::findByUserID(Session::get('user_id'));
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header',$data);
@@ -48,7 +48,7 @@ class Profile extends Authentifier
     public function profileUpdateForm()
     {
 
-        $this->checkAccountTypeRequired();
+        $this->checkRequiredUserType();
         $data = [];
         $user = null;
         if(Login::userLoggedIn()) {
