@@ -39,11 +39,6 @@ $hooks = Hooks::get();
 //hook for running code after body tag
 $hooks->run('afterBody');
 ?>
-<style>
-	#test{
-		display: inline-block;
-	}
-</style>
 
 <div class="container">
 	<nav class="navbar navbar-default">
@@ -60,7 +55,7 @@ $hooks->run('afterBody');
 					</a>
 				</li>
 				<li>
-					<div class="dropdown" id="test">
+					<div class="dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" >More <span class="caret"></span></button>
 						<ul class="dropdown-menu">
 							<li><a href="<?= DIR."authentifier/admin/users_management_panel" ?>">Administration panel</a></li>
