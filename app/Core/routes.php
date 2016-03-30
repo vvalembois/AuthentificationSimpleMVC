@@ -16,22 +16,22 @@ Router::any('', 'Controllers\Welcome@index');
 Router::any('test', 'Controllers\Welcome@test');
 
 /** Route pour Afficher liste*/
-Router::any('articles', 'Controllers\Article@articles');
+Router::any('articles_list', 'Controllers\Article@articlesList');
 
 /** Route pour un article*/
-Router::any('article', 'Controllers\Article@article');
+Router::any('article_details', 'Controllers\Article@articleDetails');
 
 /** Route pour creation*/
-Router::any('creation', 'Controllers\Article@creationForm');
-Router::any('creationAction', 'Controllers\Article@creationAction');
+Router::any('article_creation', 'Controllers\Article@creationForm');
+Router::post('article_creation_action', 'Controllers\Article@creationAction');
 
 
 /** Route pour modif*/
-Router::any('update', 'Controllers\Article@updateForm');
-Router::any('updateAction', 'Controllers\Article@updateAction');
+Router::any('article_update_form', 'Controllers\Article@updateForm');
+Router::post('update_action', 'Controllers\Article@updateAction');
 
 /** Route pour delete*/
-Router::any('update', 'Controllers\Article@delete');
+Router::any('article_delete', 'Controllers\Article@delete');
 
 
 

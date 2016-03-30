@@ -16,8 +16,8 @@ use Helpers\Session;
 use Helpers\Url;
 use Models\ArticleModel;
 use Modules\Authentifier\Controllers\Authentifier;
-use Modules\Authentifier\Helpers\AuthMail\AuthMail;
 use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\UserModel;
 use Modules\Authentifier\Models\UserModelTest;
 
 /**
@@ -32,26 +32,18 @@ class Article extends Authentifier
      *  creation d'un article + view
      *  update d'un article plus vue
      *  delete d'un article plus vue
-     *
-     */
-
-    /**
-     * Call the parent construct
      */
 
     public function __construct()
     {
         parent::__construct();
-
     }
 
     /**
      * Define Index page title and load template files
      */
-
     public function welcome()
     {
-
         $data['title'] = "Welcome";
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         $this->test();
@@ -61,31 +53,39 @@ class Article extends Authentifier
         View::renderTemplate('footer', $data);
     }
 
-/**Article List*/
-    public function articleList($article){
+    /**Article List*/
+    public function articleListElement($article){
+        $user = LoginModel::findBySession();
+
+
         if ($article instanceof ArticleModel){
-            View::render('Article/article_list', $article->getArray());
+            if($user instanceof LoginModel && $user->getUserAccountType() > 5)
+                View::render('Article/articles_list_element_admin', $article->getArray()); //avec les boutons
+            else
+                View::render('Article/articles_list_element', $article->getArray()); //sans les boutons
         }
     }
 
-    public function articles(){
+    public function articlesList(){
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
+        View::render('Article/articles_list_header');
         foreach ( ArticleModel::findAll() as $article){
-            Article::articleList($article);
+            Article::articleListElement($article);
         }
-        View::renderTemplate('header', $data);
+        View::render('Article/articles_list_footer');
+        View::renderTemplate('footer', $data);
     }
 
-/**Article Detail*/
+    /**Article Detail*/
     public function articleDetails(){
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/article_detail', ArticleModel::findById(Request::get('art_id')));
-        View::renderTemplate('header', $data);
+        View::render('Article/article_details', ArticleModel::findById(Request::get('art_id')));
+        View::renderTemplate('footer', $data);
     }
 
-/**Creation Article*/
+    /**Creation Article*/
     public function creationForm(){
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
@@ -99,7 +99,7 @@ class Article extends Authentifier
         $this->checkRequiredUserType(2);
 
         if($user instanceof LoginModel) {
-            if ( Request::post('art_titre')!= null && Request::post('art_content')!= null) {
+            if (Request::post('art_titre')!= null && Request::post('art_content')!= null) {
                 $new_article = new ArticleModel();
                 $new_article->setArtTitle(Request::post('art_titre'));
                 $new_article->setArtAuthor($user->getUserId());
@@ -107,54 +107,59 @@ class Article extends Authentifier
                 $new_article->save();
             }
         }
-
         Url::redirect();
     }
 
-/**Update Article*/
+    /**Update Article*/
     public function updateForm(){
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
         View::renderTemplate('header', $data);
-        View::render('Article/article_update', ArticleModel::findById(Request::get('art_id')));
+        View::render('Article/article_update_form', ArticleModel::findById(Request::get('art_id')));
         View::renderTemplate('footer', $data);
     }
 
     public function updateAction(){
-        $user = LoginModel::findBySession();
         $this->checkRequiredUserType(2);
+        $article = ArticleModel::findById((Request::post('art_id')));
 
-        $article = ArticleModel::findById($_GET['art_id']);
+        if($article instanceof ArticleModel){
+            $modif =false;
 
-        $modif =false;
+            if(Request::post('art_titre') !=null){
+                if( Request::post("art_titre")!=null && Request::post("art_titre") != ($article-> getArtTitle())){
+                    $article->setArtTitle(Request::post('art_titre'));
+                    $modif=true;
+                }
+            }
 
-        if(Request::post('art_titre') !=null){
-            if( Request::post("art_titre")!=null && Request::post("art_titre") != ($article-> getArtTitle())){
-                $article->setArtTitle(Request::post('art_titre'));
-                $modif=true;
+            if(Request::post('art_titre') != null){
+                if(Request::post("art_content") !=null && Request::post("art_titre") != ($article-> getArtContent())){
+                    $article->setArtContent((Request::post('art_content')));
+                    $modif=true;
+                }
+            }
+
+            if($modif){
+                $user = LoginModel::findBySession();
+                if($user instanceof LoginModel && $user->getUserId() == $article->getArtAuthor() || $user->getUserAccountType() > 5)
+                    $article->save();
             }
         }
-
-        if(Request::post('art_titre') != null){
-            if(Request::post("art_content") !=null && Request::post("art_titre") != ($article-> getArtContent())){
-                $article->setArtContent($_POST["art_content"]);
-                $modif=true;
-            }
-        }
-
-        if($modif) $article->save();
 
         Url::redirect();
     }
 
-/**Supprimer Article*/
+    /**Supprimer Article*/
     public function delete(){
         $this->checkRequiredUserType(2);
         $data['title'] = "Welcome";
-
-
-
+        $article = ArticleModel::findById((Request::post('art_id')));
+        if($article instanceof ArticleModel){
+            $user = LoginModel::findBySession();
+            if($user instanceof LoginModel && $user->getUserId() == $article->getArtAuthor() || $user->getUserAccountType() > 5)
+                $article->delete();
+        }
         Url::redirect();
     }
-
 }
