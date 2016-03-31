@@ -8,10 +8,7 @@
 namespace Modules\Authentifier\Models;
 
 
-use Core\Model;
-use Helpers\Database;
 use Helpers\Session;
-use Modules\Authentifier\Controllers\User;
 use Modules\Authentifier\Helpers\Cookies;
 
 class LoginModel extends UserModel

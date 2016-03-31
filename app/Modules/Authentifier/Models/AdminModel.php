@@ -8,8 +8,6 @@
 namespace Modules\Authentifier\Models;
 
 
-use Helpers\Database;
-
 class AdminModel extends UserModel
 {
     public function updateAccountType($new_account_type){

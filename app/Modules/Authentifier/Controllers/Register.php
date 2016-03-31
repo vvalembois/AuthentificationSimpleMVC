@@ -84,8 +84,8 @@ class Register extends Authentifier
         $user_activation_hash = Request::get('activation');
         $user = RegisterModel::findByUserName($user_name);
 
-        if($user instanceof RegisterModel && $user->setUserActive($user_activation_hash)) {
-            $this->mail->sendMailForValidation($user);
+        if($user instanceof RegisterModel && $user->setUserActiveValidate($user_activation_hash)) {
+            $this->mail->sendMailForActivation($user);
             $this->feedback->add($user->getUserName() . ', your account is now activated!', FEEDBACK_TYPE_SUCCESS);
         }
         else
@@ -146,12 +146,17 @@ class Register extends Authentifier
     }
 
     private function registerActionInsert($new_user_data){
+        $new_user = new RegisterModel();
+        $new_user->setUserName($new_user_data['user_name']);
+        $new_user->setUserEmail($new_user_data['user_email']);
+        $new_user->setUserPasswordHash($new_user_data['user_password_hash']);
+        $new_user->setUserActivationHash($new_user_data['user_activation_hash']);
+        $new_user->setUserAccountType(1);
+        $new_user->setUserActive(0);
+        $new_user->setUserDeleted(0);
+        $new_user->setUserFailedLogins(0);
+        $new_user->setUserHasAvatar(0);
         /* Tentative d'insertion dans la table */
-        try {
-            return RegisterModel::insertUser($new_user_data);
-        } catch (\Exception $e) {
-            return false;
-
-        }
+        return $new_user->save();
     }
 }

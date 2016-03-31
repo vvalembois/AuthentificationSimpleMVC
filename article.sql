@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mer 30 Mars 2016 à 15:17
+-- Généré le :  Jeu 31 Mars 2016 à 02:24
 -- Version du serveur :  5.6.28-0ubuntu0.15.10.1
 -- Version de PHP :  5.6.11-1ubuntu3.1
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `article` (
   `art_id` int(11) NOT NULL,
   `art_title` varchar(500) NOT NULL,
-  `art_author` int(11) NOT NULL,
+  `art_author` int(11) DEFAULT NULL,
   `art_creation_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `art_update_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `art_content` longtext NOT NULL,
@@ -49,6 +49,12 @@ ALTER TABLE `article`
   ADD KEY `art_author` (`art_author`);
 
 --
+-- Contraintes pour la table `article`
+--
+ALTER TABLE `article`
+  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`art_author`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -57,16 +63,6 @@ ALTER TABLE `article`
 --
 ALTER TABLE `article`
   MODIFY `art_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Contraintes pour les tables exportées
---
-
---
--- Contraintes pour la table `article`
---
-ALTER TABLE `article`
-  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`art_author`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -389,20 +389,25 @@ abstract class UserModel extends Model
 
 
     private function update(){
-        return Database::get()->update('users', $this->getArray(), array('user_id' => $this->user_id));
+        Database::get()->update('users', $this->getArray(), array('user_id' => $this->user_id));
+        return true;
     }
 
     private function insert(){
         Database::get()->insert(PREFIX.'users', $this->getArray());
-        return RegisterModel::findByUserID(Database::get()->lastInsertId('user_id'));
+        return true;
     }
 
     public function save(){
         if($this->user_id != null){
-            return $this->update();
+            return $this->update()>0;
         }
         else{
             return $this->insert();
         }
+    }
+
+    public function delete(){
+        return Database::get()->delete(PREFIX.USERS_DB_TABLE,array('user_id'=>$this->user_id));
     }
 }

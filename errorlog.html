@@ -429,4 +429,163 @@
 #10 {main}</pre>
 
            <hr />
-<p>Error on Mar 31, 2016 0:37AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:38AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:39AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:39AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:42AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:45AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 2:05AM - Missing argument 1 for Modules\Authentifier\Models\UserModel::addUserFailedLogins(), called in /app/app/Modules/Authentifier/Models/LoginModel.php on line 134 and defined in /app/app/Modules/Authentifier/Models/UserModel.php on line 335</p>
+<p>Error on Mar 31, 2016 0:37AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:38AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:39AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:39AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:42AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 0:45AM - require(/app/app/Modules//Authentifier/Views/Admin/users_management_element_not_update_available.php): failed to open stream: No such file or directory in /app/app/Core/View.php on line 48</p><p>Error on Mar 31, 2016 2:05AM - Missing argument 1 for Modules\Authentifier\Models\UserModel::addUserFailedLogins(), called in /app/app/Modules/Authentifier/Models/LoginModel.php on line 134 and defined in /app/app/Modules/Authentifier/Models/UserModel.php on line 335</p><h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 31, 2016 2:14AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`authentifier`.`article`, CONSTRAINT `article_ibfk_1` FOREIGN KEY (`art_author`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION)</p>
+
+           <p><strong>Code:</strong> 23000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 211</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(211): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(410): Helpers\Database->delete('users', Array)
+#2 /app/app/Modules/Authentifier/Controllers/Admin.php(115): Modules\Authentifier\Models\UserModel->delete()
+#3 [internal function]: Modules\Authentifier\Controllers\Admin->usersManagementDeleteAction()
+#4 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#5 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#6 /app/app/Core/routes.php(51): Core\Router::dispatch()
+#7 /app/index.php(81): require('/app/app/Core/r...')
+#8 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 31, 2016 2:36AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'user_account_type' cannot be null</p>
+
+           <p><strong>Code:</strong> 23000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 131</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(131): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(396): Helpers\Database->insert('users', Array)
+#2 /app/app/Modules/Authentifier/Models/UserModel.php(405): Modules\Authentifier\Models\UserModel->insert()
+#3 /app/app/Modules/Authentifier/Controllers/Register.php(155): Modules\Authentifier\Models\UserModel->save()
+#4 /app/app/Modules/Authentifier/Controllers/Register.php(67): Modules\Authentifier\Controllers\Register->registerActionInsert(Array)
+#5 [internal function]: Modules\Authentifier\Controllers\Register->registerAction()
+#6 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#7 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#8 /app/app/Core/routes.php(51): Core\Router::dispatch()
+#9 /app/index.php(81): require('/app/app/Core/r...')
+#10 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 31, 2016 2:37AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'user_active' cannot be null</p>
+
+           <p><strong>Code:</strong> 23000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 131</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(131): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(396): Helpers\Database->insert('users', Array)
+#2 /app/app/Modules/Authentifier/Models/UserModel.php(405): Modules\Authentifier\Models\UserModel->insert()
+#3 /app/app/Modules/Authentifier/Controllers/Register.php(156): Modules\Authentifier\Models\UserModel->save()
+#4 /app/app/Modules/Authentifier/Controllers/Register.php(67): Modules\Authentifier\Controllers\Register->registerActionInsert(Array)
+#5 [internal function]: Modules\Authentifier\Controllers\Register->registerAction()
+#6 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#7 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#8 /app/app/Core/routes.php(51): Core\Router::dispatch()
+#9 /app/index.php(81): require('/app/app/Core/r...')
+#10 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 31, 2016 2:40AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'user_deleted' cannot be null</p>
+
+           <p><strong>Code:</strong> 23000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 131</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(131): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(396): Helpers\Database->insert('users', Array)
+#2 /app/app/Modules/Authentifier/Models/UserModel.php(405): Modules\Authentifier\Models\UserModel->insert()
+#3 /app/app/Modules/Authentifier/Controllers/Register.php(157): Modules\Authentifier\Models\UserModel->save()
+#4 /app/app/Modules/Authentifier/Controllers/Register.php(67): Modules\Authentifier\Controllers\Register->registerActionInsert(Array)
+#5 [internal function]: Modules\Authentifier\Controllers\Register->registerAction()
+#6 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#7 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#8 /app/app/Core/routes.php(51): Core\Router::dispatch()
+#9 /app/index.php(81): require('/app/app/Core/r...')
+#10 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 31, 2016 2:40AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'user_failed_logins' cannot be null</p>
+
+           <p><strong>Code:</strong> 23000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 131</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(131): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(396): Helpers\Database->insert('users', Array)
+#2 /app/app/Modules/Authentifier/Models/UserModel.php(405): Modules\Authentifier\Models\UserModel->insert()
+#3 /app/app/Modules/Authentifier/Controllers/Register.php(158): Modules\Authentifier\Models\UserModel->save()
+#4 /app/app/Modules/Authentifier/Controllers/Register.php(67): Modules\Authentifier\Controllers\Register->registerActionInsert(Array)
+#5 [internal function]: Modules\Authentifier\Controllers\Register->registerAction()
+#6 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#7 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#8 /app/app/Core/routes.php(51): Core\Router::dispatch()
+#9 /app/index.php(81): require('/app/app/Core/r...')
+#10 {main}</pre>
+
+           <hr />
+<h3>Exception information:</h3>
+
+           <p><strong>Date:</strong> Mar 31, 2016 2:41AM</p>
+
+           <p><strong>Message:</strong> SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'user_has_avatar' cannot be null</p>
+
+           <p><strong>Code:</strong> 23000</p>
+
+           <p><strong>File:</strong> /app/app/Helpers/Database.php</p>
+
+           <p><strong>Line:</strong> 131</p>
+
+           <h3>Stack trace:</h3>
+
+           <pre>#0 /app/app/Helpers/Database.php(131): PDOStatement->execute()
+#1 /app/app/Modules/Authentifier/Models/UserModel.php(396): Helpers\Database->insert('users', Array)
+#2 /app/app/Modules/Authentifier/Models/UserModel.php(405): Modules\Authentifier\Models\UserModel->insert()
+#3 /app/app/Modules/Authentifier/Controllers/Register.php(159): Modules\Authentifier\Models\UserModel->save()
+#4 /app/app/Modules/Authentifier/Controllers/Register.php(67): Modules\Authentifier\Controllers\Register->registerActionInsert(Array)
+#5 [internal function]: Modules\Authentifier\Controllers\Register->registerAction()
+#6 /app/app/Core/Router.php(126): call_user_func_array(Array, Array)
+#7 /app/app/Core/Router.php(217): Core\Router::invokeObject('Modules\\Authent...')
+#8 /app/app/Core/routes.php(51): Core\Router::dispatch()
+#9 /app/index.php(81): require('/app/app/Core/r...')
+#10 {main}</pre>
+
+           <hr />
