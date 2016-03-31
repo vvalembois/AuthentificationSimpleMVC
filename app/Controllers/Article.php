@@ -54,6 +54,8 @@ class Article extends Authentifier
             $author = ProfileModel::findByUserID($article->getArtAuthor());
             if($author instanceof ProfileModel)
                 $article_data['art_author'] = $author->getUserName();
+            else
+                $article_data['art_author'] = 'unknow';
 
             if($user instanceof LoginModel && $user->getUserAccountType() > 5)
                 View::render('Article/articles_list_element_admin', $article_data);
@@ -88,6 +90,9 @@ class Article extends Authentifier
             $user = ProfileModel::findByUserID($article->getArtAuthor());
             if($user instanceof ProfileModel)
                 $article_data['art_author'] = $user->getUserName();
+            else
+                $article_data['art_author'] = 'unknow';
+
             View::render('Article/article_details', $article_data);
 
             $article->addArtReaderCounter();
@@ -115,6 +120,7 @@ class Article extends Authentifier
                 $new_article->setArtTitle(Request::post('art_title'));
                 $new_article->setArtAuthor($user->getUserId());
                 $new_article->setArtContent(Request::post('art_content'));
+                $new_article->initArtReaderCounter();
                 $new_article->save();
             }
         }

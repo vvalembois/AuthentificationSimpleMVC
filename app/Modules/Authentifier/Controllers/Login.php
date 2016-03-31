@@ -86,19 +86,14 @@ class Login extends Authentifier
     }
 
     public function logout(){
-            $user = LoginModel::findBySession();
-            if($user instanceof LoginModel) {
-                $user->logout();
+            if($this->user_logged instanceof LoginModel) {
+                $this->user_logged->logout();
                 $this->feedback->add("You're now logout.");
             }
         Url::redirect();
     }
 
     static public function userLoggedIn(){
-        return LoginModel::userIsLoggedIn();
-    }
-
-    private function userProfileSetSession($user_id){
-        Session::set('user_id',$user_id);
+        return LoginModel::userLoggedIn();
     }
 }

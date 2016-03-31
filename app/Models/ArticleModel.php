@@ -184,6 +184,11 @@ class ArticleModel extends Model
         $this->art_image = $art_image;
     }
 
+    public function initArtReaderCounter()
+    {
+        $this->art_reader_counter = 0;
+    }
+
     /**
      * @param mixed $art_reader_counter
      */

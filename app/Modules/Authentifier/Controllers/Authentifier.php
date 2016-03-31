@@ -7,6 +7,7 @@ use Core\View;
 use Helpers\Session;
 use Helpers\Url;
 use Modules\Authentifier\Models\LoginModel;
+use Modules\Authentifier\Models\UserModel;
 use Modules\Feedback\Helpers\Feedback;
 
 /**
@@ -36,6 +37,8 @@ class Authentifier extends Controller{
      */
     protected $required_user_type;
 
+    protected $user_logged;
+
     /**
      * @param int into 0 to 127 $required_user_type (look on the $requider_user_type attribute of this class commentary)
      */
@@ -45,44 +48,19 @@ class Authentifier extends Controller{
 		Session::init();
 
 		// Tester si une session existe, la garder si elle est bonne, la detruire si elle est mauvaise
-		LoginModel::userIsLoggedIn();
+		$this->user_logged = LoginModel::userLoggedIn();
 
 		if(!isset($this->feedback))
 			$this->feedback = new Feedback();
-
-		// Tester si l'utilisateur est non connecté et a un cookie "Rester connecté"
-		if(!Login::userLoggedIn() /* && TODO teste le cookie "Rester connecté"*/){
-			// TODO renvoyer vers la route loginWithCookie
-		}
 
         // set the required user type
         $this->required_user_type = $required_user_type;
 
 	}
-
-
-	protected function setUser(){
-        $user = LoginModel::findBySession();
-        if($user instanceof LoginModel && $user->checkSessionId(Session::id()))
-		    $this->user = $user;
-	}
 	
 	public function routes(){
 		Router::any('authentifier', 'Modules\Authentifier\Controllers\Authentifier@test');
 	}
-
-	/**
-	 * Retourne la valeur d'un champ souhaité d'un cookie
-	 * @param mixed $key La clé du champ souhaité
-	 * @return mixed La valeur du champ souhaité ou rien (si inexistant)
-	 */
-	public static function cookie($key)
-	{
-		if (isset($_COOKIE[$key]))
-			return $_COOKIE[$key];
-        return null;
-	}
-
 
     /**
      * You need to use this function on the begin of your controller method which required a certain account type
@@ -93,17 +71,13 @@ class Authentifier extends Controller{
     protected function checkRequiredUserType($required_user_type = false){
         if(!$required_user_type)
             $required_user_type = $this->required_user_type;
-        $user = null;
-        if(Login::userLoggedIn()){
-            $user = LoginModel::findByUserID(Session::get('user_id'));
-        }
-        if($required_user_type <= 0 || ($user instanceof LoginModel && $user->getUserAccountType() >= $required_user_type))
+
+        if ($required_user_type <= 0 || ($this->user_logged instanceof UserModel && $this->user_logged->getUserAccountType() >= $required_user_type))
             return true;
-        if($required_user_type == 1)
+        if ($required_user_type == 1)
             $this->feedback->add("You need to be logged to visit this part of the site", FEEDBACK_TYPE_FAIL);
         else
             $this->feedback->add('You can\'t visit this part of the site without the good right level', FEEDBACK_TYPE_FAIL);
-
         Url::redirect();
         return false;
     }

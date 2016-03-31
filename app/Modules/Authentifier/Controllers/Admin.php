@@ -50,6 +50,7 @@ class Admin extends Authentifier
     public function usersManagementElement(array $users){
         $this->checkRequiredUserType();
         if(!empty($users))
+            sort($users);
             foreach($users as $user)
                 if($user instanceof AdminModel) {
                     $user_owner = LoginModel::findBySession();
@@ -138,16 +139,31 @@ class Admin extends Authentifier
     public function usersManagementUpdateAction(){
         $this->checkRequiredUserType();
         $user_id = Request::post('user_id');
+        $update = false;
         if(isset($user_id)) {
             $user = AdminModel::findByUserID($user_id);
             if ($user instanceof AdminModel) {
-                //changement
-                //TODO
-
-                //si il y a changement
-                    $this->feedback->add('User '.$user->getUserName().' updated.',FEEDBACK_TYPE_SUCCESS);
+                if(Request::post('user_name') != null && Request::post('user_name') != $user->getUserName()){
+                    $user->setUserName(Request::post('user_name'));
+                    $update = true;
+                }
+                if(Request::post('user_mail') != null && Request::post('user_mail') != $user->getUserEmail()){
+                    $user->setUserEmail(Request::post('user_mail'));
+                    $update = true;
+                }
+                if(Request::post('user_new_password') != null){
+                    $user->setUserPasswordHash(password_hash(Request::post('user_new_password'),PASSWORD_DEFAULT));
+                    $update = true;
+                }
+                if(Request::post('user_new_account_type') != null && Request::post('user_new_account_type') != $user->getUserAccountType()){
+                    $user->setUserAccountType(Request::post('user_new_account_type'));
+                    $update = true;
+                }
             }
-            //si pas changement
+            if($update) {
+                $user->save();
+                $this->feedback->add('User ' . $user->getUserName() . ' updated.', FEEDBACK_TYPE_SUCCESS);
+            }
             else{
                 $this->feedback->add('User '.$user->getUserName().' not updated.',FEEDBACK_TYPE_INFO);
             }

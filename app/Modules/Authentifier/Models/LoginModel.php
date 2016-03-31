@@ -48,19 +48,19 @@ class LoginModel extends UserModel
      * Check if the visitor is logged in, else if he can login with a cookie
      * @return bool return true if the visitor is logged in
      */
-    public static function userIsLoggedIn()
+    public static function userLoggedIn()
     {
-        if(LoginModel::findBySession() instanceof LoginModel) {
-            return true;
+        $user = LoginModel::findBySession();
+        if($user instanceof LoginModel) {
+            return $user;
         }
         else{
             $user = LoginModel::findByCookie();
             if($user instanceof LoginModel){
-                $user->connection();
-                return true;
+                return $user->connection();
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -89,6 +89,8 @@ class LoginModel extends UserModel
         if(isset($cookie_token))
             $this->setUserRememberMeToken($cookie_token);
         $this->save();
+
+        return $this;
     }
 
     /**

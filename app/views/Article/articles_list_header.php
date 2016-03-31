@@ -10,7 +10,7 @@
                 <thead>
                 <tr>
                     <th class="header">Title</th>
-                    <th class="header">Author id</th>
+                    <th class="header">Author</th>
                     <th class="header">Creation Date</th>
                     <th class="header">Update Date</th>
                     <th class="header">Reader counter</th>

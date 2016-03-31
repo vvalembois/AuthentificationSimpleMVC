@@ -19,6 +19,7 @@ use Modules\Authentifier\Helpers\Feedback;
 use Modules\Authentifier\Helpers\InputValidation;
 use Modules\Authentifier\Models\ProfileModel;
 use Modules\Authentifier\Models\RegisterModel;
+use Modules\Authentifier\Models\UserModel;
 
 class Register extends Authentifier
 {
@@ -64,7 +65,8 @@ class Register extends Authentifier
         if ($new_user_data = $this->registerFormDataValidation($new_user_data)) {
 
             /* Tentative d'insertion dans la table */
-            if($user = $this->registerActionInsert($new_user_data)){
+            $user = $this->registerActionInsert($new_user_data);
+            if($user instanceof UserModel){
                 $this->mail->sendMailForActivation($user);
                 $this->feedback->add("Well done $new_user_data[user_name], you are now registered!", FEEDBACK_TYPE_SUCCESS);
                 $this->feedback->add("You need to activate your account, activation link has been sent to you by email to ".$new_user_data['user_email'].".", FEEDBACK_TYPE_INFO);
@@ -85,7 +87,7 @@ class Register extends Authentifier
         $user = RegisterModel::findByUserName($user_name);
 
         if($user instanceof RegisterModel && $user->setUserActiveValidate($user_activation_hash)) {
-            $this->mail->sendMailForActivation($user);
+            $this->mail->sendMailForValidation($user);
             $this->feedback->add($user->getUserName() . ', your account is now activated!', FEEDBACK_TYPE_SUCCESS);
         }
         else
@@ -157,6 +159,9 @@ class Register extends Authentifier
         $new_user->setUserFailedLogins(0);
         $new_user->setUserHasAvatar(0);
         /* Tentative d'insertion dans la table */
-        return $new_user->save();
+        if($new_user->save())
+            return $new_user;
+        else
+            return null;
     }
 }
