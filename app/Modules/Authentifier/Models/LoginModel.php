@@ -85,7 +85,7 @@ class LoginModel extends UserModel
         // Database
         $this->setSessionId(Session::id());
         $this->setUserFailedLogins(0);
-        $this->setUserLastLoginTimestamp('time');
+        $this->setUserLastLoginTimestamp(time());
         if(isset($cookie_token))
             $this->setUserRememberMeToken($cookie_token);
         $this->save();
