@@ -86,11 +86,12 @@ class LoginModel extends UserModel
         }
 
         // Database
-        $this->session_id = Session::id();
-        $update_data = array('session_id'=>$this->session_id, 'user_failed_logins'=>0, 'user_last_login_timestamp' => time());
+        $this->setSessionId(Session::id());
+        $this->setUserFailedLogins(0);
+        $this->setUserLastLoginTimestamp('time');
         if(isset($cookie_token))
-            $update_data['user_remember_me_token']=$cookie_token;
-        Database::get()->update('users', $update_data, array('user_id' => $this->user_id));
+            $this->setUserRememberMeToken($cookie_token);
+        $this->save();
     }
 
     /**
@@ -128,8 +129,9 @@ class LoginModel extends UserModel
 
     public function loginFailed(){
         $this->user_failed_logins ++;////////
-        $this->user_last_failed_login = time();//////
-        $this->user_last_failed_login_ip = $_SERVER['REMOTE_ADDR'];
-        Database::get()->update('users',array('user_failed_logins'=>$this->user_failed_logins, 'user_last_failed_login'=>$this->user_last_failed_login, 'user_last_failed_login_ip'=>$this->user_last_failed_login_ip),array('user_id' => $this->user_id));
+        $this->setUserLastFailedLogin(time());
+        $this->setUserLastFailedLoginIp($_SERVER['REMOTE_ADDR']);
+        $this->addUserFailedLogins();
+        $this->save();
     }
 }

@@ -12,10 +12,11 @@ use Core\Router;
 use Helpers\Hooks;
 
 /** Define routes. */
-Router::any('', 'Controllers\Welcome@index');
+Router::any('test1', 'Controllers\Welcome@index');
 Router::any('test', 'Controllers\Welcome@test');
 
 /** Route pour Afficher liste*/
+Router::any('', 'Controllers\Article@articlesList');
 Router::any('articles_list', 'Controllers\Article@articlesList');
 
 /** Route pour un article*/

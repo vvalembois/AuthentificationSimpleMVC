@@ -48,12 +48,17 @@ class Article extends Authentifier
     /**Article List*/
     public function articleListElement($article){
         $user = LoginModel::findBySession();
-        $data = array_merge($article->getArray(), array('art_id' => $article->getArtId()));
         if ($article instanceof ArticleModel){
+            $article_data = $article->getArray();
+            $article_data['art_id'] = $article->getArtId();
+            $author = ProfileModel::findByUserID($article->getArtAuthor());
+            if($author instanceof ProfileModel)
+                $article_data['art_author'] = $author->getUserName();
+
             if($user instanceof LoginModel && $user->getUserAccountType() > 5)
-                View::render('Article/articles_list_element_admin', $data);
+                View::render('Article/articles_list_element_admin', $article_data);
             else
-                View::render('Article/articles_list_element', $data);
+                View::render('Article/articles_list_element', $article_data);
         }
     }
 
@@ -61,6 +66,7 @@ class Article extends Authentifier
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         $articles = ArticleModel::findAll();
         View::renderTemplate('header', $data);
+        $this->feedback->render();
         View::render('Article/articles_list_header');
         if(!empty($articles)){
             foreach ($articles as $article){
@@ -73,6 +79,7 @@ class Article extends Authentifier
 
     /**Article Detail*/
     public function articleDetails(){
+        $this->checkRequiredUserType(1);
         $data['user_status'] = (Session::get('user_name') ? Session::get('user_name') : "Visitor");
         View::renderTemplate('header', $data);
         $article = ArticleModel::findById(Request::post('art_id'));

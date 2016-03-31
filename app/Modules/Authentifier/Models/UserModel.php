@@ -330,6 +330,15 @@ abstract class UserModel extends Model
     }
 
     /**
+     * @param mixed $user_failed_logins
+     */
+    public function addUserFailedLogins()
+    {
+        $this->user_failed_logins++;
+    }
+
+
+    /**
      * @param mixed $user_last_failed_login
      */
     public function setUserLastFailedLogin($user_last_failed_login)
