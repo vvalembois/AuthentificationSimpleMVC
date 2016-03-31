@@ -128,7 +128,7 @@ class LoginModel extends UserModel
     }
 
     public function loginFailed(){
-        $this->user_failed_logins ++;////////
+        $this->user_failed_logins ++;
         $this->setUserLastFailedLogin(time());
         $this->setUserLastFailedLoginIp($_SERVER['REMOTE_ADDR']);
         $this->addUserFailedLogins();
